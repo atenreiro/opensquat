@@ -1,0 +1,32 @@
+{
+    "build": {
+        "@saveall": true
+    },
+    "language": {
+        "tern_defs": {
+            "json()": {
+                "browser": {
+                    "enabled": true
+                },
+                "ecma5": {
+                    "enabled": true
+                },
+                "jQuery": {
+                    "enabled": true
+                }
+            }
+        }
+    },
+    "python": {
+        "@path": "/usr/local/lib/python3.4/dist-packages:/usr/local/lib/python3.5/dist-packages"
+    },
+    "run": {
+        "configs": {
+            "@inited": "true",
+            "json()": {}
+        }
+    },
+    "welcome": {
+        "@first": true
+    }
+}
