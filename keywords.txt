@@ -1,5 +1,7 @@
 #This is a comment
 vodafone
+vodacom
 facebook
 google
-microsoft365
+amazon
+microsoft

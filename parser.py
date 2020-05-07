@@ -30,7 +30,7 @@ def parser():
                          help="0 (very high), 1 (high), 2 (medium), 3 (low), 4 (very low) (default: 1)")
     parser.add_argument('-t', '--type', type=validate_type, default="txt", 
                          help="output file type [txt|json|csv] (default: txt)")
-    parser.add_argument('-d', '--domains', type=str, default='domain-names.txt',
+    parser.add_argument('-d', '--domains', type=str, default='',
                         help='update from FILE instead of downloading new domains')
                         
     args = parser.parse_args()

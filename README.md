@@ -52,12 +52,12 @@ OpenSquat Running Examples
 
 To Do / Roadmap
 -------------
-
 * Support for hamming distance algorithm
 * Integration with VirusTotal (VT)
 * Use certificate transparency public database as another source
 * Improve code quality from B to A grade (codacy)
-
+* PEP8 compliance
+* Add documentation 
 
 Author
 -------------

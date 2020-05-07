@@ -31,6 +31,14 @@ class Domain:
                            3: "low confidence", 
                            4: "very low confidence"}
 
+
+    @staticmethod
+    def domain_contains(keyword, domain):
+        if keyword in domain:
+            return True
+        
+        return False
+    
     def download(self):
         """Download the latest newly registered domains
 
@@ -38,7 +46,7 @@ class Domain:
             none
 
         Returns:
-            none
+            True
     
         """
 
@@ -145,8 +153,11 @@ class Domain:
                     domains = domains.replace('\n', '')
                     leven_dist = levenshtein(keyword, domain)
     
-                    if (leven_dist <= self.confidence_level):
+                    if leven_dist <= self.confidence_level:
                         print("[+] Similarity detected between", keyword, "and", domains, "(%s)" % self.confidence[leven_dist])
+                        self.list_domains.append(domains)
+                    elif self.domain_contains(keyword, domains):
+                        print("[+] Similarity detected between", keyword, "and", domains, "(high confidence)")
                         self.list_domains.append(domains)
     
             f_dom.seek(0)
@@ -162,7 +173,7 @@ class Domain:
         self.confidence_level = confidence_level
         self.count_keywords()
         
-        if not domains_file: 
+        if self.domain_filename is '': 
             self.download()
 
         self.count_domains()
@@ -191,7 +202,7 @@ if __name__ == '__main__':
     print("\t\t"+__VERSION__+"\n")    
 
     args = parser()
-    
+
     start_time = time.time()
   
     file_content = Domain().main(args.keywords, args.confidence, args.domains)
