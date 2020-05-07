@@ -1,12 +1,20 @@
-OpenSquat
+openSquat
 ====
 
-.. image:: https://api.codacy.com/project/badge/Grade/f5ce26137ad34f0b8940ce6d21fbbc68
-    :target: https://www.codacy.com/manual/atenreiro/opensquat?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=atenreiro/opensquat&amp;utm_campaign=Badge_Grade
+.. image:: https://travis-ci.org/lorien/grab.png?branch=master
+    :target: https://travis-ci.org/lorien/grab?branch=master
+
+.. image:: https://ci.appveyor.com/api/projects/status/uxj24vjin7gptdlg
+    :target: https://ci.appveyor.com/project/lorien/grab
+
+.. image:: https://coveralls.io/repos/lorien/grab/badge.svg?branch=master
+    :target: https://coveralls.io/r/lorien/grab?branch=master
 
 .. image:: https://api.codacy.com/project/badge/Grade/18465ca1458b4c5e99026aafa5b58e98
    :target: https://www.codacy.com/app/lorien/grab?utm_source=github.com&utm_medium=referral&utm_content=lorien/grab&utm_campaign=badger
 
+.. image:: https://readthedocs.org/projects/grab/badge/?version=latest
+    :target: http://docs.grablib.org/en/latest/
 
 What is OpenSquat?
 -------------
