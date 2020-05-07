@@ -19,7 +19,7 @@ This is an opensource project so everyone's welcomed to contribute.
 
 It does support some features such as:
 
-* Automatic newly registered domain updating
+* Automatic newly registered domain updating (once a day)
 * Levenshtein distance to calculate word similarity
 * Use different levels of confidence threshold to fine tune
 * Save output into different formats (txt, JSON and CSV)

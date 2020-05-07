@@ -24,8 +24,8 @@ def parser():
     parser = argparse.ArgumentParser(description="openSquat")
     parser.add_argument('-k', '--keywords', type=str, default='keywords.txt', 
                          help="keywords file (default: keywords.txt)")
-    parser.add_argument('-o', '--output', type=str, default="domains.txt", 
-                         help="output filename (default: domains.txt)")
+    parser.add_argument('-o', '--output', type=str, default="results.txt", 
+                         help="output filename (default: results.txt)")
     parser.add_argument('-c', '--confidence', type=validate_confidence, default=1, 
                          help="0 (very high), 1 (high), 2 (medium), 3 (low), 4 (very low) (default: 1)")
     parser.add_argument('-t', '--type', type=validate_type, default="txt", 
