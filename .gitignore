@@ -1,1 +1,10 @@
-.c9/*
+.c9/
+.c9*
+.git
+__pycache__/
+*.pyc
+2020/
+logs/
+venv/
+*.old
+*.bak

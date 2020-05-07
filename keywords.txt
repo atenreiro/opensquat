@@ -1,2 +1,17 @@
-#comment
-starhub
+#This is a comment
+#Telco
+#vodafone
+#vodacom
+#safaricom
+#Finance
+#paypal
+#mpesa
+#mkesh
+#emola
+#E-Commernce
+#amazon
+bazara
+#Internet
+#google
+#facebook
+#EOF - no blank line below
