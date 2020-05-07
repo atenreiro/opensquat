@@ -33,7 +33,7 @@ Installation
 
 ```bash
     $ git clone https://github.com/atenreiro/opensquat
-    $ pip3 -r requirements.txt
+    $ pip3 install -r requirements.txt
 ```
 
 Make sure you have Python 3.6+ and pip3 in your environment
