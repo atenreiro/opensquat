@@ -40,13 +40,16 @@ OpenSquat Running Examples
 
 .. code:: bash
 
+
+
+
+```bash
     # Lazy run with default options
     $ python3 opensquat.py
 
     # for all the options
     $ python3 opensquat.py -h
-
-
+```
 
 To Do / Roadmap
 -------------
