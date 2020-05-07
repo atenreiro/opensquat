@@ -3,7 +3,6 @@
 .git
 __pycache__/
 *.pyc
-2020/
 logs/
 venv/
 *.old
