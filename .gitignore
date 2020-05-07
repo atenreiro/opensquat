@@ -1,5 +1,6 @@
 .c9/
 .c9*
+.~c9*
 .git
 __pycache__/
 *.pyc
