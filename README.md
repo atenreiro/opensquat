@@ -25,23 +25,20 @@ It does support some features such as:
 * Save output into different formats (txt, JSON and CSV)
 * Can be integrated with other threat intelligence tools and DNS sinkholes
 
+
 Installation
 ------------
 
-.. code:: bash
-
-    $ pip -r requirements.txt
+```bash
+    $ git clone https://github.com/atenreiro/opensquat
+    $ pip3 -r requirements.txt
+```
 
 Make sure you have Python 3.6+ and pip3 in your environment
 
 
 OpenSquat Running Examples
 ------------
-
-.. code:: bash
-
-
-
 
 ```bash
     # Lazy run with default options
@@ -62,7 +59,5 @@ To Do / Roadmap
 
 Author
 -------------
-* Andre Tenreiro [LinkedInk](https://www.linkedin.com/in/andretenreiro/)
+* Andre Tenreiro [(LinkedInk)](https://www.linkedin.com/in/andretenreiro/)
 * andre@cert.mz
-
-
