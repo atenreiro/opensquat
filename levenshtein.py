@@ -1,4 +1,14 @@
 # Module: levenshtein.py
+"""
+openSquat
+
+(c) CERT-MZ | Andre Tenreiro | andre@cert.mz
+
+* https://www.cert.mz
+* https://github.com/atenreiro/opensquat
+
+original credits: Unkown, internet sourced 
+"""
 import numpy as np
 
 def levenshtein(s, t, ratio_calc = False):
@@ -9,8 +19,6 @@ def levenshtein(s, t, ratio_calc = False):
         For all i and j, distance[i,j] will contain the Levenshtein
         distance between the first i characters of s and the
         first j characters of t
-        
-        original credits: Unkown, internet sourced
     """
     # Initialize matrix of zeros
     rows = len(s)+1

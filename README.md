@@ -9,7 +9,7 @@ openSquat
 What is openSquat?
 -------------
 
-openSquat is a OSINT R&D project to detect **cybersquatting** threats to specific companies or domains, such as:
+openSquat is an opensource Intelligence (OSINT) R&D project to identify **cybersquatting** threats to specific companies or domains, such as:
 
 * Cyber squatting
 * Typo squatting

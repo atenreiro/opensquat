@@ -1,9 +1,31 @@
 # Module: parser.py
+"""
+openSquat
+
+(c) CERT-MZ | Andre Tenreiro | andre@cert.mz
+
+* https://www.cert.mz
+* https://github.com/atenreiro/opensquat
+
+software licensed under GNU version 3
+
+"""
 import argparse
 
 
 def validate_type(file_type):
+    """Validate file_type
+
+    Args:
+        file_type: string containing file type, can only be txt, json or csv.
+
+    Returns:
+        file_type
         
+    Raise:
+        If value is not valid, raise an exception to argparse
+    
+    """
     file_type = str(file_type)
     
     if (file_type != "txt") and (file_type != "json") and (file_type != "csv"):
@@ -11,6 +33,18 @@ def validate_type(file_type):
     return file_type
 
 def validate_confidence(confidence_level):
+    """Validate confidence_level
+
+    Args:
+        confidence_level: int containing confidence_level, can only be an int between 0 and 4.
+
+    Returns:
+        confidence_level
+        
+    Raise:
+        If value is not valid, raise an exception to argparse
+    
+    """
     confidence_level = int(confidence_level)
     
     if confidence_level not in range(0, 5):
@@ -18,7 +52,15 @@ def validate_confidence(confidence_level):
     return confidence_level
         
 def parser():
+    """Parser main function
+
+    Args:
+        none
+
+    Returns:
+        args: returns arguments
     
+    """    
     
     # Parser
     parser = argparse.ArgumentParser(description="openSquat")

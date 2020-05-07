@@ -1,3 +1,15 @@
+# -*- coding: utf-8 -*-
+"""
+openSquat
+
+(c) CERT-MZ | Andre Tenreiro | andre@cert.mz
+
+* https://www.cert.mz
+* https://github.com/atenreiro/opensquat
+
+software licensed under GNU version 3
+
+"""
 import io
 import requests
 import zipfile
@@ -16,6 +28,22 @@ from parser import *
 __VERSION__ = "version 1.0"
 
 class Domain:
+    """The Domain class with handle all the functions related to the domain verifications
+     
+    To use:
+        Domain().main(keywords, confidence, domains)
+    
+    Attributes:
+        URL: The URL to download the updated domain list
+        today: today's date in the format yyyy-mm-dd
+        domain_filename: If no URL download is required, the local file containing the domains 
+        keywords_filename: File containing the keywords (plain text)
+        domain_total: Total count number of domains from domain_filename
+        keywords_total: Total count number of keywords from keywords_filename
+        list_domains: A list containing all the flagged domains
+        confidence_level: An int containing the confidence of sensitiveness level
+        confidence: Dictionary containing the respective confidence string
+    """
     def __init__(self):
         self.URL = 'https://raw.githubusercontent.com/CERT-MZ/projects/master/Domain-squatting/domain-names.txt'
         self.today = date.today().strftime("%Y-%m-%d")
@@ -40,13 +68,13 @@ class Domain:
         return False
     
     def download(self):
-        """Download the latest newly registered domains
+        """Download the latest newly registered domains and save locally
 
         Args:
             none
 
         Returns:
-            True
+            none
     
         """
 
@@ -107,7 +135,7 @@ class Domain:
         """Method to set the filename 
 
         Args:
-            (string): keywords_filename
+            keywords_filename
 
         Returns:
             none
@@ -120,7 +148,7 @@ class Domain:
         """Method to print some configuration information
 
         Args:
-            self
+            none
 
         Returns:
             none
@@ -133,6 +161,15 @@ class Domain:
 
         
     def check_squatting(self):
+        """Method that will compute all the similarity calculations between the keywords and domain names
+
+        Args:
+            none
+
+        Returns:
+            list_domains: list containing all the flagged domains
+    
+        """
         
         f_key = open(self.keywords_filename, "r")
         f_dom = open(self.domain_filename, "r")
@@ -167,6 +204,15 @@ class Domain:
         
         
     def main(self, keywords_file, confidence_level, domains_file):
+        """Method to call the class functions
+
+        Args:
+            none
+
+        Returns:
+            none
+    
+        """
         
         self.set_filename(keywords_file)
         self.domain_filename = domains_file
