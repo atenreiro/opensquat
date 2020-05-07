@@ -3,6 +3,8 @@ openSquat
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f5ce26137ad34f0b8940ce6d21fbbc68)](https://www.codacy.com/manual/atenreiro/opensquat?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=atenreiro/opensquat&amp;utm_campaign=Badge_Grade)
 
+![alt text](https://raw.githubusercontent.com/atenreiro/opensquat/master/openSquat.PNG)
+
 
 What is openSquat?
 -------------
