@@ -12,12 +12,9 @@ software licensed under GNU version 3
 """
 import io
 import requests
-import json
 import os
 import time
-import subprocess as call
 from datetime import date
-from lxml import etree 
 
 # external files
 from output import *

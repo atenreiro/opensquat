@@ -97,6 +97,7 @@ netflix-offres.com
 netflixcine.com
 netflixlounge.com
 netflixsolutions.services
+diogolopescomercialvodafone.com
 able-paypal.com
 avoid-paypal.com
 aware-paypal.com
@@ -120,4 +121,3 @@ serviziopaypal.com
 servpaypals.com
 solution-paypal.com
 unusual-paypal.com
-diogolopescomercialvodafone.com
