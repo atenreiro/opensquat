@@ -12,7 +12,6 @@ software licensed under GNU version 3
 """
 import io
 import requests
-import zipfile
 import json
 import os
 import time
