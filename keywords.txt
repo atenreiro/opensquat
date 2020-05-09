@@ -5,4 +5,5 @@ amazon
 microsoft
 netflix
 paypal
+vodafone
 #EOF
