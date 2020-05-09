@@ -52,7 +52,7 @@ Usage Examples
 
 To Do / Roadmap
 -------------
-* Support for hamming distance algorithm
+* Finalise the support for Jaro-Winkler (word similarity)
 * Integration with VirusTotal (VT)
 * Use certificate transparency public database as another source
 * Homograph detection
@@ -63,9 +63,9 @@ To Do / Roadmap
 
 Changelog
 -------------
-* Check the [(CHANGELOG)](https://www.linkedin.com/in/andretenreiro/) file.
+* Check the [CHANGELOG)](https://github.com/atenreiro/opensquat/blob/master/CHANGELOG) file.
 
 Author
 -------------
-* Andre Tenreiro [(LinkedInk)](https://github.com/atenreiro/opensquat/blob/master/CHANGELOG)
+* Andre Tenreiro [(LinkedInk)](https://www.linkedin.com/in/andretenreiro/)
 * andre@cert.mz

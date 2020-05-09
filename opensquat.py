@@ -256,11 +256,15 @@ if __name__ == '__main__':
     start_time = time.time()
   
     file_content = Domain().main(args.keywords, args.confidence, args.domains)
+    
+    print("")
+    print("+---------- Summary ----------+")
     SaveFile().main(args.output, args.type, file_content)
 
     end_time = round(time.time() - start_time, 2)
     
     print("[*] Domains flagged:", len(file_content))
     print("[*] Running time: %s seconds" % end_time)
+    print("")
     
     
