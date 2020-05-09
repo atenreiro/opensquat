@@ -11,7 +11,7 @@ What is openSquat?
 
 openSquat is an opensource Intelligence (OSINT) R&D project to identify **cybersquatting** threats to specific companies or domains, such as:
 
-* Cyber squatting
+* Domain squatting
 * Typo squatting
 * Phishing
 * Scams
@@ -39,7 +39,7 @@ Installation
 Make sure you have Python 3.6+ and pip3 in your environment
 
 
-OpenSquat Running Examples
+Usage Examples
 ------------
 
 ```bash
@@ -55,11 +55,17 @@ To Do / Roadmap
 * Support for hamming distance algorithm
 * Integration with VirusTotal (VT)
 * Use certificate transparency public database as another source
+* Homograph detection
 * Improve code quality from B to A grade (codacy)
 * PEP8 compliance
 * Add documentation 
 
+
+Changelog
+-------------
+* Check the [(CHANGELOG)](https://www.linkedin.com/in/andretenreiro/) file.
+
 Author
 -------------
-* Andre Tenreiro [(LinkedInk)](https://www.linkedin.com/in/andretenreiro/)
+* Andre Tenreiro [(LinkedInk)](https://github.com/atenreiro/opensquat/blob/master/CHANGELOG)
 * andre@cert.mz

@@ -24,8 +24,10 @@ from lxml import etree
 from levenshtein import *
 from output import *
 from parser import *
+from validations import *
 
-__VERSION__ = "version 1.0"
+__VERSION__ = "version 1.1"
+
 
 class Domain:
     """The Domain class with handle all the functions related to the domain verifications
@@ -179,6 +181,7 @@ class Domain:
         
         for keyword in f_key:
             keyword = keyword.replace('\n', '')
+            keyword = keyword.lower()
     
             if (keyword[0] != "#") and (keyword[0] != " ") and (keyword[0] != "") and (keyword[0] != "\n"):
                 i += 1
@@ -187,15 +190,17 @@ class Domain:
                 for domains in f_dom:
                     domain  = domains.split(".")
                     domain = domain[0].replace('\n', '')
+                    domain = domain.lower()
                     domains = domains.replace('\n', '')
                     leven_dist = levenshtein(keyword, domain)
-    
+
                     if leven_dist <= self.confidence_level:
                         print("[+] Similarity detected between", keyword, "and", domains, "(%s)" % self.confidence[leven_dist])
                         self.list_domains.append(domains)
                     elif self.domain_contains(keyword, domains):
                         print("[+] Similarity detected between", keyword, "and", domains, "(high confidence)")
                         self.list_domains.append(domains)
+
     
             f_dom.seek(0)
     
@@ -255,6 +260,8 @@ if __name__ == '__main__':
     SaveFile().main(args.output, args.type, file_content)
 
     end_time = round(time.time() - start_time, 2)
+    
+    print("[*] Domains flagged:", len(file_content))
     print("[*] Running time: %s seconds" % end_time)
     
     

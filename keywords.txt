@@ -3,4 +3,5 @@ facebook
 google
 amazon
 microsoft
-office365
+netflix
+paypal

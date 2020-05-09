@@ -1,2 +1,7 @@
+v1.1 - (2020-05-08)
++ Major improvements for Levenshtein implementation (5 times faster)
++ New python library strsimpy is required
+- Removed numpy lib
+
 v1.0 - (2020-05-07)
-- initial release
++ Initial release
