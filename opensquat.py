@@ -10,7 +10,6 @@ openSquat
 software licensed under GNU version 3
 
 """
-import io
 import requests
 import os
 import time
@@ -118,7 +117,6 @@ class Domain:
             none
     
         """ 
-        my_list = []
         
         if not os.path.isfile(self.keywords_filename):
             print('[*] File', self.keywords_filename, 'not found or not readable! Exiting... \n')
