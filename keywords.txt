@@ -4,6 +4,6 @@ google
 amazon
 microsoft
 netflix
-paypal
 vodafone
+paypal
 #EOF
