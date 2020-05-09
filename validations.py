@@ -40,3 +40,4 @@ def jaro_winkler(keyword, domain):
     jarowinkler = JaroWinkler()
     return jarowinkler.similarity(keyword, domain)
     
+    
