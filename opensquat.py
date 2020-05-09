@@ -21,7 +21,6 @@ from datetime import date
 from lxml import etree 
 
 # external files
-from levenshtein import *
 from output import *
 from parser import *
 from validations import *
