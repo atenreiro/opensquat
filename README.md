@@ -54,7 +54,7 @@ To Do / Roadmap
 *  Finalise the support for Jaro-Winkler (word similarity)
 *  Integration with VirusTotal (VT)
 *  Use certificate transparency public database as another source
-*  ~~~Homograph detection~~ done
+*  ~~Homograph detection~~ done
 *  Improve code quality from B to A grade (codacy)
 *  PEP8 compliance
 *  Add documentation 
