@@ -1,5 +1,5 @@
 # Module: parser.py
-"""!
+"""
 openSquat
 
 (c) CERT-MZ | Andre Tenreiro | andre@cert.mz
