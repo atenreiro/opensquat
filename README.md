@@ -5,16 +5,15 @@ openSquat
 
 ![alt text](https://raw.githubusercontent.com/atenreiro/opensquat/master/openSquat.PNG)
 
-
 What is openSquat?
 -------------
 
 openSquat is an opensource Intelligence (OSINT) R&D project to identify **cybersquatting** threats to specific companies or domains, such as:
 
-* Domain squatting
-* Typo squatting
-* Phishing
-* Scams
+*  Domain squatting
+*  Typo squatting
+*  Phishing
+*  Scams
 
 This is an opensource project so everyone's welcomed to contribute.
 

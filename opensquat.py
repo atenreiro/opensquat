@@ -32,7 +32,7 @@ class Domain:
     Attributes:
         URL: The URL to download the updated domain list
         today: today's date in the format yyyy-mm-dd
-        domain_filename: If no URL download is required, the local file containing the domains 
+        domain_filename: If no URL download is required, the local file containing the domains
         keywords_filename: File containing the keywords (plain text)
         domain_total: Total count number of domains from domain_filename
         keywords_total: Total count number of keywords from keywords_filename
@@ -50,9 +50,9 @@ class Domain:
         self.list_domains = []
         self.confidence_level = 2
         self.confidence = {0: "very high confidence",
-                           1: "high confidence", 
+                           1: "high confidence",
                            2: "medium confidence",
-                           3: "low confidence", 
+                           3: "low confidence",
                            4: "very low confidence"}
 
 
@@ -116,7 +116,7 @@ class Domain:
         Returns:
             none
     
-        """ 
+        """
         
         if not os.path.isfile(self.keywords_filename):
             print('[*] File', self.keywords_filename, 'not found or not readable! Exiting... \n')
@@ -127,7 +127,7 @@ class Domain:
                 self.keywords_total += 1
                 
     def set_filename(self, filename):
-        """Method to set the filename 
+        """Method to set the filename
 
         Args:
             keywords_filename
@@ -197,7 +197,7 @@ class Domain:
     
             f_dom.seek(0)
     
-        return self.list_domains 
+        return self.list_domains
     
         
         
@@ -243,7 +243,7 @@ if __name__ == '__main__':
     """
     
     print(banner)
-    print("\t\t"+__VERSION__+"\n")    
+    print("\t\t"+__VERSION__+"\n")
 
     args = parser()
 
@@ -254,7 +254,7 @@ if __name__ == '__main__':
     print("")
     print("+---------- Summary ----------+")
     SaveFile().main(args.output, args.type, file_content)
-
+    
     end_time = round(time.time() - start_time, 2)
     
     print("[*] Domains flagged:", len(file_content))

@@ -1,5 +1,5 @@
 # Module: parser.py
-"""
+"""!
 openSquat
 
 (c) CERT-MZ | Andre Tenreiro | andre@cert.mz
@@ -33,8 +33,9 @@ class SaveFile:
         self.content = []
         
     def as_json(self):
-        """save to json
-
+        """
+        save to json
+        
         Args:
             none
 
@@ -48,7 +49,8 @@ class SaveFile:
         print("[*] file saved:", self.filename)
         
     def as_csv(self):
-        """save to csv
+        """
+        save to csv
 
         Args:
             none
@@ -58,7 +60,7 @@ class SaveFile:
     
         """
         f_csv = open(self.filename, 'w')
-        file_csv = csv.writer(f_csv, delimiter=',', quotechar='"', 
+        file_csv = csv.writer(f_csv, delimiter=',', quotechar='"',
                               quoting=csv.QUOTE_MINIMAL)
         file_csv.writerow(self.content)
         file_csv.close()
@@ -102,12 +104,12 @@ class SaveFile:
         Returns:
             none
     
-        """    
+        """
         self.set_filename(file_name)
         self.set_filetype(file_type)
         self.set_content(file_content)
         
-        if (file_type == 'json'): 
+        if (file_type == 'json'):
             self.as_json()
         elif (file_type == 'csv'):
             self.as_csv()

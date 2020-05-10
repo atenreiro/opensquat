@@ -9,3 +9,4 @@ venv/
 *.old
 *.bak
 git-push.py
+*.txt

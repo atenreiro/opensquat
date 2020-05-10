@@ -1,5 +1,5 @@
 # Module: validations.py
-"""
+"""!
 openSquat
 
 (c) CERT-MZ | Andre Tenreiro | andre@cert.mz
@@ -36,8 +36,7 @@ def jaro_winkler(keyword, domain):
     Returns:
         jarowinkler.similarity: (float) between 0.0 and 1.0
 
-    """    
+    """
     jarowinkler = JaroWinkler()
     return jarowinkler.similarity(keyword, domain)
-    
     
