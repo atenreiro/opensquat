@@ -1,3 +1,11 @@
+v1.2 - (2020-05-11)
++ Added support for IDN homographs attacks
++ New logo 
++ New python library homoglyphs is required
++ New python library confusable_homoglyphs is required
++ Terminal colours added
+- Removed support for lxml
+
 v1.1 - (2020-05-08)
 + Major improvements for Levenshtein implementation (5 times faster)
 + New python library strsimpy is required

@@ -1,2 +1,4 @@
-lxml
 strsimpy
+confusable_homoglyphs
+homoglyphs
+colorama

@@ -14,13 +14,15 @@ import requests
 import os
 import time
 from datetime import date
+from colorama import init, Fore, Back, Style
 
 # external files
 from output import *
 from parser import *
 from validations import *
+from homograph import *
 
-__VERSION__ = "version 1.1"
+__VERSION__ = "version 1.2"
 
 
 class Domain:
@@ -178,20 +180,33 @@ class Domain:
     
             if (keyword[0] != "#") and (keyword[0] != " ") and (keyword[0] != "") and (keyword[0] != "\n"):
                 i += 1
-                print("\n[*] Verifying keyword:",keyword, "[",i,"/",self.keywords_total,"]")
+                print(Fore.GREEN+"\n[*] Verifying keyword:",keyword, "[",i,"/",self.keywords_total,"]"+Style.RESET_ALL)
                 
                 for domains in f_dom:
                     domain  = domains.split(".")
                     domain = domain[0].replace('\n', '')
                     domain = domain.lower()
                     domains = domains.replace('\n', '')
+                    
+                    # Check if the domain contains homograph character
+                    #   Yes: returns True
+                    #   No:  returns False
+                    homograph_domain = check_homograph(domain)
+                    
+                    if homograph_domain:
+                        domain = homograph_to_latin(domain)
+                    
+                    # Calculate Levenshtein distance
                     leven_dist = levenshtein(keyword, domain)
-
-                    if leven_dist <= self.confidence_level:
-                        print("[+] Similarity detected between", keyword, "and", domains, "(%s)" % self.confidence[leven_dist])
+                  
+                    if (leven_dist <= self.confidence_level) and not (homograph_domain):
+                        print(Fore.RED+"[+] Similarity detected between", keyword, "and", domains, "(%s)" % self.confidence[leven_dist],""+Style.RESET_ALL)
+                        self.list_domains.append(domains)
+                    elif (leven_dist <= self.confidence_level) and (homograph_domain):
+                        print(Fore.RED+"[+] Homograph detected between", keyword, "and", domains, "(%s)" % self.confidence[leven_dist],""+Style.RESET_ALL)
                         self.list_domains.append(domains)
                     elif self.domain_contains(keyword, domains):
-                        print("[+] Similarity detected between", keyword, "and", domains, "(high confidence)")
+                        print(Fore.YELLOW+"[+] The word", keyword, "is contained in", domains, ""+Style.RESET_ALL)
                         self.list_domains.append(domains)
 
     
@@ -229,21 +244,28 @@ class Domain:
 if __name__ == '__main__':
 
 
-    banner = """
-                          _____                   _   
-                         / ____|                 | |  
-   ___  _ __   ___ _ __ | (___   __ _ _   _  __ _| |_ 
-  / _ \| '_ \ / _ \ '_ \ \___ \ / _` | | | |/ _` | __|
- | (_) | |_) |  __/ | | |____) | (_| | |_| | (_| | |_ 
-  \___/| .__/ \___|_| |_|_____/ \__, |\__,_|\__,_|\__|
-       | |                         | |                
-       |_|                         |_|      
-                    
-    (c) CERT-MZ | Andre Tenreiro | andre@cert.mz
-    """
+    RED, WHITE, GREEN, END, YELLOW , BOLD = '\033[91m', '\33[97m', '\033[1;32m', '\033[0m', '\33[93m' , '\033[1m'
     
-    print(banner)
-    print("\t\t"+__VERSION__+"\n")
+    
+
+    logo = Fore.GREEN+"""
+                                             █████████                                  █████   
+                                            ███░░░░░███                                ░░███    
+      ██████  ████████   ██████  ████████  ░███    ░░░   ████████ █████ ████  ██████   ███████  
+     ███░░███░░███░░███ ███░░███░░███░░███ ░░█████████  ███░░███ ░░███ ░███  ░░░░░███ ░░░███░   
+    ░███ ░███ ░███ ░███░███████  ░███ ░███  ░░░░░░░░███░███ ░███  ░███ ░███   ███████   ░███    
+    ░███ ░███ ░███ ░███░███░░░   ░███ ░███  ███    ░███░███ ░███  ░███ ░███  ███░░███   ░███ ███
+    ░░██████  ░███████ ░░██████  ████ █████░░█████████ ░░███████  ░░████████░░████████  ░░█████ 
+     ░░░░░░   ░███░░░   ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░░   ░░░░░███   ░░░░░░░░  ░░░░░░░░    ░░░░░  
+              ░███                                          ░███                                
+              █████                                         █████                               
+             ░░░░░                                         ░░░░░   
+                    (c) CERT-MZ | Andre Tenreiro | andre@cert.mz
+    """+Style.RESET_ALL
+    
+    
+    print(logo)
+    print("\t\t\t"+__VERSION__+"\n")
 
     args = parser()
 
