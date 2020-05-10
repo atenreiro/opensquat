@@ -17,14 +17,13 @@ openSquat is an opensource Intelligence (OSINT) R&D project to identify **cybers
 
 This is an opensource project so everyone's welcomed to contribute.
 
-
 It does support some features such as:
 
-* Automatic newly registered domain updating (once a day)
-* Levenshtein distance to calculate word similarity
-* Use different levels of confidence threshold to fine tune
-* Save output into different formats (txt, JSON and CSV)
-* Can be integrated with other threat intelligence tools and DNS sinkholes
+*  Automatic newly registered domain updating (once a day)
+*  Levenshtein distance to calculate word similarity
+*  Use different levels of confidence threshold to fine tune
+*  Save output into different formats (txt, JSON and CSV)
+*  Can be integrated with other threat intelligence tools and DNS sinkholes
 
 
 Installation
@@ -36,7 +35,6 @@ Installation
 ```
 
 Make sure you have Python 3.6+ and pip3 in your environment
-
 
 Usage Examples
 ------------
@@ -51,20 +49,19 @@ Usage Examples
 
 To Do / Roadmap
 -------------
-* Finalise the support for Jaro-Winkler (word similarity)
-* Integration with VirusTotal (VT)
-* Use certificate transparency public database as another source
-* Homograph detection
-* Improve code quality from B to A grade (codacy)
-* PEP8 compliance
-* Add documentation 
-
+*  Finalise the support for Jaro-Winkler (word similarity)
+*  Integration with VirusTotal (VT)
+*  Use certificate transparency public database as another source
+*  Homograph detection
+*  Improve code quality from B to A grade (codacy)
+*  PEP8 compliance
+*  Add documentation 
 
 Changelog
 -------------
-* Check the [CHANGELOG)](https://github.com/atenreiro/opensquat/blob/master/CHANGELOG) file.
+*  Check the [CHANGELOG)](https://github.com/atenreiro/opensquat/blob/master/CHANGELOG) file.
 
 Author
 -------------
-* Andre Tenreiro [(LinkedInk)](https://www.linkedin.com/in/andretenreiro/)
-* andre@cert.mz
+*  Andre Tenreiro [(LinkedInk)](https://www.linkedin.com/in/andretenreiro/)
+*  andre@cert.mz
