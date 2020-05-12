@@ -2,3 +2,5 @@ strsimpy
 confusable_homoglyphs
 homoglyphs
 colorama
+requests
+numpy
