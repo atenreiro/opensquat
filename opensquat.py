@@ -18,7 +18,7 @@ from colorama import init, Fore, Back, Style
 
 # external files
 from output import *
-from parser import *
+from arg_parser import *
 from validations import *
 from homograph import *
 
@@ -77,7 +77,6 @@ class Domain:
         """
 
         print("[*] Downloading fresh domain list from", self.URL)
-        
         response = requests.get(self.URL)
         data = response.content
 
@@ -177,6 +176,9 @@ class Domain:
         for keyword in f_key:
             keyword = keyword.replace('\n', '')
             keyword = keyword.lower()
+
+            if not keyword:
+                continue
     
             if (keyword[0] != "#") and (keyword[0] != " ") and (keyword[0] != "") and (keyword[0] != "\n"):
                 i += 1
@@ -232,7 +234,7 @@ class Domain:
         self.confidence_level = confidence_level
         self.count_keywords()
         
-        if self.domain_filename is '': 
+        if self.domain_filename == '':
             self.download()
 
         self.count_domains()
@@ -267,7 +269,7 @@ if __name__ == '__main__':
     print(logo)
     print("\t\t\t"+__VERSION__+"\n")
 
-    args = parser()
+    args = get_args()
 
     start_time = time.time()
   

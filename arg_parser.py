@@ -51,8 +51,9 @@ def validate_confidence(confidence_level):
     if confidence_level not in range(0, 5):
         raise argparse.ArgumentTypeError("confidence must be between 0 and 4")
     return confidence_level
-        
-def parser():
+
+
+def get_args():
     """Parser main function
 
     Args:
@@ -79,4 +80,3 @@ def parser():
     args = parser.parse_args()
     
     return args
-        
