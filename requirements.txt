@@ -4,3 +4,9 @@ homoglyphs
 colorama
 requests
 numpy
+pytest
+pytest-cov
+codecov
+coverage
+black
+flake8
