@@ -62,9 +62,7 @@ class SaveFile:
     
         """
         f_csv = open(self.filename, "w")
-        file_csv = csv.writer(
-            f_csv, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL
-        )
+        file_csv = csv.writer(f_csv, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL)
         file_csv.writerow(self.content)
         file_csv.close()
         print("[*] file saved:", self.filename)

@@ -101,9 +101,7 @@ class Domain:
 
         if not os.path.isfile(self.domain_filename):
             print(
-                "[*] File",
-                self.domain_filename,
-                "not found or not readable! Exiting...\n",
+                "[*] File", self.domain_filename, "not found or not readable! Exiting...\n",
             )
             exit(-1)
 
@@ -126,19 +124,12 @@ class Domain:
 
         if not os.path.isfile(self.keywords_filename):
             print(
-                "[*] File",
-                self.keywords_filename,
-                "not found or not readable! Exiting... \n",
+                "[*] File", self.keywords_filename, "not found or not readable! Exiting... \n",
             )
             exit(-1)
 
         for line in open(self.keywords_filename):
-            if (
-                (line[0] != "#")
-                and (line[0] != " ")
-                and (line[0] != "")
-                and (line[0] != "\n")
-            ):
+            if (line[0] != "#") and (line[0] != " ") and (line[0] != "") and (line[0] != "\n"):
                 self.keywords_total += 1
 
     def set_filename(self, filename):
@@ -192,12 +183,7 @@ class Domain:
             if not keyword:
                 continue
 
-            if (
-                (keyword[0] != "#")
-                and (keyword[0] != " ")
-                and (keyword[0] != "")
-                and (keyword[0] != "\n")
-            ):
+            if (keyword[0] != "#") and (keyword[0] != " ") and (keyword[0] != "") and (keyword[0] != "\n"):
                 i += 1
                 print(
                     Fore.GREEN + "\n[*] Verifying keyword:",
@@ -248,11 +234,7 @@ class Domain:
                         self.list_domains.append(domains)
                     elif self.domain_contains(keyword, domains):
                         print(
-                            Fore.YELLOW + "[+] The word",
-                            keyword,
-                            "is contained in",
-                            domains,
-                            "" + Style.RESET_ALL,
+                            Fore.YELLOW + "[+] The word", keyword, "is contained in", domains, "" + Style.RESET_ALL,
                         )
                         self.list_domains.append(domains)
 
