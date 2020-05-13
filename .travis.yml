@@ -1,0 +1,14 @@
+language: python
+python:
+  - "3.7"
+
+install:
+  - pip install -r requirements.txt
+
+before_script:
+  - black --check . || true
+  - IGNORE=E123,E203,E265,E266,E302,E401,E402,E712,E731,E741,E743,F811,F841,W291,W293,W503
+  - flake8 . --count --ignore=$IGNORE --max-complexity=25 --max-line-length=127 --show-source --statistics
+
+script:
+  - pytest --cov=opensquat --cov=tests --cov=docs/src --cov-report=term-missing tests
