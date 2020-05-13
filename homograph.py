@@ -11,6 +11,7 @@ openSquat
 from confusable_homoglyphs import confusables
 import homoglyphs as hg
 
+
 def check_homograph(domain):
     """Check if domain contain homograph character
 
@@ -22,7 +23,7 @@ def check_homograph(domain):
     
     """
     homograph_domain = bool(confusables.is_dangerous(domain))
-    
+
     if homograph_domain:
         return True
     else:
@@ -38,22 +39,21 @@ def homograph_to_latin(domain):
         Return:
             none
     
-    """  
-    homoglyphs = hg.Homoglyphs(languages={'en'}, strategy=hg.STRATEGY_LOAD)
-    
+    """
+    homoglyphs = hg.Homoglyphs(languages={"en"}, strategy=hg.STRATEGY_LOAD)
+
     new_domain = []
     str_domain = ""
 
     for char in domain:
         charset = hg.Categories.detect(char)
-        if charset != 'LATIN':
+        if charset != "LATIN":
             char_converted = homoglyphs.to_ascii(char)
-            char_converted = ''.join(char_converted)
+            char_converted = "".join(char_converted)
             new_domain.append(char_converted)
         else:
             new_domain.append(char)
-    
-    str_domain = ''.join(new_domain)
-    
+
+    str_domain = "".join(new_domain)
+
     return str_domain
-    

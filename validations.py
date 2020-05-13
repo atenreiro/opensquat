@@ -8,8 +8,9 @@ openSquat
 * https://github.com/atenreiro/opensquat
 
 """
-from strsimpy.levenshtein import Levenshtein 
+from strsimpy.levenshtein import Levenshtein
 from strsimpy.jaro_winkler import JaroWinkler
+
 
 def levenshtein(keyword, domain):
     """Compute Levenshtein distance
@@ -21,7 +22,7 @@ def levenshtein(keyword, domain):
     Returns:
         leven.distance: Levenshtein Distance (int)
 
-    """  
+    """
     leven = Levenshtein()
     return leven.distance(keyword, domain)
 
@@ -39,4 +40,3 @@ def jaro_winkler(keyword, domain):
     """
     jarowinkler = JaroWinkler()
     return jarowinkler.similarity(keyword, domain)
-    
