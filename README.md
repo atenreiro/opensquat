@@ -2,6 +2,7 @@ openSquat
 ====
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/9231646e8ddf4efc9fb1f62f628df34a)](https://www.codacy.com/manual/atenreiro/opensquat?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=atenreiro/opensquat&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://travis-ci.com/atenreiro/opensquat.svg?branch=master)](https://travis-ci.com/atenreiro/opensquat)
 
 ![alt text](https://raw.githubusercontent.com/atenreiro/opensquat/master/screenshots/openSquat.PNG)
 
