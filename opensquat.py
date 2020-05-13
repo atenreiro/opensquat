@@ -13,14 +13,13 @@ software licensed under GNU version 3
 import requests
 import os
 import time
+from colorama import Fore, Style
 from datetime import date
-from colorama import init, Fore, Back, Style
 
-# external files
-from output import *
-from arg_parser import *
-from validations import *
-from homograph import *
+import output
+import arg_parser
+import validations
+import homograph
 
 __VERSION__ = "version 1.2"
 
@@ -219,13 +218,13 @@ class Domain:
                     # Check if the domain contains homograph character
                     #   Yes: returns True
                     #   No:  returns False
-                    homograph_domain = check_homograph(domain)
+                    homograph_domain = homograph.check_homograph(domain)
 
                     if homograph_domain:
-                        domain = homograph_to_latin(domain)
+                        domain = homograph.homograph_to_latin(domain)
 
                     # Calculate Levenshtein distance
-                    leven_dist = levenshtein(keyword, domain)
+                    leven_dist = validations.levenshtein(keyword, domain)
 
                     if (leven_dist <= self.confidence_level) and not (homograph_domain):
                         print(
@@ -319,7 +318,7 @@ if __name__ == "__main__":
     print(logo)
     print("\t\t\t" + __VERSION__ + "\n")
 
-    args = get_args()
+    args = arg_parser.get_args()
 
     start_time = time.time()
 
@@ -327,7 +326,7 @@ if __name__ == "__main__":
 
     print("")
     print("+---------- Summary ----------+")
-    SaveFile().main(args.output, args.type, file_content)
+    output.SaveFile().main(args.output, args.type, file_content)
 
     end_time = round(time.time() - start_time, 2)
 
