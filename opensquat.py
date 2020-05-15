@@ -43,7 +43,8 @@ class Domain:
     """
 
     def __init__(self):
-        self.URL = "https://raw.githubusercontent.com/CERT-MZ/projects/master/Domain-squatting/domain-names.txt"
+        self.URL = "https://raw.githubusercontent.com/CERT-MZ/projects/master/Domain-squatting/"
+        self.URL_file = None
         self.today = date.today().strftime("%Y-%m-%d")
         self.domain_filename = None
         self.keywords_filename = None
@@ -51,6 +52,8 @@ class Domain:
         self.keywords_total = 0
         self.list_domains = []
         self.confidence_level = 2
+        self.period = "day"
+        
         self.confidence = {
             0: "very high confidence",
             1: "high confidence",
@@ -77,15 +80,33 @@ class Domain:
     
         """
 
-        print("[*] Downloading fresh domain list from", self.URL)
-        response = requests.get(self.URL)
+        if (self.period == "day"):
+            self.URL_file = "domain-names.txt"
+        elif (self.period == "week"):
+            self.URL_file = "domain-names-week.txt"
+            
+        URL = self.URL + self.URL_file
+        
+        print("[*] Downloading fresh domain list from", URL)
+        
+        response = requests.get(URL, stream=True)
+
+        # Get total file size in bytes from the request header
+        total_size = int(response.headers.get('content-length', 0))
+        total_size_mb = round(float(total_size / 1024 / 1024), 2)
+
+        print("[*] Download volume:", total_size_mb, "MB")
+
         data = response.content
-
-        with open("domain-names.txt", "wb") as f:
+        response.close()
+        
+        with open(self.URL_file, "wb") as f:
             f.write(data)
-
+        
         f.close()
-        self.domain_filename = "domain-names.txt"
+        
+        self.domain_filename = self.URL_file
+
         return True
 
     def count_domains(self):
@@ -143,7 +164,21 @@ class Domain:
     
         """
         self.keywords_filename = filename
+        
 
+    def set_searchPeriod(self, search_period):
+        """Method to set the search_period
+
+        Args:
+            search_period
+
+        Returns:
+            none
+    
+        """
+        self.period = search_period
+        
+        
     def print_info(self):
         """Method to print some configuration information
 
@@ -242,7 +277,11 @@ class Domain:
 
         return self.list_domains
 
-    def main(self, keywords_file, confidence_level, domains_file):
+    def main(self,
+             keywords_file,
+             confidence_level, 
+             domains_file,
+             search_period):
         """Method to call the class functions
 
         Args:
@@ -255,6 +294,7 @@ class Domain:
 
         self.set_filename(keywords_file)
         self.domain_filename = domains_file
+        self.set_searchPeriod(search_period)
         self.confidence_level = confidence_level
         self.count_keywords()
 
@@ -262,6 +302,7 @@ class Domain:
             self.download()
 
         self.count_domains()
+        
 
         self.print_info()
         return self.check_squatting()
@@ -304,7 +345,8 @@ if __name__ == "__main__":
 
     start_time = time.time()
 
-    file_content = Domain().main(args.keywords, args.confidence, args.domains)
+    file_content = Domain().main(args.keywords, args.confidence,
+                                 args.domains, args.period)
 
     print("")
     print("+---------- Summary ----------+")
