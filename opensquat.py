@@ -293,11 +293,9 @@ class Domain:
             self.download()
 
         self.count_domains()
-        
-
+       
         self.print_info()
         return self.check_squatting()
-
 
 if __name__ == "__main__":
 
