@@ -10,3 +10,4 @@ venv/
 *.bak
 git-push.py
 *.txt
+*.dat
