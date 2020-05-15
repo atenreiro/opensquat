@@ -22,8 +22,10 @@ import homograph
 
 __VERSION__ = "version 1.2"
 
+
 class Domain:
-    """The Domain class with handle all the functions related to the domain verifications
+    """The Domain class with handle all the functions related to 
+       the domain verifications
      
     To use:
         Domain().main(keywords, confidence, domains)
@@ -106,7 +108,7 @@ class Domain:
         self.domain_filename = self.URL_file
 
         return True
-
+    
     def count_domains(self):
         """Count number of domains (lines) from the domains file
 
@@ -160,6 +162,7 @@ class Domain:
     
         """
         self.keywords_filename = filename
+        
         
     def set_searchPeriod(self, search_period):
         """Method to set the search_period
@@ -267,6 +270,7 @@ class Domain:
             f_dom.seek(0)
 
         return self.list_domains
+    
 
     def main(self,
              keywords_file,
@@ -296,8 +300,8 @@ class Domain:
        
         self.print_info()
         return self.check_squatting()
-
     
+
 if __name__ == "__main__":
 
     RED, WHITE, GREEN, END, YELLOW, BOLD = (
@@ -347,4 +351,3 @@ if __name__ == "__main__":
     print("[*] Domains flagged:", len(file_content))
     print("[*] Running time: %s seconds" % end_time)
     print("")
-#EOF
