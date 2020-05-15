@@ -1,12 +1,12 @@
+# -*- coding: utf-8 -*-
 # Module: validations.py
-"""!
+"""
 openSquat
 
 (c) CERT-MZ | Andre Tenreiro | andre@cert.mz
 
 * https://www.cert.mz
 * https://github.com/atenreiro/opensquat
-
 """
 from strsimpy.levenshtein import Levenshtein
 from strsimpy.jaro_winkler import JaroWinkler
@@ -19,7 +19,7 @@ def levenshtein(keyword, domain):
         keyword:
         domain:
 
-    Returns:
+    Return:
         leven.distance: Levenshtein Distance (int)
 
     """
@@ -34,7 +34,7 @@ def jaro_winkler(keyword, domain):
         keyword:
         domain:
 
-    Returns:
+    Return:
         jarowinkler.similarity: (float) between 0.0 and 1.0
 
     """

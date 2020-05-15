@@ -8,7 +8,6 @@ openSquat
 * https://github.com/atenreiro/opensquat
 
 software licensed under GNU version 3
-
 """
 import requests
 import os
@@ -23,15 +22,15 @@ import homograph
 
 __VERSION__ = "version 1.2"
 
-
 class Domain:
     """The Domain class with handle all the functions related to the domain verifications
      
     To use:
         Domain().main(keywords, confidence, domains)
     
-    Attributes:
+    Attribute:
         URL: The URL to download the updated domain list
+        URL_file: The URL file name
         today: today's date in the format yyyy-mm-dd
         domain_filename: If no URL download is required, the local file containing the domains
         keywords_filename: File containing the keywords (plain text)
@@ -75,9 +74,8 @@ class Domain:
         Args:
             none
 
-        Returns:
+        Return:
             none
-    
         """
 
         if (self.period == "day"):
@@ -115,9 +113,8 @@ class Domain:
         Args:
             none
 
-        Returns:
+        Return:
             self.domain_total: total number of domains in the file
-    
         """
 
         if not os.path.isfile(self.domain_filename):
@@ -138,9 +135,8 @@ class Domain:
         Args:
             none
 
-        Returns:
+        Return:
             none
-    
         """
 
         if not os.path.isfile(self.keywords_filename):
@@ -171,9 +167,8 @@ class Domain:
         Args:
             search_period
 
-        Returns:
+        Return:
             none
-    
         """
         self.period = search_period
 
@@ -183,9 +178,8 @@ class Domain:
         Args:
             none
 
-        Returns:
+        Return:
             none
-    
         """
         print("[*] keywords:", self.keywords_filename)
         print("[*] keywords total:", self.keywords_total)
@@ -198,9 +192,8 @@ class Domain:
         Args:
             none
 
-        Returns:
+        Return:
             list_domains: list containing all the flagged domains
-    
         """
 
         f_key = open(self.keywords_filename, "r")

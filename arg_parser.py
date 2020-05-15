@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Module: arg_parser.py
 """
 openSquat
@@ -19,12 +20,11 @@ def validate_period(search_period):
     Args:
         period: string containing the searchable period, either day or week.
 
-    Returns:
+    Return:
         period
         
     Raise:
         If value is not valid, raise an exception to argparse
-    
     """
     period = str(search_period)
 
@@ -39,12 +39,11 @@ def validate_type(file_type):
     Args:
         file_type: string containing file type, can only be txt, json or csv.
 
-    Returns:
+    Return:
         file_type
         
     Raise:
         If value is not valid, raise an exception to argparse
-    
     """
     file_type = str(file_type)
 
@@ -61,7 +60,7 @@ def validate_confidence(confidence_level):
         confidence_level: int containing confidence_level, can only be an int 
         between 0 and 4.
 
-    Returns:
+    Return:
         confidence_level
         
     Raise:
@@ -81,9 +80,8 @@ def get_args():
     Args:
         none
 
-    Returns:
+    Return:
         args: returns arguments
-    
     """
 
     # Parser
