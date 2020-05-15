@@ -6,7 +6,7 @@ openSquat
 
 ![alt text](https://raw.githubusercontent.com/atenreiro/opensquat/master/screenshots/openSquat.PNG)
 
-[![DepShield Badge](https://depshield.sonatype.org/badges/owner/repository/depshield.svg)](https://depshield.github.io)
+[![DepShield Badge](https://depshield.sonatype.org/badges/atenreiro/opensquat/depshield.svg)](https://depshield.github.io)
 
 What is openSquat?
 -------------
