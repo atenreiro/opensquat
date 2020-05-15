@@ -162,8 +162,7 @@ class Domain:
     
         """
         self.keywords_filename = filename
-        
-        
+            
     def set_searchPeriod(self, search_period):
         """Method to set the search_period
 
@@ -271,7 +270,6 @@ class Domain:
 
         return self.list_domains
     
-
     def main(self, keywords_file, confidence_level, domains_file, search_period):
         """Method to call the class functions
         
