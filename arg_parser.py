@@ -99,8 +99,7 @@ def get_args():
         "--confidence",
         type=validate_confidence,
         default=1,
-        help="0 (very high), 1 (high), 2 (medium)," +
-             "3 (low), 4 (very low) (default: 1)",
+        help="0 (very high), 1 (high), 2 (medium), 3 (low), 4 (very low) (default: 1)",
     )
     parser.add_argument(
         "-t", "--type", type=validate_type, default="txt",
