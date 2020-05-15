@@ -297,6 +297,7 @@ class Domain:
         self.print_info()
         return self.check_squatting()
 
+    
 if __name__ == "__main__":
 
     RED, WHITE, GREEN, END, YELLOW, BOLD = (
