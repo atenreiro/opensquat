@@ -272,19 +272,14 @@ class Domain:
         return self.list_domains
     
 
-    def main(self,
-             keywords_file,
-             confidence_level, 
-             domains_file,
-             search_period):
+    def main(self, keywords_file, confidence_level, domains_file, search_period):
         """Method to call the class functions
-
+        
         Args:
             none
 
-        Returns:
+        Return:
             none
-    
         """
 
         self.set_filename(keywords_file)
