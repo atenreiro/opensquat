@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Module: parser.py
 """
 openSquat
@@ -8,7 +9,6 @@ openSquat
 * https://github.com/atenreiro/opensquat
 
 software licensed under GNU version 3
-
 """
 import json
 import csv
@@ -21,7 +21,7 @@ class SaveFile:
     To use:
         Domain().main(keywords, confidence, domains)
     
-    Attributes:
+    Attribute:
         type: file type (txt, csv, json)
         today: today's date in the format yyyy-mm-dd
         filename: output file name
@@ -41,9 +41,8 @@ class SaveFile:
         Args:
             none
 
-        Returns:
+        Return:
             none
-    
         """
         f_json = open(self.filename, "w")
         json.dump(self.content, f_json)
@@ -57,9 +56,8 @@ class SaveFile:
         Args:
             none
 
-        Returns:
+        Return:
             none
-    
         """
         f_csv = open(self.filename, "w")
         file_csv = csv.writer(f_csv, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL)
@@ -73,9 +71,8 @@ class SaveFile:
         Args:
             none
 
-        Returns:
+        Return:
             none
-    
         """
         with open(self.filename, "w") as f:
             for item in self.content:
@@ -100,9 +97,8 @@ class SaveFile:
             file_type: file type (txt, json or csv)
             file_content: file content to be saved
 
-        Returns:
+        Return:
             none
-    
         """
         self.set_filename(file_name)
         self.set_filetype(file_type)
