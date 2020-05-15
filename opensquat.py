@@ -176,7 +176,7 @@ class Domain:
     
         """
         self.period = search_period
-        
+
     def print_info(self):
         """Method to print some configuration information
 
