@@ -165,7 +165,6 @@ class Domain:
         """
         self.keywords_filename = filename
         
-
     def set_searchPeriod(self, search_period):
         """Method to set the search_period
 
@@ -177,7 +176,6 @@ class Domain:
     
         """
         self.period = search_period
-        
         
     def print_info(self):
         """Method to print some configuration information
@@ -357,3 +355,4 @@ if __name__ == "__main__":
     print("[*] Domains flagged:", len(file_content))
     print("[*] Running time: %s seconds" % end_time)
     print("")
+#EOF
