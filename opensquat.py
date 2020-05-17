@@ -12,6 +12,7 @@ software licensed under GNU version 3
 import requests
 import os
 import time
+import bisect
 from colorama import Fore, Style
 from datetime import date
 
@@ -63,6 +64,15 @@ class Domain:
             4: "very low confidence",
         }
 
+        self.jaro_winkler = {
+            0.8: "Low",
+            0.89: "Medium",
+            0.949: "High",
+            0.95: "Very high"
+        }
+
+        self.method = "Levenshtein"
+
     @staticmethod
     def domain_contains(keyword, domain):
         if keyword in domain:
@@ -80,9 +90,9 @@ class Domain:
             none
         """
 
-        if (self.period == "day"):
+        if self.period == "day":
             self.URL_file = "domain-names.txt"
-        elif (self.period == "week"):
+        elif self.period == "week":
             self.URL_file = "domain-names-week.txt"
             
         URL = self.URL + self.URL_file
@@ -237,40 +247,79 @@ class Domain:
                     if homograph_domain:
                         domain = homograph.homograph_to_latin(domain)
 
-                    # Calculate Levenshtein distance
-                    leven_dist = validations.levenshtein(keyword, domain)
-
-                    if (leven_dist <= self.confidence_level) and not (homograph_domain):
-                        print(
-                            Fore.RED + "[+] Similarity detected between",
-                            keyword,
-                            "and",
-                            domains,
-                            "(%s)" % self.confidence[leven_dist],
-                            "" + Style.RESET_ALL,
-                        )
-                        self.list_domains.append(domains)
-                    elif (leven_dist <= self.confidence_level) and (homograph_domain):
-                        print(
-                            Fore.RED + "[+] Homograph detected between",
-                            keyword,
-                            "and",
-                            domains,
-                            "(%s)" % self.confidence[leven_dist],
-                            "" + Style.RESET_ALL,
-                        )
-                        self.list_domains.append(domains)
-                    elif self.domain_contains(keyword, domains):
-                        print(
-                            Fore.YELLOW + "[+] The word", keyword, "is contained in", domains, "" + Style.RESET_ALL,
-                        )
-                        self.list_domains.append(domains)
+                    if self.method.lower() == "levenshtein":
+                        self._process_levenshtein(keyword, domain, homograph_domain, domains)
+                    elif self.method.lower() == 'jarowinkler':
+                        self._process_jarowinkler(keyword, domain, homograph_domain, domains)
+                    else:
+                        print(f"No such method: {self.method}. Levenshtein will be used as default.")
+                        self._process_levenshtein(keyword, domain, homograph_domain, domains)
 
             f_dom.seek(0)
 
         return self.list_domains
-    
-    def main(self, keywords_file, confidence_level, domains_file, search_period):
+
+    def _process_levenshtein(self, keyword, domain, homograph_domain, domains):
+        leven_dist = validations.levenshtein(keyword, domain)
+
+        if (leven_dist <= self.confidence_level) and not homograph_domain:
+            self.on_similarity_detected(keyword, domains, self.confidence[leven_dist])
+
+        elif (leven_dist <= self.confidence_level) and homograph_domain:
+            self.on_homograph_detected(keyword, domains, self.confidence[leven_dist])
+
+        elif self.domain_contains(keyword, domains):
+            self.on_domain_contains(keyword, domains)
+
+    def _process_jarowinkler(self, keyword, domain, homograph_domain, domains):
+        similarity = validations.jaro_winkler(keyword, domain)
+        keys = list(self.jaro_winkler.keys())
+        triggered_keys = keys[1:]  # every key except Low will trigger
+        values = list(self.jaro_winkler.values())
+        insertion_point = bisect.bisect_left(keys, similarity)
+
+        if insertion_point == len(keys):
+            insertion_point -= 1
+
+        value = values[insertion_point]
+        if value in triggered_keys and not homograph_domain:
+            self.on_similarity_detected(keyword, domains, value)
+
+        elif value in triggered_keys and homograph_domain:
+            self.on_homograph_detected(keyword, domains, value)
+
+        elif self.domain_contains(keyword, domains):
+            self.on_domain_contains(keyword, domains)
+
+    def on_similarity_detected(self, keyword, domains, value):
+        print(
+            Fore.RED + "[+] Similarity detected between",
+            keyword,
+            "and",
+            domains,
+            "(%s)" % value,
+            "" + Style.RESET_ALL,
+        )
+        self.list_domains.append(domains)
+
+    def on_homograph_detected(self, keyword, domains, value):
+        print(
+            Fore.RED + "[+] Homograph detected between",
+            keyword,
+            "and",
+            domains,
+            "(%s)" % value,
+            "" + Style.RESET_ALL,
+        )
+        self.list_domains.append(domains)
+
+    def on_domain_contains(self, keyword, domains):
+        print(
+            Fore.YELLOW + "[+] The word", keyword, "is contained in", domains, "" + Style.RESET_ALL,
+        )
+        self.list_domains.append(domains)
+
+    def main(self, keywords_file, confidence_level, domains_file, search_period, method):
         """Method to call the class functions
         
         Args:
@@ -284,6 +333,7 @@ class Domain:
         self.domain_filename = domains_file
         self.set_searchPeriod(search_period)
         self.confidence_level = confidence_level
+        self.method = method
         self.count_keywords()
 
         if self.domain_filename == "":
@@ -332,8 +382,7 @@ if __name__ == "__main__":
 
     start_time = time.time()
 
-    file_content = Domain().main(args.keywords, args.confidence,
-                                 args.domains, args.period)
+    file_content = Domain().main(args.keywords, args.confidence, args.domains, args.period, args.method)
 
     print("")
     print("+---------- Summary ----------+")

@@ -113,7 +113,12 @@ def get_args():
         "-p", "--period", type=validate_period, default="day",
         help="Searchable period [day|week] (default: day)",
     )
+
+    parser.add_argument(
+        "-m", "--method", type=str, choices=("Levenshtein", "JaroWinkler"), default="Levenshtein",
+        help="method which is used to calculate similarity"
+    )
+
     args = parser.parse_args()
 
     return args
-#EOF
