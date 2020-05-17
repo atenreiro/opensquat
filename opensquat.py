@@ -13,6 +13,7 @@ software licensed under GNU version 3
 import requests
 import os
 import time
+import bisect
 from colorama import Fore, Style
 from datetime import date
 
@@ -44,6 +45,7 @@ class Domain:
 
     def __init__(self):
         self.URL = "https://raw.githubusercontent.com/CERT-MZ/projects/master/Domain-squatting/domain-names.txt"
+        self.URL = "https://github.com/atenreiro/opensquat/blob/2ea81c017e2bee3b07774452a788a7e3e54db1db/domain-names.txt"
         self.today = date.today().strftime("%Y-%m-%d")
         self.domain_filename = None
         self.keywords_filename = None
@@ -58,6 +60,15 @@ class Domain:
             3: "low confidence",
             4: "very low confidence",
         }
+
+        self.jaro_winkler = {
+            0.8: "Low",
+            0.89: "Medium",
+            0.949: "High",
+            0.95: "Very high"
+        }
+
+        self.method = "Levenshtein"
 
     @staticmethod
     def domain_contains(keyword, domain):
@@ -209,38 +220,77 @@ class Domain:
                     if homograph_domain:
                         domain = homograph.homograph_to_latin(domain)
 
-                    # Calculate Levenshtein distance
-                    leven_dist = validations.levenshtein(keyword, domain)
-
-                    if (leven_dist <= self.confidence_level) and not (homograph_domain):
-                        print(
-                            Fore.RED + "[+] Similarity detected between",
-                            keyword,
-                            "and",
-                            domains,
-                            "(%s)" % self.confidence[leven_dist],
-                            "" + Style.RESET_ALL,
-                        )
-                        self.list_domains.append(domains)
-                    elif (leven_dist <= self.confidence_level) and (homograph_domain):
-                        print(
-                            Fore.RED + "[+] Homograph detected between",
-                            keyword,
-                            "and",
-                            domains,
-                            "(%s)" % self.confidence[leven_dist],
-                            "" + Style.RESET_ALL,
-                        )
-                        self.list_domains.append(domains)
-                    elif self.domain_contains(keyword, domains):
-                        print(
-                            Fore.YELLOW + "[+] The word", keyword, "is contained in", domains, "" + Style.RESET_ALL,
-                        )
-                        self.list_domains.append(domains)
+                    if self.method == "Levenshtein":
+                        self._process_levenshtein(keyword, domain, homograph_domain, domains)
+                    elif self.method == 'JaroWinkler':
+                        self._process_jarowinkler(keyword, domain, homograph_domain, domains)
+                    else:
+                        print(f"No such method: {self.method}. Levenshtein will be used as default.")
+                        self._process_levenshtein(keyword, domain, homograph_domain, domains)
 
             f_dom.seek(0)
 
         return self.list_domains
+
+    def _process_levenshtein(self, keyword, domain, homograph_domain, domains):
+        leven_dist = validations.levenshtein(keyword, domain)
+
+        if (leven_dist <= self.confidence_level) and not homograph_domain:
+            self.on_similarity_detected(keyword, domains, self.confidence[leven_dist])
+
+        elif (leven_dist <= self.confidence_level) and homograph_domain:
+            self.on_homograph_detected(keyword, domains, self.confidence[leven_dist])
+
+        elif self.domain_contains(keyword, domains):
+            self.on_domain_contains(keyword, domains)
+
+    def _process_jarowinkler(self, keyword, domain, homograph_domain, domains):
+        similarity = validations.jaro_winkler(keyword, domain)
+        keys = list(self.jaro_winkler.keys())
+        triggered_keys = keys[1:]  # every key except Low will trigger
+        values = list(self.jaro_winkler.values())
+        insertion_point = bisect.bisect_left(keys, similarity)
+
+        if insertion_point == len(keys):
+            insertion_point -= 1
+
+        value = values[insertion_point]
+        if value in triggered_keys and not homograph_domain:
+            self.on_similarity_detected(keyword, domains, value)
+
+        elif value in triggered_keys and homograph_domain:
+            self.on_homograph_detected(keyword, domains, value)
+
+        elif self.domain_contains(keyword, domains):
+            self.on_domain_contains(keyword, domains)
+
+    def on_similarity_detected(self, keyword, domains, value):
+        print(
+            Fore.RED + "[+] Similarity detected between",
+            keyword,
+            "and",
+            domains,
+            "(%s)" % value,
+            "" + Style.RESET_ALL,
+        )
+        self.list_domains.append(domains)
+
+    def on_homograph_detected(self, keyword, domains, value):
+        print(
+            Fore.RED + "[+] Homograph detected between",
+            keyword,
+            "and",
+            domains,
+            "(%s)" % value,
+            "" + Style.RESET_ALL,
+        )
+        self.list_domains.append(domains)
+
+    def on_domain_contains(self, keyword, domains):
+        print(
+            Fore.YELLOW + "[+] The word", keyword, "is contained in", domains, "" + Style.RESET_ALL,
+        )
+        self.list_domains.append(domains)
 
     def main(self, keywords_file, confidence_level, domains_file):
         """Method to call the class functions
