@@ -8,7 +8,6 @@ openSquat
 * https://github.com/atenreiro/opensquat
 
 software licensed under GNU version 3
-
 """
 import requests
 import os
@@ -26,13 +25,15 @@ __VERSION__ = "version 1.2"
 
 
 class Domain:
-    """The Domain class with handle all the functions related to the domain verifications
+    """The Domain class with handle all the functions related to 
+       the domain verifications
      
     To use:
         Domain().main(keywords, confidence, domains)
     
-    Attributes:
+    Attribute:
         URL: The URL to download the updated domain list
+        URL_file: The URL file name
         today: today's date in the format yyyy-mm-dd
         domain_filename: If no URL download is required, the local file containing the domains
         keywords_filename: File containing the keywords (plain text)
@@ -44,7 +45,8 @@ class Domain:
     """
 
     def __init__(self):
-        self.URL = "https://raw.githubusercontent.com/CERT-MZ/projects/master/Domain-squatting/domain-names.txt"
+        self.URL = "https://raw.githubusercontent.com/CERT-MZ/projects/master/Domain-squatting/"
+        self.URL_file = None
         self.today = date.today().strftime("%Y-%m-%d")
         self.domain_filename = None
         self.keywords_filename = None
@@ -52,6 +54,8 @@ class Domain:
         self.keywords_total = 0
         self.list_domains = []
         self.confidence_level = 2
+        self.period = "day"
+        
         self.confidence = {
             0: "very high confidence",
             1: "high confidence",
@@ -82,31 +86,47 @@ class Domain:
         Args:
             none
 
-        Returns:
+        Return:
             none
-    
         """
 
-        print("[*] Downloading fresh domain list from", self.URL)
-        response = requests.get(self.URL)
+        if self.period == "day":
+            self.URL_file = "domain-names.txt"
+        elif self.period == "week":
+            self.URL_file = "domain-names-week.txt"
+            
+        URL = self.URL + self.URL_file
+        
+        print("[*] Downloading fresh domain list from", URL)
+        
+        response = requests.get(URL, stream=True)
+
+        # Get total file size in bytes from the request header
+        total_size = int(response.headers.get('content-length', 0))
+        total_size_mb = round(float(total_size / 1024 / 1024), 2)
+
+        print("[*] Download volume:", total_size_mb, "MB")
+
         data = response.content
-
-        with open("domain-names.txt", "wb") as f:
+        response.close()
+        
+        with open(self.URL_file, "wb") as f:
             f.write(data)
-
+        
         f.close()
-        self.domain_filename = "domain-names.txt"
-        return True
+        
+        self.domain_filename = self.URL_file
 
+        return True
+    
     def count_domains(self):
         """Count number of domains (lines) from the domains file
 
         Args:
             none
 
-        Returns:
+        Return:
             self.domain_total: total number of domains in the file
-    
         """
 
         if not os.path.isfile(self.domain_filename):
@@ -127,9 +147,8 @@ class Domain:
         Args:
             none
 
-        Returns:
+        Return:
             none
-    
         """
 
         if not os.path.isfile(self.keywords_filename):
@@ -153,6 +172,17 @@ class Domain:
     
         """
         self.keywords_filename = filename
+            
+    def set_searchPeriod(self, search_period):
+        """Method to set the search_period
+
+        Args:
+            search_period
+
+        Return:
+            none
+        """
+        self.period = search_period
 
     def print_info(self):
         """Method to print some configuration information
@@ -160,9 +190,8 @@ class Domain:
         Args:
             none
 
-        Returns:
+        Return:
             none
-    
         """
         print("[*] keywords:", self.keywords_filename)
         print("[*] keywords total:", self.keywords_total)
@@ -175,9 +204,8 @@ class Domain:
         Args:
             none
 
-        Returns:
+        Return:
             list_domains: list containing all the flagged domains
-    
         """
 
         f_key = open(self.keywords_filename, "r")
@@ -291,19 +319,19 @@ class Domain:
         )
         self.list_domains.append(domains)
 
-    def main(self, keywords_file, confidence_level, domains_file, method):
+    def main(self, keywords_file, confidence_level, domains_file, search_period, method):
         """Method to call the class functions
-
+        
         Args:
             none
 
-        Returns:
+        Return:
             none
-    
         """
 
         self.set_filename(keywords_file)
         self.domain_filename = domains_file
+        self.set_searchPeriod(search_period)
         self.confidence_level = confidence_level
         self.method = method
         self.count_keywords()
@@ -312,10 +340,10 @@ class Domain:
             self.download()
 
         self.count_domains()
-
+       
         self.print_info()
         return self.check_squatting()
-
+    
 
 if __name__ == "__main__":
 
@@ -354,7 +382,7 @@ if __name__ == "__main__":
 
     start_time = time.time()
 
-    file_content = Domain().main(args.keywords, args.confidence, args.domains, args.method)
+    file_content = Domain().main(args.keywords, args.confidence, args.domains, args.period, args.method)
 
     print("")
     print("+---------- Summary ----------+")

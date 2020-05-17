@@ -1,3 +1,9 @@
+v1.3 - (2020-05-15)
++ New searchable period options: day (default) and week
++ Added download size information for domains file
++ Travis-CI support (by mateuszz0000)
++ Code clean-up (by mateuszz0000)
+
 v1.2 - (2020-05-11)
 + Added support for IDN homographs attacks
 + New logo 
