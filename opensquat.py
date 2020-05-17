@@ -45,7 +45,6 @@ class Domain:
 
     def __init__(self):
         self.URL = "https://raw.githubusercontent.com/CERT-MZ/projects/master/Domain-squatting/domain-names.txt"
-        self.URL = "https://github.com/atenreiro/opensquat/blob/2ea81c017e2bee3b07774452a788a7e3e54db1db/domain-names.txt"
         self.today = date.today().strftime("%Y-%m-%d")
         self.domain_filename = None
         self.keywords_filename = None
@@ -220,9 +219,9 @@ class Domain:
                     if homograph_domain:
                         domain = homograph.homograph_to_latin(domain)
 
-                    if self.method == "Levenshtein":
+                    if self.method.lower() == "levenshtein":
                         self._process_levenshtein(keyword, domain, homograph_domain, domains)
-                    elif self.method == 'JaroWinkler':
+                    elif self.method.lower() == 'jarowinkler':
                         self._process_jarowinkler(keyword, domain, homograph_domain, domains)
                     else:
                         print(f"No such method: {self.method}. Levenshtein will be used as default.")
@@ -292,7 +291,7 @@ class Domain:
         )
         self.list_domains.append(domains)
 
-    def main(self, keywords_file, confidence_level, domains_file):
+    def main(self, keywords_file, confidence_level, domains_file, method):
         """Method to call the class functions
 
         Args:
@@ -306,6 +305,7 @@ class Domain:
         self.set_filename(keywords_file)
         self.domain_filename = domains_file
         self.confidence_level = confidence_level
+        self.method = method
         self.count_keywords()
 
         if self.domain_filename == "":
@@ -354,7 +354,7 @@ if __name__ == "__main__":
 
     start_time = time.time()
 
-    file_content = Domain().main(args.keywords, args.confidence, args.domains)
+    file_content = Domain().main(args.keywords, args.confidence, args.domains, args.method)
 
     print("")
     print("+---------- Summary ----------+")

@@ -87,6 +87,11 @@ def get_args():
         "-d", "--domains", type=str, default="", help="update from FILE instead of downloading new domains",
     )
 
+    parser.add_argument(
+        "-m", "--method", type=str, choices=("Levenshtein", "JaroWinkler"), default="Levenshtein",
+        help="method which is used to calculate similiarity"
+    )
+
     args = parser.parse_args()
 
     return args
