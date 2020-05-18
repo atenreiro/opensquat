@@ -274,18 +274,18 @@ class Domain:
     def _process_jarowinkler(self, keyword, domain, homograph_domain, domains):
         similarity = validations.jaro_winkler(keyword, domain)
         keys = list(self.jaro_winkler.keys())
-        triggered_keys = keys[1:]  # every key except Low will trigger
         values = list(self.jaro_winkler.values())
+        triggered_values = values[1:]  # every value except Low will trigger
         insertion_point = bisect.bisect_left(keys, similarity)
 
         if insertion_point == len(keys):
             insertion_point -= 1
 
         value = values[insertion_point]
-        if value in triggered_keys and not homograph_domain:
+        if value in triggered_values and not homograph_domain:
             self.on_similarity_detected(keyword, domains, value)
 
-        elif value in triggered_keys and homograph_domain:
+        elif value in triggered_values and homograph_domain:
             self.on_homograph_detected(keyword, domains, value)
 
         elif self.domain_contains(keyword, domains):
