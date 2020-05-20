@@ -12,6 +12,7 @@ software licensed under GNU version 3
 
 """
 import argparse
+from distutils import util
 
 
 def validate_period(search_period):
@@ -117,6 +118,10 @@ def get_args():
     parser.add_argument(
         "-m", "--method", type=str, choices=("Levenshtein", "JaroWinkler"), default="Levenshtein",
         help="method which is used to calculate similarity"
+    )
+
+    parser.add_argument(
+        "--doppelganger_only", type=util.strtobool, default=False, help="Find only doppelganger domains"
     )
 
     args = parser.parse_args()
