@@ -21,7 +21,7 @@ import arg_parser
 import validations
 import homograph
 
-__VERSION__ = "version 1.4"
+__VERSION__ = "version 1.5"
 
 
 class Domain:
