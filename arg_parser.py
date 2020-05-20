@@ -12,6 +12,7 @@ software licensed under GNU version 3
 
 """
 import argparse
+from distutils import util
 
 
 def validate_period(search_period):
@@ -74,6 +75,19 @@ def validate_confidence(confidence_level):
     return confidence_level
 
 
+def str2bool(v):
+    return bool(u(v))
+
+    if isinstance(v, bool):
+        return v
+    if v.lower() in ('yes', 'true', 't', 'y', '1'):
+        return True
+    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
+        return False
+    else:
+        raise argparse.ArgumentTypeError('Boolean value expected.')
+
+
 def get_args():
     """Parser main function
 
@@ -117,6 +131,10 @@ def get_args():
     parser.add_argument(
         "-m", "--method", type=str, choices=("Levenshtein", "JaroWinkler"), default="Levenshtein",
         help="method which is used to calculate similarity"
+    )
+
+    parser.add_argument(
+        "--doppelganger_only", type=util.strtobool, default=False, help="Find only doppelganger domains"
     )
 
     args = parser.parse_args()

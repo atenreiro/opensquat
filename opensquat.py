@@ -55,6 +55,7 @@ class Domain:
         self.list_domains = []
         self.confidence_level = 2
         self.period = "day"
+        self.doppelganger_only = False
         
         self.confidence = {
             0: "very high confidence",
@@ -247,6 +248,10 @@ class Domain:
                     if homograph_domain:
                         domain = homograph.homograph_to_latin(domain)
 
+                    if self.doppelganger_only:
+                        self._process_doppelgagner_only(keyword, domain, domains)
+                        continue
+
                     if self.method.lower() == "levenshtein":
                         self._process_levenshtein(keyword, domain, homograph_domain, domains)
                     elif self.method.lower() == 'jarowinkler':
@@ -258,6 +263,17 @@ class Domain:
             f_dom.seek(0)
 
         return self.list_domains
+
+    def _process_doppelgagner_only(self, keyword, domain, domains):
+        if self.domain_contains(keyword, domain):
+            print(
+                Fore.RED + "[+] Doppelganger detected between",
+                keyword,
+                "and",
+                domains,
+                "" + Style.RESET_ALL,
+            )
+            self.list_domains.append(domains)
 
     def _process_levenshtein(self, keyword, domain, homograph_domain, domains):
         leven_dist = validations.levenshtein(keyword, domain)
@@ -319,7 +335,7 @@ class Domain:
         )
         self.list_domains.append(domains)
 
-    def main(self, keywords_file, confidence_level, domains_file, search_period, method):
+    def main(self, keywords_file, confidence_level, domains_file, search_period, method, doppelganger_only=False):
         """Method to call the class functions
         
         Args:
@@ -333,6 +349,7 @@ class Domain:
         self.domain_filename = domains_file
         self.set_searchPeriod(search_period)
         self.confidence_level = confidence_level
+        self.doppelganger_only = doppelganger_only
         self.method = method
         self.count_keywords()
 
@@ -381,8 +398,9 @@ if __name__ == "__main__":
     args = arg_parser.get_args()
 
     start_time = time.time()
-
-    file_content = Domain().main(args.keywords, args.confidence, args.domains, args.period, args.method)
+    file_content = Domain().main(
+        args.keywords, args.confidence, args.domains, args.period, args.method, args.doppelganger_only
+    )
 
     print("")
     print("+---------- Summary ----------+")
