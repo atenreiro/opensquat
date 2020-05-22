@@ -6,7 +6,6 @@ openSquat
 
 ![alt text](https://raw.githubusercontent.com/atenreiro/opensquat/master/screenshots/openSquat.PNG)
 
-
 What is openSquat?
 -------------
 
@@ -16,6 +15,7 @@ openSquat is an opensource Intelligence (OSINT) R&D project to identify **cyber 
 *  Typo squatting
 *  IDN homograph attacks
 *  Phishing
+*  Doppenganger domains
 *  Scams
 
 This is an opensource project so everyone's welcomed to contribute.

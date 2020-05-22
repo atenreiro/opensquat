@@ -23,7 +23,7 @@ def validate_period(search_period):
 
     Return:
         period
-        
+
     Raise:
         If value is not valid, raise an exception to argparse
     """
@@ -32,8 +32,8 @@ def validate_period(search_period):
     if (period != "day") and (period != "week"):
         raise argparse.ArgumentTypeError("Unkown search period!")
     return period
-    
-    
+
+
 def validate_type(file_type):
     """Validate file_type
 
@@ -42,7 +42,7 @@ def validate_type(file_type):
 
     Return:
         file_type
-        
+
     Raise:
         If value is not valid, raise an exception to argparse
     """
@@ -58,15 +58,15 @@ def validate_confidence(confidence_level):
     """Validate confidence_level
 
     Args:
-        confidence_level: int containing confidence_level, can only be an int 
+        confidence_level: int containing confidence_level, can only be an int
         between 0 and 4.
 
     Return:
         confidence_level
-        
+
     Raise:
         If value is not valid, raise an exception to argparse
-    
+
     """
     confidence_level = int(confidence_level)
 
@@ -100,7 +100,8 @@ def get_args():
         "--confidence",
         type=validate_confidence,
         default=1,
-        help="0 (very high), 1 (high), 2 (medium), 3 (low), 4 (very low) (default: 1)",
+        help="0 (very high), 1 (high), 2 (medium), 3 (low),"
+             "4 (very low) (default: 1)",
     )
     parser.add_argument(
         "-t", "--type", type=validate_type, default="txt",
@@ -116,12 +117,14 @@ def get_args():
     )
 
     parser.add_argument(
-        "-m", "--method", type=str, choices=("Levenshtein", "JaroWinkler"), default="Levenshtein",
+        "-m", "--method", type=str, choices=("Levenshtein", "JaroWinkler"),
+        default="Levenshtein",
         help="method which is used to calculate similarity"
     )
 
     parser.add_argument(
-        "--doppelganger_only", type=util.strtobool, default=False, help="Find only doppelganger domains"
+        "--doppelganger_only", type=util.strtobool, default=False,
+        help="Find only doppelganger domains"
     )
 
     args = parser.parse_args()
