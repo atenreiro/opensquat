@@ -13,7 +13,7 @@ import requests
 import os
 import time
 import bisect
-from colorama import Fore, Style
+from colorama import init, Fore, Style
 from datetime import date
 
 import output
@@ -382,6 +382,8 @@ class Domain:
 
 
 if __name__ == "__main__":
+
+    init()
 
     RED, WHITE, GREEN, END, YELLOW, BOLD = (
         "\033[91m",
