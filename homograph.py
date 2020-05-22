@@ -20,7 +20,7 @@ def check_homograph(domain):
 
         Return:
             none
-    
+
     """
     homograph_domain = bool(confusables.is_dangerous(domain))
 
@@ -38,7 +38,7 @@ def homograph_to_latin(domain):
 
         Return:
             none
-    
+
     """
     homoglyphs = hg.Homoglyphs(languages={"en"}, strategy=hg.STRATEGY_LOAD)
 

@@ -17,10 +17,10 @@ from datetime import date
 
 class SaveFile:
     """The SaveFile is responsible for the file saving operations
-     
+
     To use:
         Domain().main(keywords, confidence, domains)
-    
+
     Attribute:
         type: file type (txt, csv, json)
         today: today's date in the format yyyy-mm-dd
@@ -37,7 +37,7 @@ class SaveFile:
     def as_json(self):
         """
         save to json
-        
+
         Args:
             none
 
@@ -60,7 +60,8 @@ class SaveFile:
             none
         """
         f_csv = open(self.filename, "w")
-        file_csv = csv.writer(f_csv, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        file_csv = csv.writer(f_csv, delimiter=",", quotechar='"',
+                              quoting=csv.QUOTE_MINIMAL)
         file_csv.writerow(self.content)
         file_csv.close()
         print("[*] file saved:", self.filename)

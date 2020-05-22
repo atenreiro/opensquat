@@ -25,27 +25,30 @@ __VERSION__ = "version 1.5"
 
 
 class Domain:
-    """The Domain class with handle all the functions related to 
+    """The Domain class with handle all the functions related to
        the domain verifications
-     
+
     To use:
         Domain().main(keywords, confidence, domains)
-    
+
     Attribute:
         URL: The URL to download the updated domain list
         URL_file: The URL file name
         today: today's date in the format yyyy-mm-dd
-        domain_filename: If no URL download is required, the local file containing the domains
+        domain_filename: If no URL download is required, the local file
+                         containing the domains
         keywords_filename: File containing the keywords (plain text)
         domain_total: Total count number of domains from domain_filename
         keywords_total: Total count number of keywords from keywords_filename
         list_domains: A list containing all the flagged domains
-        confidence_level: An int containing the confidence of sensitiveness level
+        confidence_level: An int containing the confidence of
+                          sensitiveness level
         confidence: Dictionary containing the respective confidence string
     """
 
     def __init__(self):
-        self.URL = "https://raw.githubusercontent.com/CERT-MZ/projects/master/Domain-squatting/"
+        self.URL = "https://raw.githubusercontent.com/CERT-MZ/projects" \
+                   "/master/Domain-squatting/"
         self.URL_file = None
         self.today = date.today().strftime("%Y-%m-%d")
         self.domain_filename = None
@@ -56,7 +59,7 @@ class Domain:
         self.confidence_level = 2
         self.period = "day"
         self.doppelganger_only = False
-        
+
         self.confidence = {
             0: "very high confidence",
             1: "high confidence",
@@ -95,11 +98,11 @@ class Domain:
             self.URL_file = "domain-names.txt"
         elif self.period == "week":
             self.URL_file = "domain-names-week.txt"
-            
+
         URL = self.URL + self.URL_file
-        
+
         print("[*] Downloading fresh domain list from", URL)
-        
+
         response = requests.get(URL, stream=True)
 
         # Get total file size in bytes from the request header
@@ -110,16 +113,16 @@ class Domain:
 
         data = response.content
         response.close()
-        
+
         with open(self.URL_file, "wb") as f:
             f.write(data)
-        
+
         f.close()
-        
+
         self.domain_filename = self.URL_file
 
         return True
-    
+
     def count_domains(self):
         """Count number of domains (lines) from the domains file
 
@@ -132,7 +135,8 @@ class Domain:
 
         if not os.path.isfile(self.domain_filename):
             print(
-                "[*] File", self.domain_filename, "not found or not readable! Exiting...\n",
+                "[*] File", self.domain_filename, "not found or not readable!"
+                                                  "Exiting...\n",
             )
             exit(-1)
 
@@ -154,12 +158,14 @@ class Domain:
 
         if not os.path.isfile(self.keywords_filename):
             print(
-                "[*] File", self.keywords_filename, "not found or not readable! Exiting... \n",
+                "[*] File", self.keywords_filename, "not found or not"
+                                                    "readable! Exiting... \n"
             )
             exit(-1)
 
         for line in open(self.keywords_filename):
-            if (line[0] != "#") and (line[0] != " ") and (line[0] != "") and (line[0] != "\n"):
+            if (line[0] != "#") and (line[0] != " ") and (line[0] != "") and \
+               (line[0] != "\n"):
                 self.keywords_total += 1
 
     def set_filename(self, filename):
@@ -170,10 +176,10 @@ class Domain:
 
         Returns:
             none
-    
+
         """
         self.keywords_filename = filename
-            
+
     def set_searchPeriod(self, search_period):
         """Method to set the search_period
 
@@ -200,7 +206,8 @@ class Domain:
         print("[*] Threshold:", self.confidence[self.confidence_level])
 
     def check_squatting(self):
-        """Method that will compute all the similarity calculations between the keywords and domain names
+        """Method that will compute all the similarity calculations between
+           the keywords and domain names
 
         Args:
             none
@@ -222,7 +229,8 @@ class Domain:
             if not keyword:
                 continue
 
-            if (keyword[0] != "#") and (keyword[0] != " ") and (keyword[0] != "") and (keyword[0] != "\n"):
+            if ((keyword[0] != "#") and (keyword[0] != " ") and
+                    (keyword[0] != "") and (keyword[0] != "\n")):
                 i += 1
                 print(
                     Fore.GREEN + "\n[*] Verifying keyword:",
@@ -249,16 +257,23 @@ class Domain:
                         domain = homograph.homograph_to_latin(domain)
 
                     if self.doppelganger_only:
-                        self._process_doppelgagner_only(keyword, domain, domains)
+                        self._process_doppelgagner_only(keyword,
+                                                        domain,
+                                                        domains)
                         continue
 
                     if self.method.lower() == "levenshtein":
-                        self._process_levenshtein(keyword, domain, homograph_domain, domains)
+                        self._process_levenshtein(keyword, domain,
+                                                  homograph_domain, domains)
                     elif self.method.lower() == 'jarowinkler':
-                        self._process_jarowinkler(keyword, domain, homograph_domain, domains)
+                        self._process_jarowinkler(keyword, domain,
+                                                  homograph_domain, domains)
                     else:
-                        print(f"No such method: {self.method}. Levenshtein will be used as default.")
-                        self._process_levenshtein(keyword, domain, homograph_domain, domains)
+                        print(f"No such method: {self.method}. "
+                              "Levenshtein will be used as default."
+                              )
+                        self._process_levenshtein(keyword, domain,
+                                                  homograph_domain, domains)
 
             f_dom.seek(0)
 
@@ -279,10 +294,12 @@ class Domain:
         leven_dist = validations.levenshtein(keyword, domain)
 
         if (leven_dist <= self.confidence_level) and not homograph_domain:
-            self.on_similarity_detected(keyword, domains, self.confidence[leven_dist])
+            self.on_similarity_detected(keyword, domains,
+                                        self.confidence[leven_dist])
 
         elif (leven_dist <= self.confidence_level) and homograph_domain:
-            self.on_homograph_detected(keyword, domains, self.confidence[leven_dist])
+            self.on_homograph_detected(keyword, domains,
+                                       self.confidence[leven_dist])
 
         elif self.domain_contains(keyword, domains):
             self.on_domain_contains(keyword, domains)
@@ -331,13 +348,15 @@ class Domain:
 
     def on_domain_contains(self, keyword, domains):
         print(
-            Fore.YELLOW + "[+] The word", keyword, "is contained in", domains, "" + Style.RESET_ALL,
+            Fore.YELLOW + "[+] The word", keyword, "is contained in",
+                          domains, "" + Style.RESET_ALL,
         )
         self.list_domains.append(domains)
 
-    def main(self, keywords_file, confidence_level, domains_file, search_period, method, doppelganger_only=False):
+    def main(self, keywords_file, confidence_level, domains_file,
+             search_period, method, doppelganger_only=False):
         """Method to call the class functions
-        
+
         Args:
             none
 
@@ -357,10 +376,10 @@ class Domain:
             self.download()
 
         self.count_domains()
-       
+
         self.print_info()
         return self.check_squatting()
-    
+
 
 if __name__ == "__main__":
 
@@ -374,22 +393,20 @@ if __name__ == "__main__":
     )
 
     logo = (
-        Fore.GREEN
-        + """
-                                             █████████                                  █████   
-                                            ███░░░░░███                                ░░███    
-      ██████  ████████   ██████  ████████  ░███    ░░░   ████████ █████ ████  ██████   ███████  
-     ███░░███░░███░░███ ███░░███░░███░░███ ░░█████████  ███░░███ ░░███ ░███  ░░░░░███ ░░░███░   
-    ░███ ░███ ░███ ░███░███████  ░███ ░███  ░░░░░░░░███░███ ░███  ░███ ░███   ███████   ░███    
+       Fore.GREEN + """
+                                             █████████                                  █████
+                                            ███░░░░░███                                ░░███
+      ██████  ████████   ██████  ████████  ░███    ░░░   ████████ █████ ████  ██████   ███████
+     ███░░███░░███░░███ ███░░███░░███░░███ ░░█████████  ███░░███ ░░███ ░███  ░░░░░███ ░░░███░
+    ░███ ░███ ░███ ░███░███████  ░███ ░███  ░░░░░░░░███░███ ░███  ░███ ░███   ███████   ░███
     ░███ ░███ ░███ ░███░███░░░   ░███ ░███  ███    ░███░███ ░███  ░███ ░███  ███░░███   ░███ ███
-    ░░██████  ░███████ ░░██████  ████ █████░░█████████ ░░███████  ░░████████░░████████  ░░█████ 
-     ░░░░░░   ░███░░░   ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░░   ░░░░░███   ░░░░░░░░  ░░░░░░░░    ░░░░░  
-              ░███                                          ░███                                
-              █████                                         █████                               
-             ░░░░░                                         ░░░░░   
+    ░░██████  ░███████ ░░██████  ████ █████░░█████████ ░░███████  ░░████████░░████████  ░░█████
+     ░░░░░░   ░███░░░   ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░░   ░░░░░███   ░░░░░░░░  ░░░░░░░░    ░░░░░
+              ░███                                          ░███
+              █████                                         █████
+             ░░░░░                                         ░░░░░
                     (c) CERT-MZ | Andre Tenreiro | andre@cert.mz
-    """
-        + Style.RESET_ALL
+    """ + Style.RESET_ALL
     )
 
     print(logo)
@@ -399,7 +416,8 @@ if __name__ == "__main__":
 
     start_time = time.time()
     file_content = Domain().main(
-        args.keywords, args.confidence, args.domains, args.period, args.method, args.doppelganger_only
+        args.keywords, args.confidence, args.domains,
+        args.period, args.method, args.doppelganger_only
     )
 
     print("")
