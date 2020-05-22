@@ -230,7 +230,7 @@ class Domain:
                 continue
 
             if ((keyword[0] != "#") and (keyword[0] != " ") and
-                    (keyword[0] != "") and (keyword[0] != "\n")):
+                (keyword[0] != "") and (keyword[0] != "\n")):
                 i += 1
                 print(
                     Fore.GREEN + "\n[*] Verifying keyword:",
