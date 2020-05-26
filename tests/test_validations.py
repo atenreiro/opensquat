@@ -10,6 +10,3 @@ class TestValidations(TestCase):
     def test_levenshtein(self):
         self.assertEqual(7, levenshtein("netflix", "netflix123.com"))
         self.assertEqual(16, levenshtein("netflix", "888888888888.com"))
-
-    def test_mine(self):
-        self.assertEqual(16, jaro_winkler("something", "gmosehitt"))
