@@ -22,7 +22,7 @@ import validations
 import homograph
 import ct
 
-__VERSION__ = "version 1.5"
+__VERSION__ = "version 1.6"
 
 
 class Domain:
