@@ -48,8 +48,10 @@ class Domain:
     """
 
     def __init__(self):
-        self.URL = "https://raw.githubusercontent.com/CERT-MZ/projects" \
-                   "/master/Domain-squatting/"
+        self.URL = (
+            "https://raw.githubusercontent.com/CERT-MZ/projects"
+            "/master/Domain-squatting/"
+        )
         self.URL_file = None
         self.today = date.today().strftime("%Y-%m-%d")
         self.domain_filename = None
@@ -73,7 +75,7 @@ class Domain:
             0.8: "Low",
             0.89: "Medium",
             0.949: "High",
-            0.95: "Very high"
+            0.95: "Very high",
         }
 
         self.method = "Levenshtein"
@@ -107,7 +109,7 @@ class Domain:
         response = requests.get(URL, stream=True)
 
         # Get total file size in bytes from the request header
-        total_size = int(response.headers.get('content-length', 0))
+        total_size = int(response.headers.get("content-length", 0))
         total_size_mb = round(float(total_size / 1024 / 1024), 2)
 
         print("[*] Download volume:", total_size_mb, "MB")
@@ -136,8 +138,9 @@ class Domain:
 
         if not os.path.isfile(self.domain_filename):
             print(
-                "[*] File", self.domain_filename, "not found or not readable!"
-                                                  "Exiting...\n",
+                "[*] File",
+                self.domain_filename,
+                "not found or not readable!" "Exiting...\n",
             )
             exit(-1)
 
@@ -159,14 +162,19 @@ class Domain:
 
         if not os.path.isfile(self.keywords_filename):
             print(
-                "[*] File", self.keywords_filename, "not found or not"
-                                                    "readable! Exiting... \n"
+                "[*] File",
+                self.keywords_filename,
+                "not found or not" "readable! Exiting... \n",
             )
             exit(-1)
 
         for line in open(self.keywords_filename):
-            if (line[0] != "#") and (line[0] != " ") and (line[0] != "") and \
-               (line[0] != "\n"):
+            if (
+                (line[0] != "#")
+                and (line[0] != " ")
+                and (line[0] != "")
+                and (line[0] != "\n")
+            ):
                 self.keywords_total += 1
 
     def set_filename(self, filename):
@@ -230,8 +238,12 @@ class Domain:
             if not keyword:
                 continue
 
-            if ((keyword[0] != "#") and (keyword[0] != " ") and
-                    (keyword[0] != "") and (keyword[0] != "\n")):
+            if (
+                (keyword[0] != "#")
+                and (keyword[0] != " ")
+                and (keyword[0] != "")
+                and (keyword[0] != "\n")
+            ):
                 i += 1
                 print(
                     Fore.GREEN + "\n[*] Verifying keyword:",
@@ -258,24 +270,26 @@ class Domain:
                         domain = homograph.homograph_to_latin(domain)
 
                     if self.doppelganger_only:
-                        self._process_doppelgagner_only(
-                            keyword, domain, domains
-                        )
+                        self._process_doppelgagner_only(keyword, domain, domains)
 
                         continue
 
                     if self.method.lower() == "levenshtein":
-                        self._process_levenshtein(keyword, domain,
-                                                  homograph_domain, domains)
-                    elif self.method.lower() == 'jarowinkler':
-                        self._process_jarowinkler(keyword, domain,
-                                                  homograph_domain, domains)
+                        self._process_levenshtein(
+                            keyword, domain, homograph_domain, domains
+                        )
+                    elif self.method.lower() == "jarowinkler":
+                        self._process_jarowinkler(
+                            keyword, domain, homograph_domain, domains
+                        )
                     else:
-                        print(f"No such method: {self.method}. "
-                              "Levenshtein will be used as default."
-                              )
-                        self._process_levenshtein(keyword, domain,
-                                                  homograph_domain, domains)
+                        print(
+                            f"No such method: {self.method}. "
+                            "Levenshtein will be used as default."
+                        )
+                        self._process_levenshtein(
+                            keyword, domain, homograph_domain, domains
+                        )
 
             f_dom.seek(0)
 
@@ -308,12 +322,10 @@ class Domain:
         leven_dist = validations.levenshtein(keyword, domain)
 
         if (leven_dist <= self.confidence_level) and not homograph_domain:
-            self.on_similarity_detected(keyword, domains,
-                                        self.confidence[leven_dist])
+            self.on_similarity_detected(keyword, domains, self.confidence[leven_dist])
 
         elif (leven_dist <= self.confidence_level) and homograph_domain:
-            self.on_homograph_detected(keyword, domains,
-                                       self.confidence[leven_dist])
+            self.on_homograph_detected(keyword, domains, self.confidence[leven_dist])
 
         elif self.domain_contains(keyword, domains):
             self.on_domain_contains(keyword, domains)
@@ -362,13 +374,23 @@ class Domain:
 
     def on_domain_contains(self, keyword, domains):
         print(
-            Fore.YELLOW + "[+] The word", keyword, "is contained in",
-                          domains, "" + Style.RESET_ALL,
+            Fore.YELLOW + "[+] The word",
+            keyword,
+            "is contained in",
+            domains,
+            "" + Style.RESET_ALL,
         )
         self.list_domains.append(domains)
 
-    def main(self, keywords_file, confidence_level, domains_file,
-             search_period, method, doppelganger_only=False):
+    def main(
+        self,
+        keywords_file,
+        confidence_level,
+        domains_file,
+        search_period,
+        method,
+        doppelganger_only=False,
+    ):
         """Method to call the class functions
 
         Args:
@@ -409,7 +431,8 @@ if __name__ == "__main__":
     )
 
     logo = (
-        Fore.GREEN + """
+        Fore.GREEN
+        + """
                                              █████████                                  █████
                                             ███░░░░░███                                ░░███
       ██████  ████████   ██████  ████████  ░███    ░░░   ████████ █████ ████  ██████   ███████
@@ -422,7 +445,8 @@ if __name__ == "__main__":
               █████                                         █████
              ░░░░░                                         ░░░░░
                     (c) CERT-MZ | Andre Tenreiro | andre@cert.mz
-    """ + Style.RESET_ALL
+    """
+        + Style.RESET_ALL
     )
 
     print(logo)
@@ -432,8 +456,12 @@ if __name__ == "__main__":
 
     start_time = time.time()
     file_content = Domain().main(
-        args.keywords, args.confidence, args.domains,
-        args.period, args.method, args.doppelganger_only
+        args.keywords,
+        args.confidence,
+        args.domains,
+        args.period,
+        args.method,
+        args.doppelganger_only,
     )
 
     print("")
