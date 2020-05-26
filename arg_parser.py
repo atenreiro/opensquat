@@ -88,11 +88,17 @@ def get_args():
     # Parser
     parser = argparse.ArgumentParser(description="openSquat")
     parser.add_argument(
-        "-k", "--keywords", type=str, default="keywords.txt",
+        "-k",
+        "--keywords",
+        type=str,
+        default="keywords.txt",
         help="keywords file (default: keywords.txt)",
     )
     parser.add_argument(
-        "-o", "--output", type=str, default="results.txt",
+        "-o",
+        "--output",
+        type=str,
+        default="results.txt",
         help="output filename (default: results.txt)",
     )
     parser.add_argument(
@@ -101,30 +107,44 @@ def get_args():
         type=validate_confidence,
         default=1,
         help="0 (very high), 1 (high), 2 (medium), 3 (low),"
-             "4 (very low) (default: 1)",
+        "4 (very low) (default: 1)",
     )
     parser.add_argument(
-        "-t", "--type", type=validate_type, default="txt",
+        "-t",
+        "--type",
+        type=validate_type,
+        default="txt",
         help="output file type [txt|json|csv] (default: txt)",
     )
     parser.add_argument(
-        "-d", "--domains", type=str, default="",
+        "-d",
+        "--domains",
+        type=str,
+        default="",
         help="update from FILE instead of downloading new domains",
     )
     parser.add_argument(
-        "-p", "--period", type=validate_period, default="day",
+        "-p",
+        "--period",
+        type=validate_period,
+        default="day",
         help="Searchable period [day|week] (default: day)",
     )
 
     parser.add_argument(
-        "-m", "--method", type=str, choices=("Levenshtein", "JaroWinkler"),
+        "-m",
+        "--method",
+        type=str,
+        choices=("Levenshtein", "JaroWinkler"),
         default="Levenshtein",
-        help="method which is used to calculate similarity"
+        help="method which is used to calculate similarity",
     )
 
     parser.add_argument(
-        "--doppelganger_only", type=util.strtobool, default=False,
-        help="Find only doppelganger domains"
+        "--doppelganger_only",
+        type=util.strtobool,
+        default=False,
+        help="Find only doppelganger domains",
     )
 
     args = parser.parse_args()
