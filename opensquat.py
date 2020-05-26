@@ -20,6 +20,7 @@ import output
 import arg_parser
 import validations
 import homograph
+import ct
 
 __VERSION__ = "version 1.5"
 
@@ -257,9 +258,10 @@ class Domain:
                         domain = homograph.homograph_to_latin(domain)
 
                     if self.doppelganger_only:
-                        self._process_doppelgagner_only(keyword,
-                                                        domain,
-                                                        domains)
+                        self._process_doppelgagner_only(
+                            keyword, domain, domains
+                        )
+
                         continue
 
                     if self.method.lower() == "levenshtein":
@@ -280,15 +282,27 @@ class Domain:
         return self.list_domains
 
     def _process_doppelgagner_only(self, keyword, domain, domains):
-        if self.domain_contains(keyword, domain):
+        def print_info(_info):
             print(
-                Fore.RED + "[+] Doppelganger detected between",
+                Fore.RED + f"[+] {_info} between",
                 keyword,
                 "and",
                 domains,
                 "" + Style.RESET_ALL,
             )
-            self.list_domains.append(domains)
+
+        doppelganger = self.domain_contains(keyword, domain)
+        valid_certificate = ct.CRTSH.check_certificate(domain)
+
+        if doppelganger and not valid_certificate:
+            print_info("Doppelganger with malicious certificate detected")
+            self.list_domains.append(domain)
+        elif doppelganger and valid_certificate:
+            print_info("Doppelganger detected")
+            self.list_domains.append(domain)
+        elif not doppelganger and valid_certificate:
+            print_info("Malicious certificate detected")
+            self.list_domains.append(domain)
 
     def _process_levenshtein(self, keyword, domain, homograph_domain, domains):
         leven_dist = validations.levenshtein(keyword, domain)
