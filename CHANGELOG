@@ -1,3 +1,6 @@
+v1.6 - (2020-05-26)
++ Support for certificate transparency (CT) search
+
 v1.5 - (2020-05-20)
 + Added doppelganger only feature
 
