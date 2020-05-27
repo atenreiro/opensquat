@@ -41,16 +41,20 @@ class CRTSH:
 
             for table_row in table.find_all("tr")[1:]:
                 tds = [td for td in table_row.find_all("td")]
-                collected_logs.append(
-                    CTLog(
-                        tds[0].text,
-                        tds[1].text,
-                        tds[2].text,
-                        tds[3].text,
-                        [x for x in tds[4] if isinstance(x, NavigableString)],
-                        tds[5].text,
+                try:
+                    collected_logs.append(
+                        CTLog(
+                            tds[0].text,
+                            tds[1].text,
+                            tds[2].text,
+                            tds[3].text,
+                            [x for x in tds[4] if isinstance(x, NavigableString)],
+                            tds[5].text,
+                        )
                     )
-                )
+                except Exception as e:
+                    print(f"Could not retreive CT logs from {domain}")
+                    return False
 
         for ca in NOT_TRUSTED_CA:
             for ctlog in collected_logs:
