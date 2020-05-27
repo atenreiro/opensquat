@@ -271,7 +271,6 @@ class Domain:
 
                     if self.doppelganger_only:
                         self._process_doppelgagner_only(keyword, domain, domains)
-
                         continue
 
                     if self.method.lower() == "levenshtein":
@@ -306,16 +305,12 @@ class Domain:
             )
 
         doppelganger = self.domain_contains(keyword, domain)
-        valid_certificate = ct.CRTSH.check_certificate(domain)
 
-        if doppelganger and not valid_certificate:
-            print_info("Doppelganger with malicious certificate detected")
-            self.list_domains.append(domain)
-        elif doppelganger and valid_certificate:
-            print_info("Doppelganger detected")
-            self.list_domains.append(domain)
-        elif not doppelganger and valid_certificate:
-            print_info("Malicious certificate detected")
+        if doppelganger:
+            if not ct.CRTSH.check_certificate(domains):
+                print_info("Doppelganger with malicious certificate detected")
+            else:
+                print_info("Doppelganger with valid certificate detected")
             self.list_domains.append(domain)
 
     def _process_levenshtein(self, keyword, domain, homograph_domain, domains):
