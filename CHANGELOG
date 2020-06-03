@@ -1,3 +1,7 @@
+v1.7 - (2020-06-03)
++ New searchable period by month
++ default search period changed from day to month
+
 v1.6 - (2020-05-26)
 + Support for certificate transparency (CT) search
 

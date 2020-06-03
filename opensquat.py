@@ -22,7 +22,7 @@ import validations
 import homograph
 import ct
 
-__VERSION__ = "version 1.6"
+__VERSION__ = "version 1.7"
 
 
 class Domain:
@@ -60,7 +60,7 @@ class Domain:
         self.keywords_total = 0
         self.list_domains = []
         self.confidence_level = 2
-        self.period = "day"
+        self.period = "week"
         self.doppelganger_only = False
 
         self.confidence = {
@@ -101,6 +101,8 @@ class Domain:
             self.URL_file = "domain-names.txt"
         elif self.period == "week":
             self.URL_file = "domain-names-week.txt"
+        elif self.period == "month":
+            self.URL_file = "domain-names-month.txt"
 
         URL = self.URL + self.URL_file
 
@@ -439,7 +441,7 @@ if __name__ == "__main__":
               ░███                                          ░███
               █████                                         █████
              ░░░░░                                         ░░░░░
-                    (c) CERT-MZ | Andre Tenreiro | andre@cert.mz
+                    (c) CERT-MZ
     """
         + Style.RESET_ALL
     )
