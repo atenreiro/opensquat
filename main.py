@@ -11,19 +11,15 @@ software licensed under GNU version 3
 """
 import requests
 import os
+
 import time
 import bisect
+
 from colorama import init, Fore, Style
 from datetime import date
-
-import output
-import arg_parser
-import validations
-import homograph
-import ct
+from opensquat import output, validations, homograph, arg_parser, ct
 
 __VERSION__ = "version 1.6"
-
 
 class Domain:
     """The Domain class with handle all the functions related to

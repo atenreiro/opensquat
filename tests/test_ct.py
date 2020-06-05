@@ -1,5 +1,5 @@
 from unittest import TestCase
-from ct import CRTSH
+from opensquat.ct import CRTSH
 
 
 class TestCRTSH(TestCase):

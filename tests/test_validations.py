@@ -1,5 +1,5 @@
 from unittest import TestCase
-from validations import levenshtein, jaro_winkler
+from opensquat.validations import levenshtein, jaro_winkler
 
 
 class TestValidations(TestCase):
