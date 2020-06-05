@@ -53,7 +53,7 @@ class CRTSH:
                         )
                     )
                 except Exception as e:
-                    print(f"Could not retreive CT logs from {domain}")
+                    print(f"Could not retreive CT logs from {domain}, {e}")
                     return False
 
         for ca in NOT_TRUSTED_CA:

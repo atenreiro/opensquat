@@ -11,18 +11,12 @@ software licensed under GNU version 3
 """
 import requests
 import os
-import time
+
 import bisect
-from colorama import init, Fore, Style
+
+from colorama import Fore, Style
 from datetime import date
-
-import output
-import arg_parser
-import validations
-import homograph
-import ct
-
-__VERSION__ = "version 1.7"
+from opensquat import validations, homograph, ct
 
 
 class Domain:
@@ -412,61 +406,3 @@ class Domain:
 
         self.print_info()
         return self.check_squatting()
-
-
-if __name__ == "__main__":
-
-    init()
-
-    RED, WHITE, GREEN, END, YELLOW, BOLD = (
-        "\033[91m",
-        "\33[97m",
-        "\033[1;32m",
-        "\033[0m",
-        "\33[93m",
-        "\033[1m",
-    )
-
-    logo = (
-        Fore.GREEN
-        + """
-                                             █████████                                  █████
-                                            ███░░░░░███                                ░░███
-      ██████  ████████   ██████  ████████  ░███    ░░░   ████████ █████ ████  ██████   ███████
-     ███░░███░░███░░███ ███░░███░░███░░███ ░░█████████  ███░░███ ░░███ ░███  ░░░░░███ ░░░███░
-    ░███ ░███ ░███ ░███░███████  ░███ ░███  ░░░░░░░░███░███ ░███  ░███ ░███   ███████   ░███
-    ░███ ░███ ░███ ░███░███░░░   ░███ ░███  ███    ░███░███ ░███  ░███ ░███  ███░░███   ░███ ███
-    ░░██████  ░███████ ░░██████  ████ █████░░█████████ ░░███████  ░░████████░░████████  ░░█████
-     ░░░░░░   ░███░░░   ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░░   ░░░░░███   ░░░░░░░░  ░░░░░░░░    ░░░░░
-              ░███                                          ░███
-              █████                                         █████
-             ░░░░░                                         ░░░░░
-                    (c) CERT-MZ
-    """
-        + Style.RESET_ALL
-    )
-
-    print(logo)
-    print("\t\t\t" + __VERSION__ + "\n")
-
-    args = arg_parser.get_args()
-
-    start_time = time.time()
-    file_content = Domain().main(
-        args.keywords,
-        args.confidence,
-        args.domains,
-        args.period,
-        args.method,
-        args.doppelganger_only,
-    )
-
-    print("")
-    print("+---------- Summary ----------+")
-    output.SaveFile().main(args.output, args.type, file_content)
-
-    end_time = round(time.time() - start_time, 2)
-
-    print("[*] Domains flagged:", len(file_content))
-    print("[*] Running time: %s seconds" % end_time)
-    print("")
