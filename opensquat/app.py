@@ -12,13 +12,11 @@ software licensed under GNU version 3
 import requests
 import os
 
-import time
 import bisect
 
-from colorama import init, Fore, Style
+from colorama import Fore, Style
 from datetime import date
-from opensquat import output, validations, homograph, arg_parser, ct
-
+from opensquat import validations, homograph, ct
 
 
 class Domain:
@@ -408,4 +406,3 @@ class Domain:
 
         self.print_info()
         return self.check_squatting()
-
