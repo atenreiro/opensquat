@@ -29,7 +29,7 @@ def validate_period(search_period):
     """
     period = str(search_period)
 
-    if (period != "day") and (period != "week"):
+    if (period != "day") and (period != "week") and (period != "month"):
         raise argparse.ArgumentTypeError("Unkown search period!")
     return period
 
@@ -127,8 +127,8 @@ def get_args():
         "-p",
         "--period",
         type=validate_period,
-        default="day",
-        help="Searchable period [day|week] (default: day)",
+        default="week",
+        help="Searchable period [day|week|month] (default: week)",
     )
 
     parser.add_argument(
