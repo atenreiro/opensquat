@@ -1,3 +1,14 @@
+# -*- coding: utf-8 -*-
+# Module: main.py
+"""
+openSquat
+
+(c) CERT-MZ
+
+* https://github.com/atenreiro/opensquat
+
+software licensed under GNU version 3
+"""
 import time
 
 from colorama import init, Fore, Style
@@ -49,6 +60,7 @@ if __name__ == "__main__":
         args.period,
         args.method,
         args.doppelganger_only,
+        args.socialmedia,
     )
 
     print("")

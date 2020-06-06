@@ -3,13 +3,11 @@
 """
 openSquat
 
-(c) CERT-MZ | Andre Tenreiro | andre@cert.mz
+(c) CERT-MZ
 
-* https://www.cert.mz
 * https://github.com/atenreiro/opensquat
 
 software licensed under GNU version 3
-
 """
 import argparse
 from distutils import util
@@ -146,7 +144,17 @@ def get_args():
         default=False,
         help="Find only doppelganger domains",
     )
+    parser.add_argument(
+        "-s",
+        "--socialmedia",
+        type=str,
+        choices=("instagram", "facebook", "linkedin", "twitter"),
+        default="instagram",
+        help="Verify keywords on social media profiles",
+        )
+    
 
     args = parser.parse_args()
 
     return args
+# EOF

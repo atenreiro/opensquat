@@ -3,10 +3,11 @@
 """
 openSquat
 
-(c) CERT-MZ | Andre Tenreiro | andre@cert.mz
+(c) CERT-MZ
 
-* https://www.cert.mz
 * https://github.com/atenreiro/opensquat
+
+software licensed under GNU version 3
 """
 from strsimpy.levenshtein import Levenshtein
 from strsimpy.jaro_winkler import JaroWinkler

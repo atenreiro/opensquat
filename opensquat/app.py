@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
+# Module: app.py
 """
 openSquat
 
-(c) CERT-MZ | Andre Tenreiro | andre@cert.mz
+(c) CERT-MZ
 
-* https://www.cert.mz
 * https://github.com/atenreiro/opensquat
 
 software licensed under GNU version 3
@@ -16,7 +16,7 @@ import bisect
 
 from colorama import Fore, Style
 from datetime import date
-from opensquat import validations, homograph, ct
+from opensquat import validations, homograph, ct, instagram
 
 
 class Domain:
@@ -56,6 +56,7 @@ class Domain:
         self.confidence_level = 2
         self.period = "week"
         self.doppelganger_only = False
+        self.socialmedia_only = False
 
         self.confidence = {
             0: "very high confidence",
@@ -268,6 +269,10 @@ class Domain:
                     if self.doppelganger_only:
                         self._process_doppelgagner_only(keyword, domain, domains)
                         continue
+                    
+                    if self.socialmedia_only:
+                        self._process_socialmedia_only(keyword)
+                        break
 
                     if self.method.lower() == "levenshtein":
                         self._process_levenshtein(
@@ -372,7 +377,23 @@ class Domain:
             "" + Style.RESET_ALL,
         )
         self.list_domains.append(domains)
-
+        
+    
+    def _process_socialmedia_only(self, keyword):
+        
+        IG = instagram.Instagram().main(keyword)
+        
+        if IG:
+            userid = IG['pk'][:]
+            print(
+                Fore.RED + "[+] Instagram user found", "[ID: %s]" % userid, ""+ Style.RESET_ALL,
+                )
+        else:
+            print(
+                Fore.GREEN + "[+] Instagram user not found" + Style.RESET_ALL,
+                )
+            
+            
     def main(
         self,
         keywords_file,
@@ -381,6 +402,7 @@ class Domain:
         search_period,
         method,
         doppelganger_only=False,
+        socialmedia_only=False,
     ):
         """Method to call the class functions
 
@@ -396,6 +418,7 @@ class Domain:
         self.set_searchPeriod(search_period)
         self.confidence_level = confidence_level
         self.doppelganger_only = doppelganger_only
+        self.socialmedia_only = socialmedia_only
         self.method = method
         self.count_keywords()
 
