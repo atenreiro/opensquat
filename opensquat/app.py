@@ -92,7 +92,7 @@ class Domain:
         """
 
         if self.period == "day":
-            self.URL_file = "domain-names.txt"
+            self.URL_file = "domain-names1.txt"
         elif self.period == "week":
             self.URL_file = "domain-names-week.txt"
         elif self.period == "month":
@@ -107,6 +107,14 @@ class Domain:
         # Get total file size in bytes from the request header
         total_size = int(response.headers.get("content-length", 0))
         total_size_mb = round(float(total_size / 1024 / 1024), 2)
+        
+        # Validate if the URL file is not found
+        if total_size_mb == 0:
+            print(
+                "[ERROR] File not found! Contact the authors " +
+                "or try again later. Exiting...\n",
+            )
+            exit(-1)
 
         print("[*] Download volume:", total_size_mb, "MB")
 
