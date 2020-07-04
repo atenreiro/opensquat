@@ -92,7 +92,7 @@ class Domain:
         """
 
         if self.period == "day":
-            self.URL_file = "domain-names1.txt"
+            self.URL_file = "domain-names.txt"
         elif self.period == "week":
             self.URL_file = "domain-names-week.txt"
         elif self.period == "month":
