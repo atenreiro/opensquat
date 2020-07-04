@@ -111,8 +111,8 @@ class Domain:
         # Validate if the URL file is not found
         if total_size_mb == 0:
             print(
-                "[ERROR] File not found! Contact the authors " +
-                "or try again later. Exiting...\n",
+                "[ERROR] File not found! Contact the authors "
+                + "or try again later. Exiting...\n",
             )
             exit(-1)
 
