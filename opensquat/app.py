@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 # -*- coding: utf-8 -*-
 """
 openSquat
@@ -416,4 +414,3 @@ class Domain:
 
         self.print_info()
         return self.check_squatting()
->>>>>>> parent of 95dafbb... enhanced support for errors 404
