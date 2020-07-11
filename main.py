@@ -1,3 +1,15 @@
+# -*- coding: utf-8 -*-
+# main.py
+"""
+openSquat
+
+(c) CERT-MZ
+
+* https://www.cert.mz
+* https://github.com/atenreiro/opensquat
+
+software licensed under GNU version 3
+"""
 import time
 
 from colorama import init, Fore, Style
@@ -40,7 +52,11 @@ if __name__ == "__main__":
     print("\t\t\t" + __VERSION__ + "\n")
 
     args = arg_parser.get_args()
+    
+    print("Args:", args)
 
+    boink = "quad9"
+    
     start_time = time.time()
     file_content = app.Domain().main(
         args.keywords,
@@ -48,6 +64,7 @@ if __name__ == "__main__":
         args.domains,
         args.period,
         args.method,
+        args.dns_validation,
         args.doppelganger_only,
     )
 

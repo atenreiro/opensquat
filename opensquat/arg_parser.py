@@ -14,7 +14,6 @@ software licensed under GNU version 3
 import argparse
 from distutils import util
 
-
 def validate_period(search_period):
     """Validate period
 
@@ -145,6 +144,15 @@ def get_args():
         type=util.strtobool,
         default=False,
         help="Find only doppelganger domains",
+    )
+
+    parser.add_argument(
+        "--dns_validation",
+        type=str,
+        choices=("cloudflare", "quad9"),
+        default=None,
+        help="Check if domain is flagged [cloudflare | quad9] "
+             + "(default: cloudflare)",
     )
 
     args = parser.parse_args()

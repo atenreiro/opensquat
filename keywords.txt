@@ -1,9 +1,10 @@
 #This is a comment
 facebook
 google
-amazon
-microsoft
-netflix
-vodafone
-paypal
+#amazon
+#microsoft
+#netflix
+#vodafone
+#vodacom
+#paypal
 #EOF
