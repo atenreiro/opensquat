@@ -147,6 +147,15 @@ def get_args():
         help="Find only doppelganger domains",
     )
 
+    parser.add_argument(
+        "--dns",
+        type=str,
+        choices=(None, "quad9"),
+        default=None,
+        help="Check if domain is flagged [ quad9] " +
+             "(default: quad9)",
+    )
+
     args = parser.parse_args()
 
     return args

@@ -2,7 +2,7 @@
 """!
 openSquat
 
-(c) CERT-MZ | Andre Tenreiro | andre@cert.mz
+(c) CERT-MZ
 
 * https://www.cert.mz
 * https://github.com/atenreiro/opensquat

@@ -11,3 +11,6 @@ venv/
 git-push.py
 *.txt
 *.dat
+ig*.py
+test.py
+DoH.py

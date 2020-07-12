@@ -2,8 +2,3 @@
 facebook
 google
 amazon
-microsoft
-netflix
-vodafone
-paypal
-#EOF

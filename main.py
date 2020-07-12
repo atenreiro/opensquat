@@ -1,3 +1,15 @@
+# -*- coding: utf-8 -*-
+# main.py
+"""
+openSquat
+
+(c) CERT-MZ
+
+* https://www.cert.mz
+* https://github.com/atenreiro/opensquat
+
+software licensed under GNU version 3
+"""
 import time
 
 from colorama import init, Fore, Style
@@ -18,8 +30,8 @@ if __name__ == "__main__":
     )
 
     logo = (
-        Fore.GREEN
-        + """
+        Style.BRIGHT + Fore.GREEN +
+        """
                                              █████████                                  █████
                                             ███░░░░░███                                ░░███
       ██████  ████████   ██████  ████████  ░███    ░░░   ████████ █████ ████  ██████   ███████
@@ -31,9 +43,8 @@ if __name__ == "__main__":
               ░███                                          ░███
               █████                                         █████
              ░░░░░                                         ░░░░░
-                    (c) CERT-MZ
-    """
-        + Style.RESET_ALL
+                    (c) CERT-MZ - https://github.com/atenreiro/opensquat
+    """ + Style.RESET_ALL
     )
 
     print(logo)
@@ -48,6 +59,7 @@ if __name__ == "__main__":
         args.domains,
         args.period,
         args.method,
+        args.dns,
         args.doppelganger_only,
     )
 
