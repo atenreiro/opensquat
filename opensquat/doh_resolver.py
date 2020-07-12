@@ -52,9 +52,7 @@ class DoH:
 
         try:
             session = requests.session()
-            r = session.get(
-                            doh_url, headers={"Accept": "application/dns-json"}
-                            )
+            r = session.get(doh_url, headers={"Accept": "application/dns-json"})
             status_code = r.status_code
             r = r.json()
 
@@ -68,7 +66,7 @@ class DoH:
                 print(
                     "[ERROR] DNS query is larger than maximum allowed" +
                     "DNS message size (status code: 413)"
-                     )
+                    )
             elif (status_code == 415):
                 print(
                     "[ERROR] Unsupported content type (status code: 415)"
