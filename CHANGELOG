@@ -1,3 +1,6 @@
+v1.8 (2020-07-12)
++ Add support for DNS validations (Quad9)
+
 v1.7 - (2020-06-03)
 + New searchable period by month
 + default search period changed from day to month

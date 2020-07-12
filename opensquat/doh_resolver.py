@@ -13,6 +13,7 @@ software licensed under GNU version 3
 import requests
 import json
 
+
 class DoH:
     """The Quad9 is responsible for to check if the doman is malicious
 
@@ -31,7 +32,9 @@ class DoH:
     def set_doh_url(self, provider):
 
         if (provider == "cloudflare"):
-            self.doh_url = "https://security.cloudflare-dns.com/dns-query?name="
+            self.doh_url = """
+                           https://security.cloudflare-dns.com/dns-query?name="
+                           """
             self.provider = "Cloudflare"
 
         elif (provider == "quad9"):
@@ -58,14 +61,14 @@ class DoH:
 
             if (status_code == 400):
                 print(
-                    "[ERROR] DNS query not specified or too small "
-                    + "(status code: 400)"
+                    "[ERROR] DNS query not specified or too small " +
+                    "(status code: 400)"
                     )
 
             elif (status_code == 413):
                 print(
-                    "[ERROR] DNS query is larger than maximum allowed"
-                     + "DNS message size (status code: 413)"
+                    "[ERROR] DNS query is larger than maximum allowed" +
+                    "DNS message size (status code: 413)"
                      )
             elif (status_code == 415):
                 print(
@@ -73,8 +76,8 @@ class DoH:
                     )
             elif (status_code == 504):
                 print(
-                    "[ERROR] Resolver timeout while waiting for the query"
-                    + "response. (status code: 504)"
+                    "[ERROR] Resolver timeout while waiting for the query" +
+                    "response. (status code: 504)"
                     )
 
         except requests.exceptions.ConnectionError:
@@ -88,7 +91,6 @@ class DoH:
             blocked_domain = False
 
         return blocked_domain
-
 
     def quad9_query(self):
         doh_url = self.doh_url + self.domain
@@ -108,15 +110,15 @@ class DoH:
                 return None
 
             if (rcode == 0):
-                blocked_domain = 0 # No error
+                blocked_domain = 0  # No error
             elif (rcode == 1):
-                blocked_domain = 1 # format error
+                blocked_domain = 1  # format error
             elif (rcode == 2):
-                blocked_domain = 2 # Server failure
-            elif ( (rcode == 3) and (RA == True)):
-                blocked_domain = 3 # Non-Existent Domain"
-            elif ( (rcode == 3) and (RA == False)):
-                blocked_domain = 300 # Domain Blocked
+                blocked_domain = 2  # Server failure
+            elif ((rcode == 3) and (RA is True)):
+                blocked_domain = 3  # Non-Existent Domain"
+            elif ((rcode == 3) and (RA is False)):
+                blocked_domain = 300  # Domain Blocked
             else:
                 blocked_domain = rcode
 
@@ -124,7 +126,6 @@ class DoH:
             return None
 
         return blocked_domain
-
 
     def main(self, domain, provider):
         """main function that will call other functions
@@ -142,5 +143,3 @@ class DoH:
             return self.cloudflare_query()
         elif (self.provider == "Quad9"):
             return self.quad9_query()
-
-

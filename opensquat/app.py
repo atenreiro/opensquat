@@ -58,6 +58,7 @@ class Domain:
         self.doppelganger_only = False
         self.dns_validation = False
         self.dns_provider = None
+        self.list_dns_domains = []
 
         self.confidence = {
             0: "very high confidence",
@@ -112,9 +113,10 @@ class Domain:
 
         # Validate if the URL file is not found
         if total_size_mb == 0:
+
             print(
-                "[ERROR] File not found! Contact the authors "
-                + "or try again later. Exiting...\n",
+                "[ERROR] File not found! Contact the authors " +
+                "or try again later. Exiting...\n",
             )
             exit(-1)
 
@@ -176,10 +178,10 @@ class Domain:
 
         for line in open(self.keywords_filename):
             if (
-                (line[0] != "#")
-                and (line[0] != " ")
-                and (line[0] != "")
-                and (line[0] != "\n")
+                (line[0] != "#") and
+                (line[0] != " ") and
+                (line[0] != "") and
+                (line[0] != "\n")
             ):
                 self.keywords_total += 1
 
@@ -206,7 +208,6 @@ class Domain:
         """
         self.period = search_period
 
-
     def set_dns_provider(self, provider):
         """Method to set the search_period
 
@@ -227,7 +228,6 @@ class Domain:
             self.dns_validation = False
             self.dns_provider = None
 
-
     def print_info(self):
         """Method to print some configuration information
 
@@ -242,7 +242,6 @@ class Domain:
         print("[*] Total domains:", self.domain_total)
         print("[*] Threshold:", self.confidence[self.confidence_level])
         print("[*] DNS validator:", self.dns_provider)
-
 
     def check_squatting(self):
         """Method that will compute all the similarity calculations between
@@ -269,10 +268,10 @@ class Domain:
                 continue
 
             if (
-                (keyword[0] != "#")
-                and (keyword[0] != " ")
-                and (keyword[0] != "")
-                and (keyword[0] != "\n")
+                (keyword[0] != "#") and
+                (keyword[0] != " ") and
+                (keyword[0] != "") and
+                (keyword[0] != "\n")
             ):
                 i += 1
                 print(
@@ -291,7 +290,6 @@ class Domain:
                     domain = domain.lower()
                     domains = domains.replace("\n", "")
 
-
                     # Check if the domain contains homograph character
                     #   Yes: returns True
                     #   No:  returns False
@@ -301,7 +299,11 @@ class Domain:
                         domain = homograph.homograph_to_latin(domain)
 
                     if self.doppelganger_only:
-                        self._process_doppelgagner_only(keyword, domain, domains)
+                        self._process_doppelgagner_only(
+                            keyword,
+                            domain,
+                            domains
+                            )
                         continue
 
                     if self.method.lower() == "levenshtein":
@@ -322,6 +324,9 @@ class Domain:
                         )
 
             f_dom.seek(0)
+
+        if (self.dns_validation is not None):
+            self.list_domains = self.list_dns_domains
 
         return self.list_domains
 
@@ -348,14 +353,22 @@ class Domain:
         leven_dist = validations.levenshtein(keyword, domain)
 
         if (leven_dist <= self.confidence_level) and not homograph_domain:
-            self.on_similarity_detected(keyword, domains, self.confidence[leven_dist])
+            self.on_similarity_detected(
+                keyword,
+                domains,
+                self.confidence[leven_dist]
+                )
 
-            # DNS validation
+            #  DNS Validation
             if(self.dns_validation):
                 self.doh_validate(domains)
 
         elif (leven_dist <= self.confidence_level) and homograph_domain:
-            self.on_homograph_detected(keyword, domains, self.confidence[leven_dist])
+            self.on_homograph_detected(
+                keyword,
+                domains,
+                self.confidence[leven_dist]
+                )
             self.doh_validate(domains)
 
             #  DNS Validation
@@ -369,40 +382,40 @@ class Domain:
             if(self.dns_validation):
                 self.doh_validate(domains)
 
-
     @staticmethod
     def doh_timeout():
         print(
-            Fore.YELLOW + "[+] DNS Server error: Possible Provider throttling\n"
-            + Style.RESET_ALL,
+            Fore.YELLOW + "[+] DNS Server error: " +
+            "Possible Provider throttling\n" + Style.RESET_ALL,
         )
 
     @staticmethod
     def doh_nxdomain():
         print(
-            Fore.YELLOW + "[+] DNS response: Non-Existent Domain\n"
-            + Style.RESET_ALL,
+            Fore.YELLOW + "[+] DNS response: Non-Existent Domain\n" +
+            Style.RESET_ALL,
         )
 
     @staticmethod
     def doh_error(blocked_domain):
         print(
-            Fore.YELLOW + "[+] DNS response:", blocked_domain,"\n"
-            + Style.RESET_ALL,
+            Fore.YELLOW + "[+] DNS response:",
+            blocked_domain,
+            "\n" + Style.RESET_ALL,
         )
 
     @staticmethod
     def doh_blocked():
         print(
-            Fore.RED + "[+] DNS validation: Malicious\n"
-            + Style.RESET_ALL,
+            Fore.RED + "[+] DNS validation: Malicious\n" +
+            Style.RESET_ALL,
         )
 
     @staticmethod
     def doh_not_blocked():
         print(
-            Fore.GREEN + "[+] DNS validation: Non-malicious\n"
-            + Style.RESET_ALL,
+            Fore.GREEN + "[+] DNS validation: Non-malicious\n" +
+            Style.RESET_ALL,
         )
 
     def doh_validate(self, domain):
@@ -411,21 +424,20 @@ class Domain:
 
         # Check response based on DNS rcodes
         if (blocked_domain == 0):
-            self.doh_not_blocked() # No error / no block
+            self.doh_not_blocked()  # No error / no block
         elif (blocked_domain == 300):
-            self.doh_blocked() # Domain Blocked
-        elif (blocked_domain == None):
-            self.doh_timeout() # Connection timeout
+            self.doh_blocked()  # Domain Blocked
+            self.list_dns_domains.append(domain)
+        elif (blocked_domain is not None):
+            self.doh_timeout()  # Connection timeout
         elif (blocked_domain == 1):
             self.doh_error("Format error")
         elif (blocked_domain == 2):
-            self.doh_timeout()
+            self.doh_timeout()  # Format error / Provider is throttling
         elif (blocked_domain == 3):
-            self.doh_nxdomain()
+            self.doh_nxdomain()  # NXDOMAIN / Non-existent Domain
         else:
             self.doh_error(blocked_domain)
-
-
 
     def _process_jarowinkler(self, keyword, domain, homograph_domain, domains):
         similarity = validations.jaro_winkler(keyword, domain)
@@ -441,14 +453,11 @@ class Domain:
         if value in triggered_values and not homograph_domain:
             self.on_similarity_detected(keyword, domains, value)
 
-
         elif value in triggered_values and homograph_domain:
             self.on_homograph_detected(keyword, domains, value)
 
         elif self.domain_contains(keyword, domains):
             self.on_domain_contains(keyword, domains)
-
-
 
     def on_similarity_detected(self, keyword, domains, value):
         print(

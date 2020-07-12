@@ -14,6 +14,7 @@ software licensed under GNU version 3
 import argparse
 from distutils import util
 
+
 def validate_period(search_period):
     """Validate period
 
@@ -147,12 +148,12 @@ def get_args():
     )
 
     parser.add_argument(
-        "--dns_validation",
+        "--dns",
         type=str,
-        choices=("cloudflare", "quad9"),
+        choices=(None, "quad9"),
         default=None,
-        help="Check if domain is flagged [cloudflare | quad9] "
-             + "(default: cloudflare)",
+        help="Check if domain is flagged [ quad9] " +
+             "(default: quad9)",
     )
 
     args = parser.parse_args()

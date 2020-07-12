@@ -30,8 +30,8 @@ if __name__ == "__main__":
     )
 
     logo = (
-        Fore.GREEN
-        + """
+        Style.BRIGHT + Fore.GREEN +
+        """
                                              █████████                                  █████
                                             ███░░░░░███                                ░░███
       ██████  ████████   ██████  ████████  ░███    ░░░   ████████ █████ ████  ██████   ███████
@@ -43,20 +43,15 @@ if __name__ == "__main__":
               ░███                                          ░███
               █████                                         █████
              ░░░░░                                         ░░░░░
-                    (c) CERT-MZ
-    """
-        + Style.RESET_ALL
+                    (c) CERT-MZ - https://github.com/atenreiro/opensquat
+    """ + Style.RESET_ALL
     )
 
     print(logo)
     print("\t\t\t" + __VERSION__ + "\n")
 
     args = arg_parser.get_args()
-    
-    print("Args:", args)
 
-    boink = "quad9"
-    
     start_time = time.time()
     file_content = app.Domain().main(
         args.keywords,
@@ -64,7 +59,7 @@ if __name__ == "__main__":
         args.domains,
         args.period,
         args.method,
-        args.dns_validation,
+        args.dns,
         args.doppelganger_only,
     )
 

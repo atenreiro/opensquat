@@ -9,7 +9,7 @@ openSquat
 What is openSquat?
 -------------
 
-openSquat is an opensource Intelligence (OSINT) R&D project to identify **cyber squatting** threats to specific companies or domains, such as:
+openSquat is an opensource Intelligence (OSINT) security project to identify **cyber squatting** threats to specific companies or domains, such as:
 
 *  Domain squatting
 *  Typo squatting
@@ -17,8 +17,6 @@ openSquat is an opensource Intelligence (OSINT) R&D project to identify **cyber 
 *  Phishing
 *  Doppenganger domains
 *  Scams
-
-This is an opensource project so everyone's welcomed to contribute.
 
 It does support some key features such as:
 
@@ -28,6 +26,8 @@ It does support some key features such as:
 *  Use different levels of confidence threshold to fine tune
 *  Save output into different formats (txt, JSON and CSV)
 *  Can be integrated with other threat intelligence tools and DNS sinkholes
+
+This is an opensource project so everyone's welcomed to contribute.
 
 
 Installation
@@ -45,27 +45,58 @@ Usage Examples
 
 ```bash
     # Lazy run with default options
-    $ python3 opensquat.py
+    $ python3 main.py
 
     # for all the options
     $ python3 opensquat.py -h
+    
+    # With DNS validation (quad9)
+    $ python3 main.py --dns quad9
+    
+    # Save output as JSON
+    $ python3 main.py -o example.json -t json
+    
+    # Save output as CSV
+    $ python3 main.py -o example.csv -t csv
+    
+    # Conduct a doppelganger validation
+    $ python3 main.py --doppelganger_only
+    
+    # Search for registrations for over the last month (default: week)
+    $ python3 main.py -p month
+    
+    # Tweak confidence level. The lower values bring more false positives
+    # (0: very high, 1: high (default), 2: medium, 3: low, 4: very low
+    $ python main.py -c 2 
+
 ```
 
 To Do / Roadmap
 -------------
-*  Finalise the support for Jaro-Winkler (word similarity)
 *  Integration with VirusTotal (VT)
-*  Use certificate transparency public database as another source
+*  ~~Use certificate transparency~~
 *  ~~Homograph detection~~ done
 *  Improve code quality from B to A grade (codacy)
 *  PEP8 compliance
 *  Add documentation 
 
+For more details check the [(Project)](https://github.com/atenreiro/opensquat/projects) section.
+
 Changelog
 -------------
 *  Check the [CHANGELOG](https://github.com/atenreiro/opensquat/blob/master/CHANGELOG) file.
 
-Author
+Authors
 -------------
+Project founder
 *  Andre Tenreiro [(LinkedInk)](https://www.linkedin.com/in/andretenreiro/)
 *  andre@cert.mz
+
+Contributors
+*  Please check the contributors page on GitHub
+
+You can help this project by:
+*  Providing your time and coding skills to enhance the project
+*  Provide access to OSINT feeds
+*  Open new issues with new ideas, bug report or feature proposals
+*  Spread within your network this project
