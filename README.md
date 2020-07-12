@@ -99,4 +99,4 @@ You can help this project by:
 *  Providing your time and coding skills to enhance the project
 *  Provide access to OSINT feeds
 *  Open new issues with new ideas, bug report or feature proposals
-*  Spread within your network this project
+*  Spread this project within your network

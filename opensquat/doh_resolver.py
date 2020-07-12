@@ -11,7 +11,6 @@ openSquat
 software licensed under GNU version 3
 """
 import requests
-import json
 
 
 class DoH:
