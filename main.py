@@ -14,7 +14,7 @@ import time
 
 from colorama import init, Fore, Style
 from opensquat import __VERSION__
-from opensquat import arg_parser, output, app
+from opensquat import arg_parser, output, app, phishing
 
 if __name__ == "__main__":
 
@@ -52,7 +52,8 @@ if __name__ == "__main__":
 
     args = arg_parser.get_args()
 
-    start_time = time.time()
+    start_time_squatting = time.time()
+
     file_content = app.Domain().main(
         args.keywords,
         args.confidence,
@@ -63,12 +64,26 @@ if __name__ == "__main__":
         args.doppelganger_only,
     )
 
-    print("")
-    print("+---------- Summary ----------+")
+    end_time_squatting = round(time.time() - start_time_squatting, 2)
+
+    if (args.phishing != ""):
+        start_time_phishing = time.time()
+        file_phishing = phishing.Phishing().main(args.keywords)
+        end_time_phishing = round(time.time() - start_time_phishing, 2)
+
+    # Print summary output for domain squatting
+    print("\n")
+    print("+---------- Summary Squatting ----------+")
     output.SaveFile().main(args.output, args.type, file_content)
-
-    end_time = round(time.time() - start_time, 2)
-
     print("[*] Domains flagged:", len(file_content))
-    print("[*] Running time: %s seconds" % end_time)
+    print("[*] Running time: %s seconds" % end_time_squatting)
     print("")
+
+    # Print summary output for domain squatting - if argument is set
+    if (args.phishing != ""):
+        print("+---------- Summary Phishing ----------+")
+        output.SaveFile().main(args.phishing, "txt", file_phishing)
+        print("[*] Sites flagged:", len(file_phishing))
+        print("[*] Running time: %s seconds" % end_time_phishing)
+        print("")
+    

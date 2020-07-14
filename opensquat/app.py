@@ -337,7 +337,7 @@ class Domain:
 
             f_dom.seek(0)
 
-        if (self.dns_validation is not None):
+        if (self.dns_validation is None):
             self.list_domains = self.list_dns_domains
 
         return self.list_domains
@@ -521,6 +521,7 @@ class Domain:
         Return:
             none
         """
+        print("+---------- Checking Domain Squatting ----------+")
         self.set_filename(keywords_file)
         self.domain_filename = domains_file
         self.set_searchPeriod(search_period)
