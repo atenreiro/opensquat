@@ -336,10 +336,7 @@ class Domain:
                         )
 
             f_dom.seek(0)
-
-        if (self.dns_validation is not None):
-            self.list_domains = self.list_dns_domains
-
+            
         return self.list_domains
 
     def _process_doppelgagner_only(self, keyword, domain, domains):
