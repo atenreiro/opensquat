@@ -518,6 +518,7 @@ class Domain:
         Return:
             none
         """
+        print("+---------- Checking Domain Squatting ----------+")
         self.set_filename(keywords_file)
         self.domain_filename = domains_file
         self.set_searchPeriod(search_period)
