@@ -110,4 +110,5 @@ You can help this project by:
 *  Spread this project within your network
 *  Share your story how you use openSquat
 
+Buy me a coffee
 [![Buy me a Coffee](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/H2H81XC1Y)
