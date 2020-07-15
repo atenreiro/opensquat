@@ -88,7 +88,7 @@ class DoH:
             blocked_domain = False
 
         return blocked_domain
-        
+
     def quad9_query(self):
         doh_url = self.doh_url + self.domain
 

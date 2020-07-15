@@ -155,6 +155,13 @@ def get_args():
         help="Check if domain is flagged [ quad9] " +
              "(default: quad9)",
     )
+    
+    parser.add_argument(
+        "--phishing",
+        type=str,
+        default="",
+        help="search known and active Phishing sites (arg: output.txt)",
+    )
 
     args = parser.parse_args()
 
