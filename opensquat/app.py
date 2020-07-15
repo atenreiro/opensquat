@@ -95,7 +95,7 @@ class Domain:
         """
 
         if self.period == "day":
-            self.URL_file = "domain-names1.txt"
+            self.URL_file = "domain-names.txt"
         elif self.period == "week":
             self.URL_file = "domain-names-week.txt"
         elif self.period == "month":
@@ -336,10 +336,7 @@ class Domain:
                         )
 
             f_dom.seek(0)
-
-        if (self.dns_validation is None):
-            self.list_domains = self.list_dns_domains
-
+            
         return self.list_domains
 
     def _process_doppelgagner_only(self, keyword, domain, domains):
