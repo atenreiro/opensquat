@@ -13,15 +13,17 @@ openSquat is an opensource Intelligence (OSINT) security project to identify **c
 
 *  Domain squatting
 *  Typo squatting
+*  Bitsquatting
 *  IDN homograph attacks
-*  Phishing
+*  Phishing campaigns
 *  Doppenganger domains
-*  Scams
+*  Other brand/domain related scams
 
 It does support some key features such as:
 
 *  Automatic newly registered domain updating (once a day)
 *  Levenshtein distance to calculate word similarity
+*  Fetches active and known phishing domains (Phishing Database project)
 *  IDN homograph attack detection
 *  Use different levels of confidence threshold to fine tune
 *  Save output into different formats (txt, JSON and CSV)
@@ -49,25 +51,31 @@ Usage Examples
 
     # for all the options
     $ python3 opensquat.py -h
-    
+
     # With DNS validation (quad9)
     $ python3 main.py --dns quad9
-    
+
+    # With Phishing validation (Phishing Database)
+    $ python3 main.py --phishing phish_results.txt
+
     # Save output as JSON
     $ python3 main.py -o example.json -t json
-    
+
     # Save output as CSV
     $ python3 main.py -o example.csv -t csv
-    
-    # Conduct a doppelganger validation
-    $ python3 main.py --doppelganger_only
-    
+
+    # Conduct a doppelganger validation (and certificate check)
+    $ python3 main.py --doppelganger_only yes
+
     # Search for registrations for over the last month (default: week)
     $ python3 main.py -p month
-    
+
     # Tweak confidence level. The lower values bring more false positives
     # (0: very high, 1: high (default), 2: medium, 3: low, 4: very low
-    $ python main.py -c 2 
+    $ python main.py -c 2
+
+    # All validations options
+    $ python main.py --doppelganger_only yes --phishing test.txt --dns quad9
 
 ```
 
@@ -78,7 +86,7 @@ To Do / Roadmap
 *  ~~Homograph detection~~ done
 *  Improve code quality from B to A grade (codacy)
 *  PEP8 compliance
-*  Add documentation 
+*  Add documentation
 
 For more details check the [(Project)](https://github.com/atenreiro/opensquat/projects) section.
 
@@ -98,5 +106,8 @@ Contributors
 You can help this project by:
 *  Providing your time and coding skills to enhance the project
 *  Provide access to OSINT feeds
-*  Open new issues with new ideas, bug report or feature proposals
+*  Open new issues with new suggestions, ideas, bug report or feature requests
 *  Spread this project within your network
+*  Share your story how you use openSquat
+
+[![Buy me a Coffee](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/H2H81XC1Y)
