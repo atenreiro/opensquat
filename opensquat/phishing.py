@@ -52,7 +52,6 @@ class Phishing:
             self.keywords_filename,
             None
             )
-        print("Total:", self.keywords_total)
 
     def check_phishing(self):
 
