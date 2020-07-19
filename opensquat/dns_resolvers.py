@@ -39,7 +39,7 @@ class Quad9:
         my_resolver.search = []
 
         try:
-            dns_response = my_resolver.query(self.domain, "A")
+            my_resolver.query(self.domain, "A")
             self.dns_resp = "non-malicious"
 
         except dns.resolver.NXDOMAIN as e:

@@ -11,7 +11,6 @@ openSquat
 software licensed under GNU version 3
 """
 import requests
-import os
 import time
 from opensquat import file_input
 
@@ -112,7 +111,6 @@ class Phishing:
                 )
             session = requests.session()
             r = session.get(self.phishing_db, stream=True)
-            status_code = r.status_code
 
             # Get total file size in bytes from the request header
             total_size = int(r.headers.get("content-length", 0))

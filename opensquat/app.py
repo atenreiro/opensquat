@@ -10,8 +10,6 @@ openSquat
 software licensed under GNU version 3
 """
 import requests
-import os
-
 import bisect
 
 from colorama import Fore, Style
