@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Module: doh_resolver.py
+# Module: phishing.py
 """
 openSquat
 
@@ -13,8 +13,10 @@ software licensed under GNU version 3
 import requests
 import os
 import time
+from opensquat import file_input
 
 from colorama import Fore, Style
+
 
 class Phishing:
     """Class: Phishing
@@ -26,7 +28,9 @@ class Phishing:
         keyword: list of keywords
     """
     def __init__(self):
-        self.phishing_db = "https://raw.githubusercontent.com/mitchellkrogza/Phishing.Database/master/phishing-domains-ACTIVE.txt"
+        self.phishing_db = "https://raw.githubusercontent.com/mitchellkrogza" \
+                           "/Phishing.Database/master/" \
+                           "phishing-domains-ACTIVE.txt"
         self.phishing_filename = "phishing.db"
         self.keyword = ""
         self.keywords_filename = ""
@@ -36,7 +40,6 @@ class Phishing:
     def set_keywords(self, keywords):
         self.keywords_filename = keywords
 
-
     @staticmethod
     def URL_contains(keyword, phishing):
         if keyword in phishing:
@@ -44,36 +47,12 @@ class Phishing:
 
         return False
 
-
     def count_keywords(self):
-        """Count number of keywords from the keyword file
-           the counter will ignore the chars "#", "\n" and " "
-
-        Args:
-            none
-
-        Return:
-            none
-        """
-
-        if not os.path.isfile(self.keywords_filename):
-            print(
-                "[*] File",
-                self.keywords_filename,
-                "not found or not" "readable! Exiting... \n",
+        self.keywords_total = file_input.InputFile().main(
+            self.keywords_filename,
+            None
             )
-            exit(-1)
-
-        for line in open(self.keywords_filename):
-            if (
-                (line[0] != "#") and
-                (line[0] != " ") and
-                (line[0] != "") and
-                (line[0] != "\n")
-            ):
-                self.keywords_total += 1
-                
-        print("Total keywords:", self.keywords_total)
+        print("Total:", self.keywords_total)
 
     def check_phishing(self):
 
@@ -83,7 +62,7 @@ class Phishing:
 
         # keyword iteration
         i = 0
-        
+
         for keyword in f_key:
             keyword = keyword.replace("\n", "")
             keyword = keyword.lower()
@@ -107,23 +86,22 @@ class Phishing:
                     self.keywords_total,
                     "]" + Style.RESET_ALL,
                 )
-            
+
                 for site in f_phishing:
                     phishing_site = site.lower()
                     phishing_site = site.replace("\n", "")
-                    
+
                     if self.URL_contains(keyword, phishing_site):
                         print(
-                            Style.BRIGHT + Fore.YELLOW + 
-                            "[+] Similarity detected between",
+                            Style.BRIGHT + Fore.YELLOW +
+                            "  \_ Similarity detected between",
                             keyword,
                             "and",
                             phishing_site,
                             "" + Style.RESET_ALL
                             )
                         self.list_domains.append(phishing_site)
-                        i += 1
-                        
+
         return self.list_domains
 
     def update_db(self):
@@ -177,7 +155,7 @@ class Phishing:
         """
         print("")
         print("+---------- Checking Phishing sites ----------+")
-        time.sleep(3)
+        time.sleep(2)
         self.set_keywords(keywords)
         self.update_db()
         self.count_keywords()

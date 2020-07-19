@@ -11,12 +11,20 @@ openSquat
 software licensed under GNU version 3
 """
 import time
+import signal
 
 from colorama import init, Fore, Style
 from opensquat import __VERSION__
 from opensquat import arg_parser, output, app, phishing
 
+
+def signal_handler(sig, frame):
+    print("\n[*] openSquat is terminating...\n")
+    exit(0)
+
 if __name__ == "__main__":
+
+    signal.signal(signal.SIGINT, signal_handler)
 
     init()
 
@@ -86,4 +94,3 @@ if __name__ == "__main__":
         print("[*] Sites flagged:", len(file_phishing))
         print("[*] Running time: %s seconds" % end_time_phishing)
         print("")
-    

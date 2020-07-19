@@ -12,5 +12,5 @@ git-push.py
 *.txt
 *.dat
 ig*.py
-test.py
+test*.py
 DoH.py

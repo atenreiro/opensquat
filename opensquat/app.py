@@ -16,7 +16,7 @@ import bisect
 
 from colorama import Fore, Style
 from datetime import date
-from opensquat import validations, homograph, ct, doh_resolver
+from opensquat import validations, homograph, ct, dns_resolvers, file_input
 
 
 class Domain:
@@ -76,6 +76,13 @@ class Domain:
         }
 
         self.method = "Levenshtein"
+
+    def count_files(self):
+
+        (self.keywords_total, self.domain_total) = file_input.InputFile().main(
+            self.keywords_filename,
+            self.domain_filename
+            )
 
     @staticmethod
     def domain_contains(keyword, domain):
@@ -145,57 +152,6 @@ class Domain:
         self.domain_filename = self.URL_file
 
         return True
-
-    def count_domains(self):
-        """Count number of domains (lines) from the domains file
-
-        Args:
-            none
-
-        Return:
-            self.domain_total: total number of domains in the file
-        """
-
-        if not os.path.isfile(self.domain_filename):
-            print(
-                "[*] File",
-                self.domain_filename,
-                "not found or not readable!" "Exiting...\n",
-            )
-            exit(-1)
-
-        for line in open(self.domain_filename):
-            self.domain_total += 1
-
-        return self.domain_total
-
-    def count_keywords(self):
-        """Count number of keywords from the keyword file
-           the counter will ignore the chars "#", "\n" and " "
-
-        Args:
-            none
-
-        Return:
-            none
-        """
-
-        if not os.path.isfile(self.keywords_filename):
-            print(
-                "[*] File",
-                self.keywords_filename,
-                "not found or not" "readable! Exiting... \n",
-            )
-            exit(-1)
-
-        for line in open(self.keywords_filename):
-            if (
-                (line[0] != "#") and
-                (line[0] != " ") and
-                (line[0] != "") and
-                (line[0] != "\n")
-            ):
-                self.keywords_total += 1
 
     def set_filename(self, filename):
         """Method to set the filename
@@ -272,6 +228,11 @@ class Domain:
         # keyword iteration
         i = 0
 
+        # Domains iteration
+        j = 0
+
+        domain_total_lines = self.domain_total * self.keywords_total
+
         for keyword in f_key:
             keyword = keyword.replace("\n", "")
             keyword = keyword.lower()
@@ -301,6 +262,11 @@ class Domain:
                     domain = domain[0].replace("\n", "")
                     domain = domain.lower()
                     domains = domains.replace("\n", "")
+
+                    # Show Progress every 50.000 line
+                    if ((j % 50000 == 0) and (j != 0)):
+                        progress = round(((j * 100) / domain_total_lines), 2)
+                        print(">> Progress:", progress, "%")
 
                     # Check if the domain contains homograph character
                     #   Yes: returns True
@@ -334,9 +300,9 @@ class Domain:
                         self._process_levenshtein(
                             keyword, domain, homograph_domain, domains
                         )
-
+                    j += 1
             f_dom.seek(0)
-            
+
         return self.list_domains
 
     def _process_doppelgagner_only(self, keyword, domain, domains):
@@ -370,7 +336,7 @@ class Domain:
 
             #  DNS Validation
             if(self.dns_validation):
-                self.doh_validate(domains)
+                self.dns_reputation(domains)
 
         elif (leven_dist <= self.confidence_level) and homograph_domain:
             self.on_homograph_detected(
@@ -378,75 +344,89 @@ class Domain:
                 domains,
                 self.confidence[leven_dist]
                 )
-            self.doh_validate(domains)
+            self.dns_reputation(domains)
 
             #  DNS Validation
             if(self.dns_validation):
-                self.doh_validate(domains)
+                self.dns_reputation(domains)
 
         elif self.domain_contains(keyword, domains):
             self.on_domain_contains(keyword, domains)
 
             # DNS validation
             if(self.dns_validation):
-                self.doh_validate(domains)
+                self.dns_reputation(domains)
 
     @staticmethod
-    def doh_timeout():
+    def dns_error_NoAnswer():
         print(
-            Fore.YELLOW + "[+] DNS Server error: " +
-            "Possible Provider throttling\n" + Style.RESET_ALL,
-        )
-
-    @staticmethod
-    def doh_nxdomain():
-        print(
-            Fore.YELLOW + "[+] DNS response: Non-Existent Domain\n" +
+            Fore.YELLOW + "  \_ DNS Server error: No Answer\n" +
             Style.RESET_ALL,
         )
 
     @staticmethod
-    def doh_error(blocked_domain):
+    def dns_error_NoNameservers():
         print(
-            Fore.YELLOW + "[+] DNS response:",
-            blocked_domain,
+            Fore.YELLOW + "  \_ DNS Server error: No Name Servers (SRVFAIL)" +
             "\n" + Style.RESET_ALL,
         )
 
     @staticmethod
-    def doh_blocked():
+    def dns_error_timeout():
         print(
-            Style.BRIGHT + Fore.RED + "[+] DNS Resolution: Malicious\n" +
+            Fore.YELLOW + "  \_ DNS Server error: " +
+            "Possible Provider throttling\n" + Style.RESET_ALL,
+        )
+
+    @staticmethod
+    def dns_error_nxdomain():
+        print(
+            Fore.YELLOW + "  \_ DNS response: Non-Existent Domain\n" +
             Style.RESET_ALL,
         )
 
     @staticmethod
-    def doh_not_blocked():
+    def dns_error(dns_resp):
         print(
-            Fore.GREEN + "[+] DNS Resolution: Non-malicious\n" +
+            Fore.YELLOW + "  \_ DNS response:",
+            dns_resp,
+            "\n" + Style.RESET_ALL,
+        )
+
+    @staticmethod
+    def dns_malicious():
+        print(
+            Style.BRIGHT + Fore.RED + "  \_ Domain Reputation: Malicious\n" +
             Style.RESET_ALL,
         )
 
-    def doh_validate(self, domain):
+    @staticmethod
+    def dns_non_malicious():
+        print(
+            Fore.GREEN + "  \_ Domain Reputation: Non-malicious\n" +
+            Style.RESET_ALL,
+        )
 
-        blocked_domain = doh_resolver.DoH().main(domain, self.dns_provider)
+    def dns_reputation(self, domain):
+
+        dns_resp = dns_resolvers.Quad9().main(domain)
 
         # Check response based on DNS rcodes
-        if (blocked_domain == 0):
-            self.doh_not_blocked()  # No error / no block
-        elif (blocked_domain == 300):
-            self.doh_blocked()  # Domain Blocked
+        if (dns_resp == "non-malicious"):
+            self.dns_non_malicious()  # No error / Non-malicous
+        elif (dns_resp == "malicious"):
+            self.dns_malicious()  # Domain Malicious
             self.list_dns_domains.append(domain)
-        elif (blocked_domain is not None):
-            self.doh_timeout()  # Connection timeout
-        elif (blocked_domain == 1):
-            self.doh_error("Format error")
-        elif (blocked_domain == 2):
-            self.doh_timeout()  # Format error / Provider is throttling
-        elif (blocked_domain == 3):
-            self.doh_nxdomain()  # NXDOMAIN / Non-existent Domain
+        elif (dns_resp == "Timeout"):
+            self.dns_error_timeout()  # Connection timeout
+        elif (dns_resp == "NXDOMAIN"):
+            self.dns_error_nxdomain()  # NXDOMAIN / Non-existent Domain
+        elif (dns_resp == "NoNameservers"):
+            self.dns_error_NoNameservers()  # SRVFAIL / No Name servers
+        elif (dns_resp == "NoAnswer"):
+            self.dns_error_NoAnswer()
         else:
-            self.doh_error(blocked_domain)
+            self.dns_error(dns_resp)
 
     def _process_jarowinkler(self, keyword, domain, homograph_domain, domains):
         similarity = validations.jaro_winkler(keyword, domain)
@@ -526,12 +506,11 @@ class Domain:
         self.doppelganger_only = doppelganger_only
         self.set_dns_provider(dns_provider)
         self.method = method
-        self.count_keywords()
 
         if self.domain_filename == "":
             self.download()
 
-        self.count_domains()
+        self.count_files()
         self.print_info()
 
         return self.check_squatting()

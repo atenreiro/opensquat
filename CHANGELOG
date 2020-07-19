@@ -1,3 +1,8 @@
+v1.91 (2020-07-19)
++ Switched Quad9 from DoH to native DNS
++ It now shows squatting progress in percentage
+- Bug on phishing keyword counter
+
 v1.9 (2020-07-15)
 + Now it checks against active and known Phishing domains (Phishing Database)
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Module: parser.py
+# Module: output.py
 """
 openSquat
 
