@@ -15,6 +15,7 @@ import os
 
 class InputFile:
     def __init__(self):
+        """Initiator."""
         self.domain_filename = None
         self.keywords_filename = None
         self.domain_total = 0
@@ -27,7 +28,8 @@ class InputFile:
         self.keywords_filename = keywords_file
 
     def count_domains(self):
-        """Count number of domains (lines) from the domains file.
+        """
+        Count number of domains (lines) from the domains file.
 
         Args:
             none
