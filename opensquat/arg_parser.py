@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Module: arg_parser.py
 """
-openSquat
+openSquat.
 
 (c) CERT-MZ | Andre Tenreiro | andre@cert.mz
 
@@ -16,7 +16,8 @@ from distutils import util
 
 
 def validate_period(search_period):
-    """Validate period.
+    """
+    Validate period.
 
     Args:
         period: string containing the searchable period, either day or week.
@@ -55,7 +56,8 @@ def validate_type(file_type):
 
 
 def validate_confidence(confidence_level):
-    """Validate confidence_level.
+    """
+    Validate confidence_level.
 
     Args:
         confidence_level: int containing confidence_level, can only be an int
@@ -76,7 +78,8 @@ def validate_confidence(confidence_level):
 
 
 def get_args():
-    """Parser main function.
+    """
+    Parser main function.
 
     Args:
         none
@@ -84,7 +87,6 @@ def get_args():
     Return:
         args: returns arguments
     """
-    # Parser
     parser = argparse.ArgumentParser(description="openSquat")
     parser.add_argument(
         "-k",
@@ -154,7 +156,7 @@ def get_args():
         help="Check if domain is flagged [ quad9] " +
              "(default: quad9)",
     )
-    
+
     parser.add_argument(
         "--phishing",
         type=str,

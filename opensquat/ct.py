@@ -29,8 +29,8 @@ class CTLog:
 
 
 class CRTSH:
-    
-    """Class responsible for checking given domain for CT logs"""
+
+    """Class responsible for checking given domain for CT logs."""
 
     URL = "https://crt.sh/"
 

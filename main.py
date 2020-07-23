@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # main.py
-"""openSquat
+"""
+openSquat
 
 (c) CERT-MZ
 

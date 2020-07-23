@@ -19,9 +19,10 @@ from opensquat import validations, homograph, ct, dns_resolvers, file_input
 
 
 class Domain:
-    
-    """The Domain class with handle all the functions related to
-       the domain verifications.
+
+    """
+    The Domain class with handle all the functions related to
+    the domain verifications.
 
     To use:
         Domain().main(keywords, confidence, domains)
@@ -93,7 +94,8 @@ class Domain:
         return False
 
     def download(self):
-        """Download the latest newly registered domains and save locally.
+        """
+        Download the latest newly registered domains and save locally.
 
         Args:
             none
@@ -162,7 +164,6 @@ class Domain:
 
         Returns:
             none
-
         """
         self.keywords_filename = filename
 
@@ -199,7 +200,8 @@ class Domain:
             self.dns_provider = None
 
     def print_info(self):
-        """Method to print some configuration information.
+        """
+        Method to print some configuration information.
 
         Args:
             none
