@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Module: phishing.py
-"""openSquat
+"""
+openSquat
 
 (c) CERT-MZ
 
@@ -17,7 +18,7 @@ from colorama import Fore, Style
 
 
 class Phishing:
-    
+
     """
     Class Phishing.
 

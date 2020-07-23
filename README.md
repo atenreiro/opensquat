@@ -31,13 +31,12 @@ It does support some key features such as:
 
 This is an opensource project so everyone's welcomed to contribute.
 
-
 Installation
 ------------
 
 ```bash
-    $ git clone https://github.com/atenreiro/opensquat
-    $ pip3 install -r requirements.txt
+    git clone https://github.com/atenreiro/opensquat
+    pip3 install -r requirements.txt
 ```
 
 Make sure you have Python 3.6+ and pip3 in your environment
@@ -47,35 +46,35 @@ Usage Examples
 
 ```bash
     # Lazy run with default options
-    $ python3 main.py
+    python3 main.py
 
     # for all the options
-    $ python3 opensquat.py -h
+    python3 main.py -h
 
     # With DNS validation (quad9)
-    $ python3 main.py --dns quad9
+    python3 main.py --dns quad9
 
     # With Phishing validation (Phishing Database)
-    $ python3 main.py --phishing phish_results.txt
+    python3 main.py --phishing phish_results.txt
 
     # Save output as JSON
-    $ python3 main.py -o example.json -t json
+    python3 main.py -o example.json -t json
 
     # Save output as CSV
-    $ python3 main.py -o example.csv -t csv
+    python3 main.py -o example.csv -t csv
 
     # Conduct a doppelganger validation (and certificate check)
-    $ python3 main.py --doppelganger_only yes
+    python3 main.py --doppelganger_only yes
 
     # Search for registrations for over the last month (default: week)
-    $ python3 main.py -p month
+    python3 main.py -p month
 
     # Tweak confidence level. The lower values bring more false positives
     # (0: very high, 1: high (default), 2: medium, 3: low, 4: very low
-    $ python main.py -c 2
+    python main.py -c 2
 
     # All validations options
-    $ python main.py --doppelganger_only yes --phishing test.txt --dns quad9
+    python main.py --doppelganger_only yes --phishing test.txt --dns quad9
 
 ```
 
@@ -98,7 +97,7 @@ Authors
 -------------
 Project founder
 *   Andre Tenreiro [(LinkedInk)](https://www.linkedin.com/in/andretenreiro/)
-*   andre@cert.mz
+*   [andre@cert.mz](mailto:andre@cert.mz)
 
 Contributors
 *   Please check the contributors page on GitHub
