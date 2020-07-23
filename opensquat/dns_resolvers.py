@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Module: dns_resolvers.py
-"""openSquat
+"""
+openSquat
 
 (c) CERT-MZ
 
@@ -13,6 +14,7 @@ import dns.resolver
 
 
 class Quad9:
+    
     """The Quad9 is responsible for to check if the doman is malicious
 
     To use:
@@ -63,7 +65,8 @@ class Quad9:
         return self.dns_resp
 
     def main(self, domain):
-        """main function that will call other functions.
+        """
+        main function that will call other functions.
 
         Args:
             domain: the domain name (duh)
