@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # Module: phishing.py
-"""
-openSquat
+"""openSquat
 
 (c) CERT-MZ
 
@@ -18,7 +17,8 @@ from colorama import Fore, Style
 
 
 class Phishing:
-    """Class: Phishing
+    
+    """Class Phishing.
 
     To use:
         Phishing().main(keyword)
@@ -142,7 +142,7 @@ class Phishing:
         return True
 
     def main(self, keywords):
-        """main function that will call other functions
+        """main function that will call other functions.
 
         Args:
             keyword: keyword to search for(duh)

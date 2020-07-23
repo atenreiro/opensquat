@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # Module: output.py
-"""
-openSquat
+"""openSquat
 
 (c) CERT-MZ
 
@@ -16,7 +15,7 @@ from datetime import date
 
 
 class SaveFile:
-    """The SaveFile is responsible for the file saving operations
+    """The SaveFile is responsible for the file saving operations.
 
     To use:
         Domain().main(keywords, confidence, domains)
@@ -35,8 +34,7 @@ class SaveFile:
         self.content = []
 
     def as_json(self):
-        """
-        save to json
+        """save to json.
 
         Args:
             none
@@ -50,8 +48,7 @@ class SaveFile:
         print("[*] file saved:", self.filename)
 
     def as_csv(self):
-        """
-        save to csv
+        """save to csv.
 
         Args:
             none
@@ -68,7 +65,7 @@ class SaveFile:
         print("[*] file saved:", self.filename)
 
     def as_text(self):
-        """save to plain text
+        """save to plain text.
 
         Args:
             none
@@ -92,7 +89,7 @@ class SaveFile:
         self.type = file_type
 
     def main(self, file_name, file_type, file_content):
-        """main function that will call other functions
+        """main function that will call other functions.
 
         Args:
             file_name: file name (duh)

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-"""
-openSquat
+# Module: app.py
+"""openSquat
 
 (c) CERT-MZ
 
@@ -18,8 +18,9 @@ from opensquat import validations, homograph, ct, dns_resolvers, file_input
 
 
 class Domain:
+    
     """The Domain class with handle all the functions related to
-       the domain verifications
+       the domain verifications.
 
     To use:
         Domain().main(keywords, confidence, domains)
@@ -40,6 +41,7 @@ class Domain:
     """
 
     def __init__(self):
+        """Initiator."""
         self.URL = (
             "https://raw.githubusercontent.com/CERT-MZ/projects"
             "/master/Domain-squatting/"
@@ -90,7 +92,7 @@ class Domain:
         return False
 
     def download(self):
-        """Download the latest newly registered domains and save locally
+        """Download the latest newly registered domains and save locally.
 
         Args:
             none
@@ -98,7 +100,6 @@ class Domain:
         Return:
             none
         """
-
         if self.period == "day":
             self.URL_file = "domain-names.txt"
         elif self.period == "week":
@@ -152,7 +153,7 @@ class Domain:
         return True
 
     def set_filename(self, filename):
-        """Method to set the filename
+        """Method to set the filename.
 
         Args:
             keywords_filename
@@ -164,7 +165,7 @@ class Domain:
         self.keywords_filename = filename
 
     def set_searchPeriod(self, search_period):
-        """Method to set the search_period
+        """Method to set the search_period.
 
         Args:
             search_period
@@ -175,7 +176,7 @@ class Domain:
         self.period = search_period
 
     def set_dns_provider(self, provider):
-        """Method to set the search_period
+        """Method to set the search_period.
 
         Args:
             dns provider
@@ -183,7 +184,6 @@ class Domain:
         Return:
             none
         """
-
         if (provider == "cloudflare"):
             self.dns_validation = True
             self.dns_provider = "cloudflare"
@@ -195,7 +195,7 @@ class Domain:
             self.dns_provider = None
 
     def print_info(self):
-        """Method to print some configuration information
+        """Method to print some configuration information.
 
         Args:
             none
@@ -211,7 +211,7 @@ class Domain:
 
     def check_squatting(self):
         """Method that will compute all the similarity calculations between
-           the keywords and domain names
+           the keywords and domain names.
 
         Args:
             none
@@ -219,7 +219,6 @@ class Domain:
         Return:
             list_domains: list containing all the flagged domains
         """
-
         f_key = open(self.keywords_filename, "r")
         f_dom = open(self.domain_filename, "r")
 
@@ -488,7 +487,7 @@ class Domain:
         dns_provider,
         doppelganger_only=False,
     ):
-        """Method to call the class functions
+        """Method to call the class functions.
 
         Args:
             none

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-# Module: doh_resolver.py
-"""
-openSquat
+# Module: dns_resolvers.py
+"""openSquat
 
 (c) CERT-MZ
 
@@ -25,6 +24,7 @@ class Quad9:
         dns_resp: (string) DNS response
     """
     def __init__(self):
+        """initiator."""
         self.resolver = "9.9.9.9"
         self.dns_resp = None
         self.domain = None
@@ -51,7 +51,6 @@ class Quad9:
                     self.dns_resp = "malicious"
                 else:
                     self.dns_resp = "NXDOMAIN"
-            pass
         except dns.resolver.NoAnswer:
             self.dns_resp = "NoAnswer"
             pass
@@ -64,7 +63,7 @@ class Quad9:
         return self.dns_resp
 
     def main(self, domain):
-        """main function that will call other functions
+        """main function that will call other functions.
 
         Args:
             domain: the domain name (duh)

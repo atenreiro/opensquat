@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # Module: arg_parser.py
-"""
-openSquat
+"""openSquat
 
 (c) CERT-MZ | Andre Tenreiro | andre@cert.mz
 
@@ -16,7 +15,7 @@ from distutils import util
 
 
 def validate_period(search_period):
-    """Validate period
+    """Validate period.
 
     Args:
         period: string containing the searchable period, either day or week.
@@ -35,7 +34,7 @@ def validate_period(search_period):
 
 
 def validate_type(file_type):
-    """Validate file_type
+    """Validate file_type.
 
     Args:
         file_type: string containing file type, can only be txt, json or csv.
@@ -54,8 +53,7 @@ def validate_type(file_type):
 
 
 def validate_confidence(confidence_level):
-
-    """Validate confidence_level
+    """Validate confidence_level.
 
     Args:
         confidence_level: int containing confidence_level, can only be an int
@@ -76,7 +74,7 @@ def validate_confidence(confidence_level):
 
 
 def get_args():
-    """Parser main function
+    """Parser main function.
 
     Args:
         none
@@ -84,7 +82,6 @@ def get_args():
     Return:
         args: returns arguments
     """
-
     # Parser
     parser = argparse.ArgumentParser(description="openSquat")
     parser.add_argument(

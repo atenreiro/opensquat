@@ -1,6 +1,6 @@
+# -*- coding: utf-8 -*-
 # Module: homograph.py
-"""!
-openSquat
+"""openSquat
 
 (c) CERT-MZ
 
@@ -13,13 +13,13 @@ import homoglyphs as hg
 
 
 def check_homograph(domain):
-    """Check if domain contain homograph character
+    """Check if domain contain homograph character.
 
-        Args:
-            none
+    Args:
+        none
 
-        Return:
-            none
+    Return:
+        none
 
     """
     homograph_domain = bool(confusables.is_dangerous(domain))
@@ -31,13 +31,13 @@ def check_homograph(domain):
 
 
 def homograph_to_latin(domain):
-    """Convert homograph domain to LATIN characters
+    """Convert homograph domain to LATIN characters.
 
-        Args:
-            none
+    Args:
+        none
 
-        Return:
-            none
+    Return:
+        none
 
     """
     homoglyphs = hg.Homoglyphs(languages={"en"}, strategy=hg.STRATEGY_LOAD)

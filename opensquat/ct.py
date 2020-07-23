@@ -1,4 +1,14 @@
-""" Certificate transparency """
+# -*- coding: utf-8 -*-
+# Module: ct.py
+"""openSquat
+
+(c) CERT-MZ
+
+* https://www.cert.mz
+* https://github.com/atenreiro/opensquat
+
+software licensed under GNU version 3
+"""
 import requests
 from bs4 import BeautifulSoup, NavigableString
 
@@ -18,7 +28,7 @@ class CTLog:
 
 
 class CRTSH:
-    """ Class responsible for checking given domain for CT logs """
+    """Class responsible for checking given domain for CT logs"""
 
     URL = "https://crt.sh/"
 

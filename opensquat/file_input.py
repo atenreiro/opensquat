@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-# Module: input.py
-"""
-openSquat
+# Module: file_input.py
+"""openSquat
 
 (c) CERT-MZ
 
@@ -51,7 +50,7 @@ class InputFile:
 
     def count_keywords(self):
         """Count number of keywords from the keyword file
-           the counter will ignore the chars "#", "\n" and " "
+           the counter will ignore the chars "#", "\n" and " ".
 
         Args:
             none
@@ -59,7 +58,6 @@ class InputFile:
         Return:
             none
         """
-
         if not os.path.isfile(self.keywords_filename):
             print(
                 "[*] File",
