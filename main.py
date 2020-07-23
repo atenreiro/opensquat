@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # main.py
-"""
-openSquat
+"""openSquat
 
 (c) CERT-MZ
 
@@ -19,6 +18,7 @@ from opensquat import arg_parser, output, app, phishing
 
 
 def signal_handler(sig, frame):
+    """Function to catch CTR+C and terminate."""
     print("\n[*] openSquat is terminating...\n")
     exit(0)
 
