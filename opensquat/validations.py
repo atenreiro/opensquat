@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Module: validations.py
-"""openSquat
+"""
+openSquat
 
 (c) CERT-MZ
 
@@ -12,7 +13,8 @@ from strsimpy.jaro_winkler import JaroWinkler
 
 
 def levenshtein(keyword, domain):
-    """Compute Levenshtein distance.
+    """
+    Compute Levenshtein distance.
 
     Args:
         keyword:
@@ -26,7 +28,8 @@ def levenshtein(keyword, domain):
 
 
 def jaro_winkler(keyword, domain):
-    """Compute Jaro Winkler similarity.
+    """
+    Compute Jaro Winkler similarity.
 
     Args:
         keyword:

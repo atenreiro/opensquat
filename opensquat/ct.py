@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Module: ct.py
-"""openSquat
+"""
+openSquat
 
 (c) CERT-MZ
 
@@ -28,6 +29,7 @@ class CTLog:
 
 
 class CRTSH:
+    
     """Class responsible for checking given domain for CT logs"""
 
     URL = "https://crt.sh/"

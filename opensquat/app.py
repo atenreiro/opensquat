@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Module: app.py
-"""openSquat
+"""
+openSquat
 
 (c) CERT-MZ
 
@@ -153,7 +154,8 @@ class Domain:
         return True
 
     def set_filename(self, filename):
-        """Method to set the filename.
+        """
+        Method to set the filename.
 
         Args:
             keywords_filename
@@ -165,7 +167,8 @@ class Domain:
         self.keywords_filename = filename
 
     def set_searchPeriod(self, search_period):
-        """Method to set the search_period.
+        """
+        Method to set the search_period.
 
         Args:
             search_period
@@ -176,7 +179,8 @@ class Domain:
         self.period = search_period
 
     def set_dns_provider(self, provider):
-        """Method to set the search_period.
+        """
+        Method to set the search_period.
 
         Args:
             dns provider
@@ -210,8 +214,9 @@ class Domain:
         print("[*] DNS validator:", self.dns_provider)
 
     def check_squatting(self):
-        """Method that will compute all the similarity calculations between
-           the keywords and domain names.
+        """
+        Method that will compute all the similarity calculations between
+        the keywords and domain names.
 
         Args:
             none
@@ -487,7 +492,8 @@ class Domain:
         dns_provider,
         doppelganger_only=False,
     ):
-        """Method to call the class functions.
+        """
+        Method to call the class functions.
 
         Args:
             none

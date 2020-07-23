@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Module: file_input.py
-"""openSquat
+"""
+openSquat
 
 (c) CERT-MZ
 
@@ -26,7 +27,7 @@ class InputFile:
         self.keywords_filename = keywords_file
 
     def count_domains(self):
-        """Count number of domains (lines) from the domains file
+        """Count number of domains (lines) from the domains file.
 
         Args:
             none
@@ -34,7 +35,6 @@ class InputFile:
         Return:
             self.domain_total: total number of domains in the file
         """
-
         if not os.path.isfile(self.domain_filename):
             print(
                 "[*] File",
@@ -49,8 +49,9 @@ class InputFile:
         return self.domain_total
 
     def count_keywords(self):
-        """Count number of keywords from the keyword file
-           the counter will ignore the chars "#", "\n" and " ".
+        """
+        Count number of keywords from the keyword file
+        the counter will ignore the chars "#", "\n" and " ".
 
         Args:
             none

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Module: arg_parser.py
-"""openSquat
+"""
+openSquat
 
 (c) CERT-MZ | Andre Tenreiro | andre@cert.mz
 
@@ -34,7 +35,8 @@ def validate_period(search_period):
 
 
 def validate_type(file_type):
-    """Validate file_type.
+    """
+    Validate file_type.
 
     Args:
         file_type: string containing file type, can only be txt, json or csv.
