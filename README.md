@@ -6,28 +6,28 @@ openSquat
 
 ![alt text](https://raw.githubusercontent.com/atenreiro/opensquat/master/screenshots/openSquat.PNG)
 
-What is openSquat?
+What is openSquat
 -------------
 
 openSquat is an opensource Intelligence (OSINT) security project to identify **cyber squatting** threats to specific companies or domains, such as:
 
-*  Domain squatting
-*  Typo squatting
-*  Bitsquatting
-*  IDN homograph attacks
-*  Phishing campaigns
-*  Doppenganger domains
-*  Other brand/domain related scams
+*   Domain squatting
+*   Typo squatting
+*   Bitsquatting
+*   IDN homograph attacks
+*   Phishing campaigns
+*   Doppenganger domains
+*   Other brand/domain related scams
 
 It does support some key features such as:
 
-*  Automatic newly registered domain updating (once a day)
-*  Levenshtein distance to calculate word similarity
-*  Fetches active and known phishing domains (Phishing Database project)
-*  IDN homograph attack detection
-*  Use different levels of confidence threshold to fine tune
-*  Save output into different formats (txt, JSON and CSV)
-*  Can be integrated with other threat intelligence tools and DNS sinkholes
+*   Automatic newly registered domain updating (once a day)
+*   Levenshtein distance to calculate word similarity
+*   Fetches active and known phishing domains (Phishing Database project)
+*   IDN homograph attack detection
+*   Use different levels of confidence threshold to fine tune
+*   Save output into different formats (txt, JSON and CSV)
+*   Can be integrated with other threat intelligence tools and DNS sinkholes
 
 This is an opensource project so everyone's welcomed to contribute.
 
@@ -81,34 +81,34 @@ Usage Examples
 
 To Do / Roadmap
 -------------
-*  Integration with VirusTotal (VT)
-*  ~~Use certificate transparency~~
-*  ~~Homograph detection~~ done
-*  Improve code quality from B to A grade (codacy)
-*  PEP8 compliance
-*  Add documentation
+*   Integration with VirusTotal (VT)
+*   ~~Use certificate transparency~~
+*   ~~Homograph detection~~ done
+*   Improve code quality from B to A grade (codacy)
+*   PEP8 compliance
+*   Add documentation
 
 For more details check the [(Project)](https://github.com/atenreiro/opensquat/projects) section.
 
 Changelog
 -------------
-*  Check the [CHANGELOG](https://github.com/atenreiro/opensquat/blob/master/CHANGELOG) file.
+*   Check the [CHANGELOG](https://github.com/atenreiro/opensquat/blob/master/CHANGELOG) file.
 
 Authors
 -------------
 Project founder
-*  Andre Tenreiro [(LinkedInk)](https://www.linkedin.com/in/andretenreiro/)
-*  andre@cert.mz
+*   Andre Tenreiro [(LinkedInk)](https://www.linkedin.com/in/andretenreiro/)
+*   andre@cert.mz
 
 Contributors
-*  Please check the contributors page on GitHub
+*   Please check the contributors page on GitHub
 
 You can help this project by:
-*  Providing your time and coding skills to enhance the project
-*  Provide access to OSINT feeds
-*  Open new issues with new suggestions, ideas, bug report or feature requests
-*  Spread this project within your network
-*  Share your story how you use openSquat
-*  Buy me a coffee
+*   Providing your time and coding skills to enhance the project
+*   Provide access to OSINT feeds
+*   Open new issues with new suggestions, ideas, bug report or feature requests
+*   Spread this project within your network
+*   Share your story how you use openSquat
+*   Buy me a coffee
 
 [![Buy me a Coffee](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/H2H81XC1Y)
