@@ -1,5 +1,5 @@
 v1.93 (2020-09-07)
-- Checks for the latest version after each run (sometimes but not all times)
+- Checks for the latest version after each run
 
 v1.92 (2020-09-04)
 - Feeds URL changed from Github to feeds.opensquat.com (CDN for faster delivery)

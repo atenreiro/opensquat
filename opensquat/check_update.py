@@ -11,7 +11,6 @@ openSquat
 software licensed under GNU version 3
 """
 import requests
-import random
 from colorama import Fore, Style
 from opensquat import __VERSION__
 
@@ -75,9 +74,4 @@ class CheckUpdate:
         return True
 
     def main(self):
-
-        # I don't want to nag people about upgrades all times.
-        rand = random.randint(1, 3)
-
-        if rand == 1:
-            self.check()
+        self.check()
