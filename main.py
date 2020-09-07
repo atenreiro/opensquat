@@ -15,7 +15,7 @@ import signal
 
 from colorama import init, Fore, Style
 from opensquat import __VERSION__
-from opensquat import arg_parser, output, app, phishing
+from opensquat import arg_parser, output, app, phishing, check_update
 
 
 def signal_handler(sig, frame):
@@ -57,7 +57,7 @@ if __name__ == "__main__":
     )
 
     print(logo)
-    print("\t\t\t" + __VERSION__ + "\n")
+    print("\t\t\tversion " + __VERSION__ + "\n")
 
     args = arg_parser.get_args()
 
@@ -95,3 +95,5 @@ if __name__ == "__main__":
         print("[*] Sites flagged:", len(file_phishing))
         print("[*] Running time: %s seconds" % end_time_phishing)
         print("")
+    
+    check_update.CheckUpdate().main()
