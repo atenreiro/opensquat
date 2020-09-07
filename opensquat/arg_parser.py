@@ -128,8 +128,8 @@ def get_args():
         "-p",
         "--period",
         type=validate_period,
-        default="week",
-        help="Searchable period [day|week|month] (default: week)",
+        default="day",
+        help="Searchable period [day|week|month] (default: day)",
     )
 
     parser.add_argument(

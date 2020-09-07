@@ -12,6 +12,7 @@ software licensed under GNU version 3
 """
 import requests
 import bisect
+from opensquat import __VERSION__
 
 from colorama import Fore, Style
 from datetime import date
@@ -44,7 +45,8 @@ class Domain:
 
     def __init__(self):
         """Initiator."""
-        self.URL = (
+        self.URL = ("https://feeds.opensquat.com/")
+        self.URL_backup = (
             "https://raw.githubusercontent.com/CERT-MZ/projects"
             "/master/Domain-squatting/"
         )
@@ -114,19 +116,20 @@ class Domain:
 
         print("[*] Downloading fresh domain list from", URL)
 
-        response = requests.get(URL, stream=True)
+        # User-Agent
+        ver = "openSquat " + __VERSION__
+        headers = {'User-Agent': ver}
+        response = requests.get(URL, stream=True, headers=headers)
 
         # fault tolerance in case the "domain-names.txt is not found"
-        if (response.status_code == 404 and self.period == "day"):
+        if (response.status_code == 403 or response.status_code == 404):
             print(
                 Style.BRIGHT+Fore.RED+"[ERROR]", self.URL_file, "not found," +
-                "trying the weekly file."+Style.RESET_ALL
+                "trying the backup URL."+Style.RESET_ALL
                 )
-            self.period = "week"
-            self.URL_file = "domain-names-week.txt"
-            URL = self.URL + self.URL_file
-            print("[*] Downloading fresh domain list from", URL)
-            response = requests.get(URL, stream=True)
+            URL = self.URL_backup + self.URL_file
+            print("[*] Downloading fresh domain list from backup URL", URL)
+            response = requests.get(URL, stream=True, headers=headers)
 
         # Get total file size in bytes from the request header
         total_size = int(response.headers.get("content-length", 0))
@@ -136,9 +139,9 @@ class Domain:
         if total_size_mb == 0:
 
             print(
-                "[ERROR] File not found! Contact the authors " +
-                "or try again later. Exiting...\n",
-            )
+                Style.BRIGHT+Fore.RED+"[ERROR]", self.URL_file, "not found, " +
+                "Please notify the authors or try again later."+Style.RESET_ALL
+                )
             exit(-1)
 
         print("[*] Download volume:", total_size_mb, "MB")
