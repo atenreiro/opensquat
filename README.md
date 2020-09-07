@@ -83,8 +83,8 @@ To Do / Roadmap
 *   Integration with VirusTotal (VT)
 *   ~~Use certificate transparency~~
 *   ~~Homograph detection~~ done
-*   Improve code quality from B to A grade (codacy)
-*   PEP8 compliance
+*   ~~Improve code quality from B to A grade (codacy)~~
+*   ~~PEP8 compliance~~
 *   Add documentation
 
 For more details check the [(Project)](https://github.com/atenreiro/opensquat/projects) section.
