@@ -117,7 +117,7 @@ class Domain:
         print("[*] Downloading fresh domain list from", URL)
 
         # User-Agent
-        ver = "openSquat " + __VERSION__
+        ver = "openSquat-" + __VERSION__
         headers = {'User-Agent': ver}
         response = requests.get(URL, stream=True, headers=headers)
 

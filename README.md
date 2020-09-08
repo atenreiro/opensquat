@@ -66,7 +66,7 @@ Usage Examples
     # Conduct a doppelganger validation (and certificate check)
     python main.py --doppelganger_only yes
 
-    # Search for registrations for over the last month (default: week)
+    # Search registrations from the last month (default: day)
     python main.py -p month
 
     # Tweak confidence level. The lower values bring more false positives
