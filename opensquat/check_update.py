@@ -35,7 +35,7 @@ class CheckUpdate:
     def check(self):
 
         # User-Agent
-        ver = "openSquat " + self.current
+        ver = "openSquat-" + self.current
         headers = {'User-Agent': ver}
 
         try:
