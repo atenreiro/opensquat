@@ -58,11 +58,12 @@ class Domain:
         self.keywords_total = 0
         self.list_domains = []
         self.confidence_level = 2
-        self.period = "week"
+        self.period = "day"
         self.doppelganger_only = False
         self.dns_validation = False
-        self.dns_provider = None
         self.list_dns_domains = []
+        self.list_file_domains = []
+        self.list_file_keywords = []
 
         self.confidence = {
             0: "very high confidence",
@@ -94,6 +95,33 @@ class Domain:
             return True
 
         return False
+
+    def read_files(self):
+        """
+        Method to read domain files
+
+        Args:
+            none
+
+        Return:
+            none
+        """
+        file_domains = open(self.domain_filename, "r")
+        file_keywords = open(self.keywords_filename, "r")
+
+        for mydomains in file_domains:
+            domain = mydomains.replace("\n", "")
+            domain = domain.lower()
+            self.list_file_domains.append(domain)
+
+        for line in file_keywords:
+            if (
+                (line[0] != "#") and
+                (line[0] != " ") and
+                (line[0] != "") and
+                (line[0] != "\n")
+            ):
+                self.list_file_keywords.append(line)
 
     def download(self):
         """
@@ -182,7 +210,7 @@ class Domain:
         """
         self.period = search_period
 
-    def set_dns_provider(self, provider):
+    def set_dns_validation(self, dns):
         """
         Method to set the search_period.
 
@@ -192,15 +220,10 @@ class Domain:
         Return:
             none
         """
-        if (provider == "cloudflare"):
+        if dns:
             self.dns_validation = True
-            self.dns_provider = "cloudflare"
-        elif (provider == "quad9"):
-            self.dns_validation = True
-            self.dns_provider = "quad9"
         else:
             self.dns_validation = False
-            self.dns_provider = None
 
     def print_info(self):
         """
@@ -216,9 +239,8 @@ class Domain:
         print("[*] keywords total:", self.keywords_total)
         print("[*] Total domains:", self.domain_total)
         print("[*] Threshold:", self.confidence[self.confidence_level])
-        print("[*] DNS validator:", self.dns_provider)
 
-    def check_squatting(self):
+    def worker(self):
         """
         Method that will compute all the similarity calculations between
         the keywords and domain names.
@@ -229,9 +251,6 @@ class Domain:
         Return:
             list_domains: list containing all the flagged domains
         """
-        f_key = open(self.keywords_filename, "r")
-        f_dom = open(self.domain_filename, "r")
-
         # keyword iteration
         i = 0
 
@@ -240,7 +259,7 @@ class Domain:
 
         domain_total_lines = self.domain_total * self.keywords_total
 
-        for keyword in f_key:
+        for keyword in self.list_file_keywords:
             keyword = keyword.replace("\n", "")
             keyword = keyword.lower()
 
@@ -264,7 +283,7 @@ class Domain:
                     "]" + Style.RESET_ALL,
                 )
 
-                for domains in f_dom:
+                for domains in self.list_file_domains:
                     domain = domains.split(".")
                     domain = domain[0].replace("\n", "")
                     domain = domain.lower()
@@ -272,7 +291,7 @@ class Domain:
 
                     # Show Progress every 50.000 line
                     if ((j % 50000 == 0) and (j != 0)):
-                        progress = round(((j * 100) / domain_total_lines), 2)
+                        progress = round(((j * 100) / domain_total_lines), 1)
                         print(">> Progress:", progress, "%")
 
                     # Check if the domain contains homograph character
@@ -308,7 +327,6 @@ class Domain:
                             keyword, domain, homograph_domain, domains
                         )
                     j += 1
-            f_dom.seek(0)
 
         return self.list_domains
 
@@ -326,9 +344,9 @@ class Domain:
 
         if doppelganger:
             if not ct.CRTSH.check_certificate(domains):
-                print_info("Doppelganger with malicious certificate detected")
+                print_info("suspicious certificate detected")
             else:
-                print_info("Doppelganger with valid certificate detected")
+                print_info("suspicious certificate detected")
             self.list_domains.append(domain)
 
     def _process_levenshtein(self, keyword, domain, homograph_domain, domains):
@@ -494,7 +512,7 @@ class Domain:
         domains_file,
         search_period,
         method,
-        dns_provider,
+        dns,
         doppelganger_only=False,
     ):
         """
@@ -512,13 +530,14 @@ class Domain:
         self.set_searchPeriod(search_period)
         self.confidence_level = confidence_level
         self.doppelganger_only = doppelganger_only
-        self.set_dns_provider(dns_provider)
+        self.set_dns_validation(dns)
         self.method = method
 
         if self.domain_filename == "":
             self.download()
 
         self.count_files()
+        self.read_files()
         self.print_info()
 
-        return self.check_squatting()
+        return self.worker()

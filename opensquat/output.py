@@ -49,7 +49,6 @@ class SaveFile:
         f_json = open(self.filename, "w")
         json.dump(self.content, f_json)
         f_json.close()
-        print("[*] file saved:", self.filename)
 
     def as_csv(self):
         """
@@ -67,7 +66,6 @@ class SaveFile:
         )
         file_csv.writerow(self.content)
         file_csv.close()
-        print("[*] file saved:", self.filename)
 
     def as_text(self):
         """
@@ -83,7 +81,6 @@ class SaveFile:
             for item in self.content:
                 f.write(item + "\n")
         f.close()
-        print("[*] file saved:", self.filename)
 
     def set_content(self, file_content):
         self.content = file_content

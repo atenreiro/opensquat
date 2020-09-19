@@ -142,19 +142,15 @@ def get_args():
     )
 
     parser.add_argument(
-        "--doppelganger_only",
-        type=util.strtobool,
-        default=False,
-        help="Find only doppelganger domains",
+        "--ct",
+        action="store_true",
+        help="search in certificate transparency",
     )
 
     parser.add_argument(
         "--dns",
-        type=str,
-        choices=(None, "quad9"),
-        default=None,
-        help="Check if domain is flagged [ quad9] " +
-             "(default: quad9)",
+        action="store_true",
+        help="Check if domain is flagged by Quad9 DNS"
     )
 
     parser.add_argument(
@@ -163,6 +159,11 @@ def get_args():
         default="",
         help="search known and active Phishing sites (arg: output.txt)",
     )
+    parser.add_argument(
+        "--subdomains",
+        action="store_true",
+        help="search for subdomains from flagged domains",
+    )   
 
     args = parser.parse_args()
 

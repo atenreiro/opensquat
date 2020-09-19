@@ -1,11 +1,16 @@
+v1.94 (2020-09-19)
++ Run file is back again to "opensquat.py"
++ Checks for sudomains (virustotal)
+- Doppenganger options replaced by certificate transparency
+
 v1.93 (2020-09-07)
-- Checks for the latest version after each run
++ Checks for the latest version after each run
 
 v1.92 (2020-09-04)
-- Feeds URL changed from Github to feeds.opensquat.com (CDN for faster delivery)
-- Added the old feed (Github) as the backup URL case the primary fails
-- Default period is now day
-- default HTTP USER_AGENT is now openSquat+version 
++ Feeds URL changed from Github to feeds.opensquat.com (CDN for faster delivery)
++ Added the old feed (Github) as the backup URL case the primary fails
++ Default period is now day
++ default HTTP USER_AGENT is now openSquat+version 
 
 v1.91 (2020-07-19)
 + Switched Quad9 from DoH to native DNS

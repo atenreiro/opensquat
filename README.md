@@ -25,6 +25,8 @@ It does support some key features such as:
 *   Levenshtein distance to calculate word similarity
 *   Fetches active and known phishing domains (Phishing Database project)
 *   IDN homograph attack detection
+*   Integration with VirusTotal
+*   Integration with Quad9 DNS service
 *   Use different levels of confidence threshold to fine tune
 *   Save output into different formats (txt, JSON and CSV)
 *   Can be integrated with other threat intelligence tools and DNS sinkholes
@@ -46,41 +48,44 @@ Usage Examples
 
 ```bash
     # Lazy run with default options
-    python main.py
+    python opensquat.py
 
     # for all the options
-    python main.py -h
+    python opensquat.py -h
 
     # With DNS validation (quad9)
-    python main.py --dns quad9
+    python opensquat.py --dns
+    
+    # Subdomain search
+    python opensquat.py --subdomains
 
     # With Phishing validation (Phishing Database)
-    python main.py --phishing phish_results.txt
+    python opensquat.py --phishing phish_results.txt
 
     # Save output as JSON
-    python main.py -o example.json -t json
+    python opensquat.py -o example.json -t json
 
     # Save output as CSV
-    python main.py -o example.csv -t csv
+    python opensquat.py -o example.csv -t csv
 
-    # Conduct a doppelganger validation (and certificate check)
-    python main.py --doppelganger_only yes
+    # Conduct a certificate transparency (ct) hunt
+    python opensquat.py --ct
 
-    # Search registrations from the last month (default: day)
-    python main.py -p month
+    # Period search - registrations from the last month (default: day)
+    python opensquat.py -p month
 
     # Tweak confidence level. The lower values bring more false positives
     # (0: very high, 1: high (default), 2: medium, 3: low, 4: very low
-    python main.py -c 2
+    python opensquat.py -c 2
 
     # All validations options
-    python main.py --doppelganger_only yes --phishing test.txt --dns quad9
+    python opensquat.py --phishing phishing_domains.txt --dns --ct --subdomains
 
 ```
 
 To Do / Roadmap
 -------------
-*   Integration with VirusTotal (VT)
+*   ~~Integration with VirusTotal (VT)~~
 *   ~~Use certificate transparency~~
 *   ~~Homograph detection~~ done
 *   ~~Improve code quality from B to A grade (codacy)~~

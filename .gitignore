@@ -8,11 +8,9 @@ logs/
 venv/
 *.old
 *.bak
-git-push.py
 *.txt
 *.dat
 *.log
 *.json
-ig*.py
 test*.py
-DoH.py
+phishing.db
