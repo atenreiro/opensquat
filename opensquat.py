@@ -71,8 +71,7 @@ if __name__ == "__main__":
         args.period,
         args.method,
         args.dns,
-        args.ct,
-        args.portcheck
+        args.ct
     )
 
     # Check for subdomains
