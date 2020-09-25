@@ -163,6 +163,11 @@ def get_args():
         "--subdomains",
         action="store_true",
         help="search for subdomains from flagged domains",
+    )
+    parser.add_argument(
+        "--portcheck",
+        action="store_true",
+        help="Verify is port 80/443 is open",
     )   
 
     args = parser.parse_args()

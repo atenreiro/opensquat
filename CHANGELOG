@@ -1,3 +1,6 @@
+v1.95 (2020-09-25)
++ Added --portcheck flag to validate if flagged domains have port 80/443 opened
+
 v1.94 (2020-09-19)
 + Run file is back again to "opensquat.py"
 + Checks for sudomains (virustotal)

@@ -496,13 +496,7 @@ class Domain:
         self.list_domains.append(domains)
 
     def on_domain_contains(self, keyword, domains):
-        print(
-            Fore.YELLOW + "[+] The word",
-            keyword,
-            "is contained in",
-            domains,
-            "" + Style.RESET_ALL,
-        )
+        print(Fore.YELLOW + "[+] Found", domains, "" + Style.RESET_ALL)
         self.list_domains.append(domains)
 
     def main(

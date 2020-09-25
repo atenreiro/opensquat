@@ -11,11 +11,11 @@ What is openSquat
 
 openSquat is an opensource Intelligence (OSINT) security project to identify **cyber squatting** threats to specific companies or domains, such as:
 
+*   Phishing campaigns
 *   Domain squatting
 *   Typo squatting
 *   Bitsquatting
 *   IDN homograph attacks
-*   Phishing campaigns
 *   Doppenganger domains
 *   Other brand/domain related scams
 
@@ -58,6 +58,9 @@ Usage Examples
     
     # Subdomain search
     python opensquat.py --subdomains
+    
+    # Check for domains with open ports 80/443
+    python opensquat.py --portcheck
 
     # With Phishing validation (Phishing Database)
     python opensquat.py --phishing phish_results.txt
@@ -79,7 +82,7 @@ Usage Examples
     python opensquat.py -c 2
 
     # All validations options
-    python opensquat.py --phishing phishing_domains.txt --dns --ct --subdomains
+    python opensquat.py --phishing phishing_domains.txt --dns --ct --subdomains --portcheck
 
 ```
 
@@ -90,6 +93,7 @@ To Do / Roadmap
 *   ~~Homograph detection~~ done
 *   ~~Improve code quality from B to A grade (codacy)~~
 *   ~~PEP8 compliance~~
+*   Integration with PulseDive
 *   Add documentation
 
 For more details check the [(Project)](https://github.com/atenreiro/opensquat/projects) section.

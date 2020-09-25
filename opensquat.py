@@ -16,6 +16,8 @@ import signal
 from colorama import init, Fore, Style
 from opensquat import __VERSION__
 from opensquat import arg_parser, output, app, phishing, check_update, vt
+from opensquat import port_check
+
 
 def signal_handler(sig, frame):
     """Function to catch CTR+C and terminate."""
@@ -70,14 +72,13 @@ if __name__ == "__main__":
         args.method,
         args.dns,
         args.ct,
+        args.portcheck
     )
-
-    output.SaveFile().main(args.output, args.type, file_content)
 
     # Check for subdomains
     if (args.subdomains):
         print("\n+---------- Checking for Subdomains ----------+")
-        time.sleep(2)
+        time.sleep(1)
         for domain in file_content:
             print("[*]", domain)
             subdomains = vt.VirusTotal().main(domain)
@@ -95,12 +96,31 @@ if __name__ == "__main__":
         file_phishing = phishing.Phishing().main(args.keywords)
         output.SaveFile().main(args.phishing, "txt", file_phishing)
 
+    if (args.portcheck):
+        file_content_ports = []
+        print("\n+---------- Domains with open webserver ports ----------+")
+        time.sleep(1)
+
+        for domain in file_content:
+            ports = port_check.PortCheck().main(domain)
+
+            if ports:
+                file_content_ports.append(domain)
+                print(
+                    Fore.YELLOW +
+                    "[*]", domain, ports, "" +
+                    Style.RESET_ALL,
+                    )
+
+        file_content = file_content_ports
+
+    output.SaveFile().main(args.output, args.type, file_content)
     end_time_squatting = round(time.time() - start_time_squatting, 2)
 
     # Print summary
     print("\n")
     print(
-        Style.BRIGHT+Fore.MAGENTA +
+        Style.BRIGHT+Fore.GREEN +
         "+---------- Summary Squatting ----------+" +
         Style.RESET_ALL)
 
