@@ -12,7 +12,6 @@ software licensed under GNU version 3
 
 """
 import argparse
-import distutils
 
 
 def validate_period(search_period):
