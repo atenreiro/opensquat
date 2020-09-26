@@ -96,7 +96,9 @@ To Do / Roadmap
 *   Integration with PulseDive
 *   Add documentation
 
-For more details check the [(Project)](https://github.com/atenreiro/opensquat/projects) section.
+Feature Request
+-------------
+To request for a new feature, create a "new issue" and describe the feature and potential use cases. If something similar already exists, you can upvote the "issue" and contribute to the discussions.
 
 Changelog
 -------------
@@ -117,8 +119,5 @@ You can help this project in many ways:
 *   Provide access to OSINT feeds
 *   Open new issues with new suggestions, ideas, bug report or feature requests
 *   Spread this project within your network
-*   Share your story how you use openSquat
+*   Share your story how have you been using the openSquat and what impact it brought to you
 *   Make a project logo
-*   Buy me a coffee
-
-[![Buy me a Coffee](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/H2H81XC1Y)
