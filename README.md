@@ -45,7 +45,7 @@ Make sure you have **Python 3.6+** and **pip3** in your environment
 
 Usage Examples
 ------------
-
+[Demo Video](https://asciinema.org/a/361931)
 ```bash
     # Lazy run with default options
     python opensquat.py
@@ -84,7 +84,6 @@ Usage Examples
     # All validations options
     python opensquat.py --phishing phishing_domains.txt --dns --ct --subdomains --portcheck 
 ```
-[Demo Video](https://asciinema.org/a/361931)
 
 To Do / Roadmap
 -------------
