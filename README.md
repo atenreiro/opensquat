@@ -82,10 +82,9 @@ Usage Examples
     python opensquat.py -c 2
 
     # All validations options
-    python opensquat.py --phishing phishing_domains.txt --dns --ct --subdomains --portcheck
-
-    [![asciicast](https://asciinema.org/a/361931.svg)](https://asciinema.org/a/361931)
+    python opensquat.py --phishing phishing_domains.txt --dns --ct --subdomains --portcheck 
 ```
+[Demo Video](https://asciinema.org/a/361931)
 
 To Do / Roadmap
 -------------
