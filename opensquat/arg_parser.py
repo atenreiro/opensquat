@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Module: arg_parser.py
 """
-openSquat.
+openSquat
 
 (c) CERT-MZ | Andre Tenreiro | andre@cert.mz
 
@@ -12,7 +12,7 @@ software licensed under GNU version 3
 
 """
 import argparse
-from distutils import util
+import distutils
 
 
 def validate_period(search_period):
@@ -168,7 +168,7 @@ def get_args():
         "--portcheck",
         action="store_true",
         help="Verify is port 80/443 is open",
-    )   
+    )
 
     args = parser.parse_args()
 

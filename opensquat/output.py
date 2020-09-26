@@ -43,7 +43,7 @@ class SaveFile:
         Args:
             none
 
-        Return:
+        Return
             none
         """
         f_json = open(self.filename, "w")
@@ -57,7 +57,7 @@ class SaveFile:
         Args:
             none
 
-        Return:
+        Return
             none
         """
         f_csv = open(self.filename, "w")
@@ -74,7 +74,7 @@ class SaveFile:
         Args:
             none
 
-        Return:
+        Return
             none
         """
         with open(self.filename, "w") as f:
