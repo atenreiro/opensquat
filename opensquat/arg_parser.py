@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Module: arg_parser.py
 """
-openSquat
+openSquat.
 
 (c) CERT-MZ | Andre Tenreiro | andre@cert.mz
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Module: ct.py
 """
-openSquat
+openSquat.
 
 (c) CERT-MZ
 

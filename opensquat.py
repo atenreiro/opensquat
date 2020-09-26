@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # opensquat.py
 """
-openSquat
+openSquat.
 
 (c) CERT-MZ
 
