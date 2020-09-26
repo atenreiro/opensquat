@@ -85,6 +85,9 @@ Usage Examples
     python opensquat.py --phishing phishing_domains.txt --dns --ct --subdomains --portcheck
 
 ```
+Demo
+------------
+[![asciicast]](https://asciinema.org/a/361931)
 
 To Do / Roadmap
 -------------
