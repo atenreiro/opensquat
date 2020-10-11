@@ -12,6 +12,8 @@ software licensed under GNU version 3
 """
 import requests
 import bisect
+import hashlib
+import os
 from opensquat import __VERSION__
 
 from colorama import Fore, Style
@@ -20,7 +22,6 @@ from opensquat import validations, homograph, ct, dns_resolvers, file_input
 
 
 class Domain:
-
     """
     The Domain class with handle all the functions related to
     the domain verifications.
@@ -123,6 +124,48 @@ class Domain:
             ):
                 self.list_file_keywords.append(line)
 
+    def check_latest_feeds(self):
+
+        URL = self.URL + self.URL_file + ".md5"
+
+        print("[*] Checking for the latest feeds...")
+
+        # User-Agent
+        ver = "openSquat-" + __VERSION__
+        headers = {'User-Agent': ver}
+
+        try:
+            response = requests.get(URL, headers=headers)
+        except requests.exceptions.RequestException:
+            return False
+
+        if (response.status_code != 200):
+            return False
+
+        latest_checksum = response.content.decode('utf-8')
+        latest_checksum = latest_checksum.replace("\n", "")
+        latest_checksum = latest_checksum.strip()
+
+        response.close()
+
+        # Compare if local file is the latest
+        if os.path.exists(self.domain_filename):
+            with open(self.domain_filename, "rb") as f:
+                try:
+                    local_checksum = hashlib.md5(f.read()).hexdigest()
+
+                    if latest_checksum == local_checksum:
+                        print("[*] You have the latest feeds\n")
+                        # print("-> ", latest_checksum, " ", local_checksum)
+                        return True
+                    else:
+                        # print("-> ", latest_checksum, " ", local_checksum)
+                        return False
+
+                except:
+                    return False
+        return False
+
     def download(self):
         """
         Download the latest newly registered domains and save locally.
@@ -133,16 +176,9 @@ class Domain:
         Return:
             none
         """
-        if self.period == "day":
-            self.URL_file = "domain-names.txt"
-        elif self.period == "week":
-            self.URL_file = "domain-names-week.txt"
-        elif self.period == "month":
-            self.URL_file = "domain-names-month.txt"
-
         URL = self.URL + self.URL_file
 
-        print("[*] Downloading fresh domain list from", URL)
+        print("[*] Downloading fresh domain list:", self.URL_file)
 
         # User-Agent
         ver = "openSquat-" + __VERSION__
@@ -186,6 +222,21 @@ class Domain:
 
         return True
 
+    def set_domain_filename(self, domain_filename):
+        """
+        Method to set the domain filename.
+
+        Args:
+            domain_filename
+
+        Returns:
+            none
+        """
+        if domain_filename == "":
+            self.domain_filename = "domain-names.txt"
+        else:
+            self.domain_filename = domain_filename
+
     def set_filename(self, filename):
         """
         Method to set the filename.
@@ -209,6 +260,13 @@ class Domain:
             none
         """
         self.period = search_period
+
+        if self.period == "day":
+            self.URL_file = "domain-names.txt"
+        elif self.period == "week":
+            self.URL_file = "domain-names-week.txt"
+        elif self.period == "month":
+            self.URL_file = "domain-names-month.txt"
 
     def set_dns_validation(self, dns):
         """
@@ -528,7 +586,9 @@ class Domain:
         self.method = method
 
         if self.domain_filename == "":
-            self.download()
+            self.domain_filename = self.URL_file
+            if not self.check_latest_feeds():
+                self.download()
 
         self.count_files()
         self.read_files()

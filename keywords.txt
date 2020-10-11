@@ -1,6 +1,6 @@
 #This is a comment
-google
-facebook
-amazon
+#google
+#facebook
+#amazon
 paypal
-microsoft
+#microsoft

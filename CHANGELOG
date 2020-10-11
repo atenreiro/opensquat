@@ -1,3 +1,7 @@
+v1.96 (2020-10-11)
++ Bandwidth saving - only download the latest feeds if it has changed
++ added generic.txt containing generic keywords used for phishing
+
 v1.95 (2020-09-25)
 + Added --portcheck flag to validate if flagged domains have port 80/443 opened
 

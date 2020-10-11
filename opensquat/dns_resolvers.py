@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Module: dns_resolvers.py
 """
-openSquat
+openSquat.
 
 (c) CERT-MZ
 

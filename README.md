@@ -1,5 +1,6 @@
 openSquat
 ====
+Your phishing and domain squatting watchdog :dog:
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/9231646e8ddf4efc9fb1f62f628df34a)](https://www.codacy.com/manual/atenreiro/opensquat?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=atenreiro/opensquat&amp;utm_campaign=Badge_Grade)
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fatenreiro%2Fopensquat&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
@@ -9,7 +10,7 @@ openSquat
 What is openSquat
 -------------
 
-openSquat is an opensource Intelligence (OSINT) security project to identify **cyber squatting** threats to specific companies or domains, such as:
+openSquat is an opensource Intelligence (OSINT) security tool to identify **cyber squatting** threats to specific companies or domains, such as:
 
 *   Phishing campaigns
 *   Domain squatting
@@ -33,25 +34,44 @@ It does support some key features such as:
 
 This is an opensource project so everyone's welcomed to contribute.
 
-Installation
+Web Demo
+------------
+Please check [Phishy Domains](https://phishydomains.com) for a simple version of the openSquat.
+
+How to Install
 ------------
 
 ```bash
     git clone https://github.com/atenreiro/opensquat
     pip install -r requirements.txt
 ```
-
 Make sure you have **Python 3.6+** and **pip3** in your environment
+
+How to Update
+------------
+To update your current version, just type the following commands inside the openSquat directory:
+```bash
+    git pull
+    pip install -r requirements.txt
+```
+The "pip install" is just to make sure no new libs very added with the new upgrade. 
+
 
 Usage Examples
 ------------
 [Demo Video](https://asciinema.org/a/361931)
+
+Edit the "keywords.txt" with your customised keywords to hunt.
+
 ```bash
     # Lazy run with default options
     python opensquat.py
 
     # for all the options
     python opensquat.py -h
+    
+    # Search for generic terms used in phishing campaigns (can lead to false positives)
+    python opensquat.py -k generic.txt
 
     # With DNS validation (quad9)
     python opensquat.py --dns
@@ -92,7 +112,6 @@ To Do / Roadmap
 *   ~~Homograph detection~~ done
 *   ~~Improve code quality from B to A grade (codacy)~~
 *   ~~PEP8 compliance~~
-*   Integration with PulseDive
 *   Add documentation
 
 Feature Request
@@ -112,6 +131,8 @@ Project founder
 Contributors
 *   Please check the contributors page on GitHub
 
+How to help
+-------------
 You can help this project in many ways:
 *   Providing your time and coding skills to enhance the project
 *   Build a decent but simple [project webpage](https://opensquat.com)
