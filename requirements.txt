@@ -12,4 +12,3 @@ black
 flake8
 beautifulsoup4
 dnspython==1.16.0
-hashlib
