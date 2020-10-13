@@ -106,7 +106,8 @@ Edit the "keywords.txt" with your customised keywords to hunt.
 
 To Do / Roadmap
 -------------
-*   ~~Integration with VirusTotal (VT)~~
+*   ~~Integration with VirusTotal (VT) for subdomains validation~~
+*   Integratration with VirusTotal (VT) for malware detection
 *   ~~Use certificate transparency~~
 *   ~~Homograph detection~~ done
 *   ~~Improve code quality from B to A grade (codacy)~~
