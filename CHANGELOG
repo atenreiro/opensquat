@@ -1,6 +1,6 @@
 v1.97 (2020-10-18)
 + Domains can be verified is they are blacklisted to any VirusTotal engine
-+ You can now filter results usign different args
++ You can now filter results using different args
 + minor change, the number of domains showing with the thousand comma 
 
 v1.96 (2020-10-11)
