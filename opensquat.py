@@ -119,6 +119,7 @@ if __name__ == "__main__":
                     "[*] VT is throttling the response:", domain +
                     Style.RESET_ALL,
                     )
+                list_aux.append(domain)
         file_content = list_aux
         print("[*] Total found:", len(file_content))
 
