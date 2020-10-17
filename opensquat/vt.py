@@ -12,6 +12,7 @@ software licensed under GNU version 3
 """
 import requests
 import json
+import time
 
 
 class VirusTotal:
@@ -20,14 +21,22 @@ class VirusTotal:
         self.domain = ""
         self.subdomains = []
         self.URL = ""
+        self.content = ""
+        self.op = ""
 
     def set_domain(self, domain):
         self.domain = domain
 
-    def check_subdomain(self):
+    def set_operation(self, op):
+        self.op = op
 
-        self.URL = "https://www.virustotal.com/ui/domains/" + self.domain \
-                   + "/subdomains"
+    def get_content(self):
+
+        if self.op == "subdomains":
+            self.URL = "https://www.virustotal.com/ui/domains/" + self.domain \
+                       + "/subdomains"
+        else:
+            self.URL = "https://www.virustotal.com/ui/domains/" + self.domain
 
         # User-Agent Headers
         headers = {
@@ -36,15 +45,20 @@ class VirusTotal:
             "Chrome/78.0.3904.108 Safari/537.36"
         }
 
+        # Get response content
         response = requests.get(self.URL, stream=True, headers=headers)
         content = json.loads(response.content)
 
+        self.content = content
+
+    def get_subdomains(self):
+
         try:
-            if "error" in content:
+            if "error" in self.content:
                 print(" \_ VirusTotal might be throttling/blocking")
                 return False
-            elif content.get('data'):
-                for item in content['data']:
+            elif self.content.get('data'):
+                for item in self.content['data']:
                     if item['type'] == 'domain':
                         subdomain = item['id']
                         self.subdomains.append(subdomain)
@@ -56,11 +70,26 @@ class VirusTotal:
         else:
             return False
 
-    def main(self, domain):
-        self.set_domain(domain)
-        subdomains = self.check_subdomain()
+    def get_malicious(self):
 
-        if subdomains:
-            return subdomains
+        try:
+            malicious = (
+                self.content
+                ['attributes']
+                ['last_analysis_stats']
+                ['malicious']
+                )
+        except KeyError:
+            return -1
+
+        return malicious
+
+    def main(self, domain, op):
+        self.set_domain(domain)
+        self.set_operation(op)
+        self.get_content()
+
+        if (op == "subdomains"):
+            return self.get_subdomains()
         else:
-            return False
+            return self.get_malicious()

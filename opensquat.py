@@ -74,13 +74,18 @@ if __name__ == "__main__":
         args.ct
     )
 
+    if args.subdomains or args.vt or args.subdomains or args.phishing \
+        or args.portscheck:
+        print("[*] Total found:", len(file_content))
+
     # Check for subdomains
     if (args.subdomains):
+        list_aux = []
         print("\n+---------- Checking for Subdomains ----------+")
         time.sleep(1)
         for domain in file_content:
             print("[*]", domain)
-            subdomains = vt.VirusTotal().main(domain)
+            subdomains = vt.VirusTotal().main(domain, "subdomains")
 
             if subdomains:
                 for subdomain in subdomains:
@@ -89,14 +94,42 @@ if __name__ == "__main__":
                         " \_", subdomain +
                         Style.RESET_ALL,
                         )
+                    list_aux.append(subdomain)
+        file_content = list_aux
+        print("[*] Total found:", len(file_content))
+
+    # Check for VirusTotal
+    if (args.vt):
+        list_aux = []
+        print("\n+---------- VirusTotal ----------+")
+        time.sleep(1)
+        for domain in file_content:
+            malicious = vt.VirusTotal().main(domain, "malicious")
+
+            if malicious > 0:
+                print(
+                    Style.BRIGHT + Fore.RED +
+                    "[*] found:", domain, "({})".format(str(malicious)) +
+                    Style.RESET_ALL,
+                    )
+                list_aux.append(domain)
+            elif malicious < 0:
+                print(
+                    Style.BRIGHT + Fore.YELLOW +
+                    "[*] VT is throttling the response:", domain +
+                    Style.RESET_ALL,
+                    )
+        file_content = list_aux
+        print("[*] Total found:", len(file_content))
 
     # Check for phishing
     if (args.phishing != ""):
         file_phishing = phishing.Phishing().main(args.keywords)
         output.SaveFile().main(args.phishing, "txt", file_phishing)
 
+    # Check if domain has webserver port opened
     if (args.portcheck):
-        file_content_ports = []
+        list_aux = []
         print("\n+---------- Domains with open webserver ports ----------+")
         time.sleep(1)
 
@@ -104,14 +137,14 @@ if __name__ == "__main__":
             ports = port_check.PortCheck().main(domain)
 
             if ports:
-                file_content_ports.append(domain)
+                list_aux.append(domain)
                 print(
                     Fore.YELLOW +
                     "[*]", domain, ports, "" +
                     Style.RESET_ALL,
                     )
-
-        file_content = file_content_ports
+        file_content = list_aux
+        print("[*] Total found:", len(file_content))
 
     output.SaveFile().main(args.output, args.type, file_content)
     end_time_squatting = round(time.time() - start_time_squatting, 2)

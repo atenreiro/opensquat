@@ -295,7 +295,7 @@ class Domain:
         """
         print("[*] keywords:", self.keywords_filename)
         print("[*] keywords total:", self.keywords_total)
-        print("[*] Total domains:", self.domain_total)
+        print("[*] Total domains:", f"{self.domain_total:,}")
         print("[*] Threshold:", self.confidence[self.confidence_level])
 
     def worker(self):

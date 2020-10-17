@@ -168,6 +168,11 @@ def get_args():
         action="store_true",
         help="Verify is port 80/443 is open",
     )
+    parser.add_argument(
+        "--vt",
+        action="store_true",
+        help="validate against VirusTotal",
+    )
 
     args = parser.parse_args()
 
