@@ -96,7 +96,7 @@ if __name__ == "__main__":
                         )
                     list_aux.append(subdomain)
         file_content = list_aux
-        print("[*] Total found:", len(file_content))
+        print("\n[*] Total found:", len(file_content))
 
     # Check for VirusTotal
     if (args.vt):
