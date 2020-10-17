@@ -76,7 +76,7 @@ if __name__ == "__main__":
 
     if args.subdomains or args.vt or args.subdomains or args.phishing \
         or args.portscheck:
-        print("[*] Total found:", len(file_content))
+        print("\n[*] Total found:", len(file_content))
 
     # Check for subdomains
     if (args.subdomains):
@@ -96,7 +96,7 @@ if __name__ == "__main__":
                         )
                     list_aux.append(subdomain)
         file_content = list_aux
-        print("\n[*] Total found:", len(file_content))
+        print("[*] Total found:", len(file_content))
 
     # Check for VirusTotal
     if (args.vt):
