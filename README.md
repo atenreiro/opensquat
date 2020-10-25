@@ -2,14 +2,6 @@ openSquat
 ====
 ![alt text](https://raw.githubusercontent.com/atenreiro/opensquat/master/screenshots/openSquat_logo.png)
 
-Screenshot / Video Demo
--------------
-![alt text](https://raw.githubusercontent.com/atenreiro/opensquat/master/screenshots/openSquat.PNG)
-
-Check the 40 seconds [Demo Video](https://asciinema.org/a/361931) (v1.95)
-
-
-
 What is openSquat
 -------------
 
@@ -36,6 +28,13 @@ It does support some key features such as:
 *   Can be integrated with other threat intelligence tools and DNS sinkholes
 
 This is an opensource project so everyone's welcomed to contribute.
+
+Screenshot / Video Demo
+-------------
+![alt text](https://raw.githubusercontent.com/atenreiro/opensquat/master/screenshots/openSquat.PNG)
+
+Check the 40 seconds [Demo Video](https://asciinema.org/a/361931) (v1.95)
+
 
 Web Demo
 ------------
