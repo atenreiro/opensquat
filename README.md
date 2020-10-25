@@ -1,10 +1,13 @@
 openSquat
 ====
-### Your phishing and domain squatting watchdog :dog:
-
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fatenreiro%2Fopensquat&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
+![alt text](https://raw.githubusercontent.com/atenreiro/opensquat/master/screenshots/openSquat_logo.png)
 
+Screenshot / Video Demo
+-------------
 ![alt text](https://raw.githubusercontent.com/atenreiro/opensquat/master/screenshots/openSquat.PNG)
+
+[Demo Video](https://asciinema.org/a/361931) (v1.95)
 
 What is openSquat
 -------------
@@ -58,8 +61,6 @@ The "pip install" is just to make sure no new libs were added with the new upgra
 
 Usage Examples
 ------------
-[Demo Video](https://asciinema.org/a/361931)
-
 Edit the "keywords.txt" with your customised keywords to hunt.
 
 ```bash
