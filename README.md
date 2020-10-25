@@ -1,13 +1,12 @@
 openSquat
 ====
-[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fatenreiro%2Fopensquat&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
 ![alt text](https://raw.githubusercontent.com/atenreiro/opensquat/master/screenshots/openSquat_logo.png)
 
 Screenshot / Video Demo
 -------------
 ![alt text](https://raw.githubusercontent.com/atenreiro/opensquat/master/screenshots/openSquat.PNG)
 
-[Demo Video](https://asciinema.org/a/361931) (v1.95)
+Check the 40 seconds [Demo Video](https://asciinema.org/a/361931) (v1.95)
 
 What is openSquat
 -------------
