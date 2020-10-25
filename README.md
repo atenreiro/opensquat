@@ -8,6 +8,8 @@ Screenshot / Video Demo
 
 Check the 40 seconds [Demo Video](https://asciinema.org/a/361931) (v1.95)
 
+
+
 What is openSquat
 -------------
 
