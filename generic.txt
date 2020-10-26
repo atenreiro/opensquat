@@ -1,0 +1,19 @@
+# Generic suspicious terms used for phishing and scams
+# these terms may lead to a large number of false positives
+account
+alert
+bank
+bill
+covid
+credential
+customer
+noreply
+invoice
+help
+login
+password
+security
+sign-in
+signin
+support
+update
