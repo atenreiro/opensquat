@@ -113,6 +113,7 @@ To Do / Roadmap
 *   ~~Homograph detection~~ done
 *   ~~Improve code quality from B to A grade (codacy)~~
 *   ~~PEP8 compliance~~
+*   AND logical condition for keywords search (e.g: goole+login) - Thanks to Steff T.
 *   Add documentation
 
 Feature Request
