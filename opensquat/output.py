@@ -65,7 +65,7 @@ class SaveFile:
             f_csv, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL
         )
         file_csv.writerow(self.content)
-        file_csv.close()
+        f_csv.close()
 
     def as_text(self):
         """
