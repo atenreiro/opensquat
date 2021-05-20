@@ -41,7 +41,7 @@ Demo / Forks
 *   [Phishy Domains](https://phishydomains.com) for a simple web version of the openSquat.
 *   [openSquat Bot](https://telegram.me/opensquat_bot) for a simple Telegram bot.
 
-Note: Both forks do not contain all features from the openSquat.
+Note: Both forks do not contain all openSquat features.
 
 
 How to Install
