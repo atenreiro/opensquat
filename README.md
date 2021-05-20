@@ -36,9 +36,13 @@ Screenshot / Video Demo
 Check the 40 seconds [Demo Video](https://asciinema.org/a/361931) (v1.95)
 
 
-Web Demo
+Demo / Forks
 ------------
-Please check [Phishy Domains](https://phishydomains.com) for a simple version of the openSquat.
+*   [Phishy Domains](https://phishydomains.com) for a simple web version of the openSquat.
+*   [openSquat Bot](https://telegram.me/opensquat_bot) for a simple Telegram bot.
+
+Note: Both forks do not contain all features from the openSquat.
+
 
 How to Install
 ------------
