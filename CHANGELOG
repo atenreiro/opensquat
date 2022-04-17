@@ -1,3 +1,6 @@
+v1.97.1 (2022-04-17)
++ Bug correction (#63) - double DNS validation 
+
 v1.97 (2020-10-18)
 + Domains can be verified is they are blacklisted to any VirusTotal engine
 + You can now filter results using different args

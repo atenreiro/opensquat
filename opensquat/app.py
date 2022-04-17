@@ -427,7 +427,6 @@ class Domain:
                 domains,
                 self.confidence[leven_dist]
                 )
-            self.dns_reputation(domains)
 
             #  DNS Validation
             if(self.dns_validation):
