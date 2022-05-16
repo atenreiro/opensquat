@@ -131,7 +131,7 @@ Changelog
 Authors
 -------------
 Project founder
-*   Andre Tenreiro [(LinkedInk)](https://www.linkedin.com/in/andretenreiro/)
+*   Andre Tenreiro [(LinkedIn)](https://www.linkedin.com/in/andretenreiro/)
 *   [andre@cert.mz](mailto:andre@cert.mz)
 
 Contributors
