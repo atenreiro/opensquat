@@ -405,7 +405,7 @@ class Domain:
                 print_info("suspicious certificate detected")
             else:
                 print_info("suspicious certificate detected")
-            self.list_domains.append(domain)
+            self.list_domains.append(domains)
 
     def _process_levenshtein(self, keyword, domain, homograph_domain, domains):
         leven_dist = validations.levenshtein(keyword, domain)

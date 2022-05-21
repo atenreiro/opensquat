@@ -1,3 +1,6 @@
+v1.99 (2022-05-21)
++ Bug correction (#50) - Suspicious certificate results not showing in results.txt
+
 v1.98 (2022-04-17)
 + Bug correction (#63) - double DNS validation 
 
