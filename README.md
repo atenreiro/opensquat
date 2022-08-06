@@ -117,7 +117,7 @@ To Do / Roadmap
 *   ~~Homograph detection~~ done
 *   ~~Improve code quality from B to A grade (codacy)~~
 *   ~~PEP8 compliance~~
-*   AND logical condition for keywords search (e.g: goole+login) - Thanks to Steff T.
+*   AND logical condition for keywords search (e.g: google+login) - Thanks to Steff T.
 *   Add documentation
 
 Feature Request
@@ -132,7 +132,7 @@ Authors
 -------------
 Project founder
 *   Andre Tenreiro [(LinkedIn)](https://www.linkedin.com/in/andretenreiro/)
-*   [andre@cert.mz](mailto:andre@cert.mz)
+*   [andre@opensquat.com](mailto:andre@opensquat.com) [PGP Key](https://mail-api.proton.me/pks/lookup?op=get&search=andre@opensquat.com)
 
 Contributors
 *   Please check the contributors page on GitHub
