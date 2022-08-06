@@ -132,7 +132,7 @@ Authors
 -------------
 Project founder
 *   Andre Tenreiro [(LinkedIn)](https://www.linkedin.com/in/andretenreiro/)
-*   [andre@opensquat.com](mailto:andre@opensquat.com) [PGP Key](https://mail-api.proton.me/pks/lookup?op=get&search=andre@opensquat.com)
+*   andre@opensquat.com - [PGP Key](https://mail-api.proton.me/pks/lookup?op=get&search=andre@opensquat.com)
 
 Contributors
 *   Please check the contributors page on GitHub
