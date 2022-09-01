@@ -419,7 +419,7 @@ class Domain:
         doppelganger = self.domain_contains(keyword, domain)
 
         if doppelganger:
-            reachable = self.is_site_reachable(domains)[1]
+            reachable = self.is_site_reachable(domains)[0]
             if self.response_contains_keyword(keyword):
                 print_info(f"Site response contains {keyword} !")
             if not ct.CRTSH.check_certificate(domains):
