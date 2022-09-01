@@ -421,7 +421,7 @@ class Domain:
         if doppelganger:
             reachable = self.is_site_reachable(domains)[1]
             if self.response_contains_keyword(keyword):
-                print_info(f"Site contains {self.text_to_search} !")
+                print_info(f"Site response contains {keyword} !")
             if not ct.CRTSH.check_certificate(domains):
                 print_info("suspicious certificate detected")
             else:
