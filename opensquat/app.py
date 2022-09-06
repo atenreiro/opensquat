@@ -97,6 +97,7 @@ class Domain:
 
         return False
 
+
     def read_files(self):
         """
         Method to read domain files
@@ -388,6 +389,39 @@ class Domain:
 
         return self.list_domains
 
+    def is_site_reachable(self, domain):
+        """
+        Check if site is reachable in HTTPS
+
+        Args:
+            domain name: domain name to search
+
+        Returns 2-length tuple:
+            Site reachable -> bool
+            Error string -> str
+        """
+        try:
+            response = requests.get(f"https://{domain}")
+            self.response = response
+            output = (True, f"Reachable ({response.status_code})")
+            print(Fore.GREEN + f"[+] https://{domain}/: Site reachable ({response.status_code})"+ Style.RESET_ALL)
+        except Exception as e:
+            output = (False, f"Not reachable: {e}")
+            print(Fore.YELLOW + f"[*] {e}" + Style.RESET_ALL)
+        return output
+
+    def response_contains_keyword(self, keyword):
+        """
+        Check if response contains a specific keyword in response
+
+        Args:
+            keyword: keyword to search
+
+        Returns:
+            bool
+        """
+        return keyword in self.response.text
+
     def _process_doppelgagner_only(self, keyword, domain, domains):
         def print_info(_info):
             print(
@@ -401,6 +435,9 @@ class Domain:
         doppelganger = self.domain_contains(keyword, domain)
 
         if doppelganger:
+            reachable = self.is_site_reachable(domains)[0]
+            if self.response_contains_keyword(keyword):
+                print_info(f"Site contains {keyword} !")
             if not ct.CRTSH.check_certificate(domains):
                 print_info("suspicious certificate detected")
             else:
