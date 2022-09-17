@@ -27,7 +27,7 @@ It does support some key features such as:
 *   Save output into different formats (txt, JSON and CSV)
 *   Can be integrated with other threat intelligence tools and DNS sinkholes
 
-This is an opensource project so everyone's welcomed to contribute.
+As an opensource project, everyone's welcome to contribute.
 
 Screenshot / Video Demo
 -------------
@@ -40,8 +40,9 @@ Demo / Forks
 ------------
 *   [Phishy Domains](https://phishydomains.com) for a simple web version of the openSquat.
 *   [openSquat Bot](https://telegram.me/opensquat_bot) for a simple Telegram bot.
+*   [RapidAPI](https://rapidapi.com/atenreiro/api/opensquat1) to integrate your application with openSquat using REST API.
 
-Note: Both forks do not contain all openSquat features.
+**Note**: The forks do not contain all the openSquat features.
 
 
 How to Install
@@ -74,7 +75,7 @@ Edit the "keywords.txt" with your customised keywords to hunt.
     # for all the options
     python opensquat.py -h
     
-    # Search for generic terms used in phishing campaigns (can lead to false positives)
+    # Search for generic terms used in phishing campaigns (can lead to false-positives)
     python opensquat.py -k generic.txt
 
     # With DNS validation (quad9)
@@ -109,6 +110,23 @@ Edit the "keywords.txt" with your customised keywords to hunt.
     python opensquat.py --phishing phishing_domains.txt --dns --ct --subdomains --portcheck 
 ```
 
+Automations & Integrations
+-------------
+You can set up openSquat to run automatically using a task scheduler (such as crontab for Linux) to generate a new list of results daily.
+
+We update our feeds with a fresh new list of domains every day around 7.30 am (UTC+0 / GMT+0)
+
+```bash
+# Crontab example - run openSquat every day at 8 am
+# In this example, it saves the results file in JSON format
+0 10 * * * /home/john/opensquat/opensquat.py -k keywords.txt -o results.json -t json
+```
+You can use this output file to feed your SIEM, SOAR, or other tools that support importing from TXT/JSON/CSV formats.
+
+Alternatively, currently in a **Beta preview** you can integrate using REST APIs, your application with [RapidAPI](https://rapidapi.com/atenreiro/api/opensquat1)
+
+Do you have an integration idea or would like to share an integration you developed with our community? Open a GitHub issue or send me an email.
+
 To Do / Roadmap
 -------------
 *   ~~Integration with VirusTotal (VT) for subdomains validation~~
@@ -118,11 +136,11 @@ To Do / Roadmap
 *   ~~Improve code quality from B to A grade (codacy)~~
 *   ~~PEP8 compliance~~
 *   AND logical condition for keywords search (e.g: google+login) - Thanks to Steff T.
-*   Add documentation
+*   Enhanced documentation
 
 Feature Request
 -------------
-To request for a new feature, create a "new issue" and describe the feature and potential use cases. If something similar already exists, you can upvote the "issue" and contribute to the discussions.
+To request a new feature, create a "new issue" and describe the feature and potential use cases. You can upvote the "issue" and contribute to the discussions if something similar already exists.
 
 Changelog
 -------------
@@ -146,4 +164,3 @@ You can help this project in many ways:
 *   Open new issues with new suggestions, ideas, bug report or feature requests
 *   Spread this project within your network
 *   Share your story how have you been using the openSquat and what impact it brought to you
-*   Make a project logo
