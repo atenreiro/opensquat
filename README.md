@@ -119,7 +119,7 @@ We update our feeds with a fresh new list of domains every day around 7.30 am (U
 ```bash
 # Crontab example - run openSquat every day at 8 am
 # In this example, it saves the results file in JSON format
-0 10 * * * /home/john/opensquat/opensquat.py -k keywords.txt -o results.json -t json
+0 8 * * * /home/john/opensquat/opensquat.py -k keywords.txt -o results.json -t json
 ```
 You can use this output file to feed your SIEM, SOAR, or other tools that support importing from TXT/JSON/CSV formats.
 
