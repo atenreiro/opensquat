@@ -4,9 +4,6 @@
 """
 openSquat.
 
-(c) CERT-MZ
-
-* https://www.cert.mz
 * https://github.com/atenreiro/opensquat
 
 software licensed under GNU version 3
@@ -15,8 +12,8 @@ import time
 import signal
 
 from colorama import init, Fore, Style
-from opensquat import __VERSION__
-from opensquat import arg_parser, output, app, phishing, check_update, vt
+from opensquat import __VERSION__, vt
+from opensquat import arg_parser, output, app, phishing, check_update
 from opensquat import port_check
 
 
@@ -54,7 +51,7 @@ if __name__ == "__main__":
               ░███                                          ░███
               █████                                         █████
              ░░░░░                                         ░░░░░
-                    (c) CERT-MZ - https://github.com/atenreiro/opensquat
+                    (c) Andre Tenreiro - https://github.com/atenreiro/opensquat
     """ + Style.RESET_ALL
     )
 
@@ -99,13 +96,17 @@ if __name__ == "__main__":
         file_content = list_aux
         print("[*] Total found:", len(file_content))
 
-    # Check for VirusTotal
+    # Check for VirusTotal (if domain is flagged as malicious)
     if (args.vt):
         list_aux = []
         print("\n+---------- VirusTotal ----------+")
         time.sleep(1)
         for domain in file_content:
-            malicious = vt.VirusTotal().main(domain, "malicious")
+            total_votes = vt.VirusTotal().main(domain)
+
+            # total votes
+            harmless = total_votes[0]
+            malicious = total_votes[1]
 
             if malicious > 0:
                 print(

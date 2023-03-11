@@ -3,9 +3,6 @@
 """
 openSquat
 
-(c) CERT-MZ
-
-* https://www.cert.mz
 * https://github.com/atenreiro/opensquat
 
 software licensed under GNU version 3
@@ -13,7 +10,7 @@ software licensed under GNU version 3
 import requests
 from colorama import Fore, Style
 from opensquat import __VERSION__
-
+from packaging import version
 
 class CheckUpdate:
     """
@@ -29,7 +26,7 @@ class CheckUpdate:
 
     def __init__(self):
         """Initiator."""
-        self.URL = ("https://feeds.opensquat.com/latest.txt")
+        self.URL = ("https://feeds.opensquat.com/latest_version.txt")
         self.current = __VERSION__
 
     def check(self):
@@ -46,12 +43,13 @@ class CheckUpdate:
         if (response.status_code != 200):
             return False
 
-        latest_ver = float(response.content)
+        latest_ver = response.content
+        latest_ver = latest_ver.decode()
         response.close()
 
-        current_ver = float(self.current)
+        current_ver = self.current
 
-        if current_ver < latest_ver:
+        if version.parse(latest_ver) > version.parse(current_ver):
             print(
                 Style.BRIGHT+Fore.MAGENTA +
                 "[INFO] New version avaiable!" +
@@ -70,8 +68,9 @@ class CheckUpdate:
             print(
                 Style.BRIGHT+Fore.WHITE + "-> update now: $ git pull\n" +
                 Style.RESET_ALL)
+            return True
 
-        return True
+        return False
 
     def main(self):
         self.check()
