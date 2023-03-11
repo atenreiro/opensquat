@@ -1,5 +1,7 @@
 v2.0.0 (2023-03-11)
 + Improved VirusTotal integration and support for VT API v3
++ new configuration file "vt_key.txt" for VirusTotal API key
++ Fixed bug #78 on CT (thanks to jj98594 and TerminalFi)
 + Adopted Semantic Versioning (https://semver.org)
 
 v1.99 (2022-05-21)
