@@ -56,6 +56,8 @@ Make sure you have **Python 3.6+** and **pip3** in your environment
 
 How to Update
 ------------
+> :warning: **when updating**: especially for a major release, re-run the pip install to check for new dependencies.
+
 To update your current version, just type the following commands inside the openSquat directory:
 ```bash
     git pull
