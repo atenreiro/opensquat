@@ -3,93 +3,104 @@
 """
 openSquat
 
-(c) CERT-MZ
-
-* https://www.cert.mz
 * https://github.com/atenreiro/opensquat
 
 software licensed under GNU version 3
 """
-import requests
+import os
 import json
-import time
+import requests
 
 
 class VirusTotal:
+    """
+    This domain class validates a domain on VirusTotal 
+
+    To use:
+        VirusTotal.main("opensquat.com")
+
+    Attribute:
+        domain: a domain name
+    """
     def __init__(self):
         """Initiator."""
         self.domain = ""
-        self.subdomains = []
-        self.URL = ""
-        self.content = ""
-        self.op = ""
+        self.api_key = ""
+        self.api_key_file = ""
+
+    def set_apikey(self, api_key_file):
+
+        self.api_key_file = api_key_file
+
+        if not os.path.isfile(self.api_key_file):
+            print(
+                "[*] VT API Key File",
+                self.api_key_file ,
+                "not found or not readable! Exiting... \n",
+            )
+            exit(-1)
+
+        file_vt = open(self.api_key_file, "r")
+
+        for line in file_vt:
+            if (
+                (line[0] != "#") and
+                (line[0] != " ") and
+                (line[0] != "") and
+                (line[0] != "\n")
+            ):
+                self.api_key = line
+
+        file_vt.close()
+
+        return True
+
 
     def set_domain(self, domain):
         self.domain = domain
 
-    def set_operation(self, op):
-        self.op = op
+    def domain_report(self):
 
-    def get_content(self):
+        url = "https://www.virustotal.com/api/v3/domains/" + self.domain
 
-        if self.op == "subdomains":
-            self.URL = "https://www.virustotal.com/ui/domains/" + self.domain \
-                       + "/subdomains"
-        else:
-            self.URL = "https://www.virustotal.com/ui/domains/" + self.domain
-
-        # User-Agent Headers
         headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
-            "AppleWebKit/537.36 (KHTML, like Gecko)"
-            "Chrome/78.0.3904.108 Safari/537.36"
+            "accept": "application/json",
+            "x-apikey": self.api_key
         }
 
-        # Get response content
-        response = requests.get(self.URL, stream=True, headers=headers)
-        content = json.loads(response.content)
+        response = requests.get(url, headers=headers, timeout=30)
 
-        self.content = content
+        json_data = json.loads(response.text)
 
-    def get_subdomains(self):
+        if response.status_code == 200:
 
-        try:
-            if "error" in self.content:
-                print(" \_ VirusTotal might be throttling/blocking")
-                return False
-            elif self.content.get('data'):
-                for item in self.content['data']:
-                    if item['type'] == 'domain':
-                        subdomain = item['id']
-                        self.subdomains.append(subdomain)
-        except Exception:
-            return False
+            if "data" in json_data and \
+                "attributes" in json_data['data'] and \
+                "total_votes" in json_data['data']['attributes']:
 
-        if self.subdomains:
-            return self.subdomains
+                harmless = json_data['data']['attributes']['total_votes']['harmless']
+                malicious = json_data['data']['attributes']['total_votes']['malicious']
+                harmless = int(harmless)
+                malicious = int(malicious)
+                total_votes = [harmless, malicious]
+
+                return total_votes
+
         else:
-            return False
 
-    def get_malicious(self):
-
-        try:
-            malicious = (
-                self.content
-                ['attributes']
-                ['last_analysis_stats']
-                ['malicious']
+            if "error" in json_data:
+                message = json_data['error']['message']
+                print("[*] VT API ERROR:", message)
+                exit(-1)
+            else:
+                print(
+                    "[*] Unexpected VT Response. HTTP Code: ",
+                    response.status_code,
+                    " Exiting... \n",
                 )
-        except KeyError:
-            return -1
+                exit(-1)
 
-        return malicious
-
-    def main(self, domain, op):
+    def main(self, domain, api_key_file="vt_key.txt"):
         self.set_domain(domain)
-        self.set_operation(op)
-        self.get_content()
-
-        if (op == "subdomains"):
-            return self.get_subdomains()
-        else:
-            return self.get_malicious()
+        self.set_apikey(api_key_file)
+        return self.domain_report()
