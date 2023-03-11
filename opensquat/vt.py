@@ -49,6 +49,7 @@ class VirusTotal:
                 (line[0] != "") and
                 (line[0] != "\n")
             ):
+                line = line.replace('\n', '')
                 self.api_key = line
 
         file_vt.close()
