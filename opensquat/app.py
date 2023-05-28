@@ -377,7 +377,6 @@ class Domain:
             futs = [ executor.submit(functools.partial(self.verify_keyword, keyword, keyword_line_number, self.domain_total))
                 for keyword_line_number, keyword in enumerate(self.list_file_keywords) if keyword ]
         
-        print(futs)
         
         for fut in futs:
             result_buffer, result_domains = fut.result()
