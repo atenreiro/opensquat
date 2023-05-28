@@ -89,7 +89,7 @@ if __name__ == "__main__":
                 for subdomain in subdomains:
                     print(
                         Style.BRIGHT + Fore.YELLOW +
-                        " \_", subdomain +
+                        " \\_", subdomain +
                         Style.RESET_ALL,
                         )
                     list_aux.append(subdomain)

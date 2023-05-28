@@ -28,7 +28,7 @@ class Quad9:
     """
     def __init__(self):
         """initiator."""
-        self.resolver = "9.9.9.9"
+        self.resolver = '9.9.9.9'
         self.dns_resp = None
         self.domain = None
 
@@ -37,12 +37,12 @@ class Quad9:
 
     def dns_query(self):
 
-        my_resolver = dns.resolver.Resolver()
+        my_resolver = dns.resolver.Resolver(configure=False)
         my_resolver.nameservers = [self.resolver]
         my_resolver.search = []
 
         try:
-            my_resolver.query(self.domain, "A")
+            my_resolver.resolve(self.domain, "A")
             self.dns_resp = "non-malicious"
 
         except dns.resolver.NXDOMAIN as e:

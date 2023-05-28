@@ -108,22 +108,22 @@ class Domain:
         Return:
             none
         """
-        file_domains = open(self.domain_filename, "r")
-        file_keywords = open(self.keywords_filename, "r")
-
-        for mydomains in file_domains:
-            domain = mydomains.replace("\n", "")
-            domain = domain.lower()
-            self.list_file_domains.append(domain)
-
-        for line in file_keywords:
-            if (
-                (line[0] != "#") and
-                (line[0] != " ") and
-                (line[0] != "") and
-                (line[0] != "\n")
-            ):
-                self.list_file_keywords.append(line)
+        
+        with open(self.domain_filename, mode='r') as file_domains:
+            for mydomains in file_domains:
+                domain = mydomains.replace("\n", "")
+                domain = domain.lower()
+                self.list_file_domains.append(domain)
+        
+        with open(self.keywords_filename, mode='r') as file_keywords:
+            for line in file_keywords:
+                if (
+                    (line[0] != "#") and
+                    (line[0] != " ") and
+                    (line[0] != "") and
+                    (line[0] != "\n")
+                ):
+                    self.list_file_keywords.append(line)
 
     def check_latest_feeds(self):
 
@@ -483,35 +483,35 @@ class Domain:
     @staticmethod
     def dns_error_NoAnswer():
         print(
-            Fore.YELLOW + "  \_ DNS Server error: No Answer\n" +
+            Fore.YELLOW + "  \\_ DNS Server error: No Answer\n" +
             Style.RESET_ALL,
         )
 
     @staticmethod
     def dns_error_NoNameservers():
         print(
-            Fore.YELLOW + "  \_ DNS Server error: No Name Servers (SRVFAIL)" +
+            Fore.YELLOW + "  \\_ DNS Server error: No Name Servers (SRVFAIL)" +
             "\n" + Style.RESET_ALL,
         )
 
     @staticmethod
     def dns_error_timeout():
         print(
-            Fore.YELLOW + "  \_ DNS Server error: " +
+            Fore.YELLOW + "  \\_ DNS Server error: " +
             "Possible Provider throttling\n" + Style.RESET_ALL,
         )
 
     @staticmethod
     def dns_error_nxdomain():
         print(
-            Fore.YELLOW + "  \_ DNS response: Non-Existent Domain\n" +
+            Fore.YELLOW + "  \\_ DNS response: Non-Existent Domain\n" +
             Style.RESET_ALL,
         )
 
     @staticmethod
     def dns_error(dns_resp):
         print(
-            Fore.YELLOW + "  \_ DNS response:",
+            Fore.YELLOW + "  \\_ DNS response:",
             dns_resp,
             "\n" + Style.RESET_ALL,
         )
@@ -519,14 +519,14 @@ class Domain:
     @staticmethod
     def dns_malicious():
         print(
-            Style.BRIGHT + Fore.RED + "  \_ Domain Reputation: Malicious\n" +
+            Style.BRIGHT + Fore.RED + "  \\_ Domain Reputation: Malicious\n" +
             Style.RESET_ALL,
         )
 
     @staticmethod
     def dns_non_malicious():
         print(
-            Fore.GREEN + "  \_ Domain Reputation: Non-malicious\n" +
+            Fore.GREEN + "  \\_ Domain Reputation: Non-malicious\n" +
             Style.RESET_ALL,
         )
 

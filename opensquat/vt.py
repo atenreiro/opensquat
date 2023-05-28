@@ -39,18 +39,17 @@ class VirusTotal:
                 "not found or not readable! Exiting... \n",
             )
             exit(-1)
-
-        file_vt = open(self.api_key_file, "r")
-
-        for line in file_vt:
-            if (
-                (line[0] != "#") and
-                (line[0] != " ") and
-                (line[0] != "") and
-                (line[0] != "\n")
-            ):
-                line = line.replace('\n', '')
-                self.api_key = line
+        
+        with open(self.api_key_file, mode='r') as file_vt:
+            for line in file_vt:
+                if (
+                    (line[0] != "#") and
+                    (line[0] != " ") and
+                    (line[0] != "") and
+                    (line[0] != "\n")
+                ):
+                    line = line.replace('\n', '')
+                    self.api_key = line
 
         file_vt.close()
 

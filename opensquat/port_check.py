@@ -35,19 +35,26 @@ class PortCheck:
         self.URL = domain
 
     def check_socket(self, host, port):
-
+        res = False
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.settimeout(self.sock_timeout)
 
         try:
 
             if sock.connect_ex((host, port)) == 0:
-                return port
+                #return port
+                res = port
             else:
-                return False
+                res = False
+                #return False
 
         except socket.error:
-            return False
+            #return False
+            res = False
+        
+        finally:
+            sock.close()
+            return res
 
     def connect(self):
 

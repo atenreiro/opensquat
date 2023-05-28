@@ -55,52 +55,50 @@ class Phishing:
             )
 
     def check_phishing(self):
-
-        # Open phishing DB
-        f_phishing = open(self.phishing_filename, "r")
-        f_key = open(self.keywords_filename, "r")
-
         # keyword iteration
         i = 0
+        
+        # Open phishing DB
+        with open(self.keywords_filename, mode='r') as f_key:
+            for keyword in f_key:
+                keyword = keyword.replace("\n", "")
+                keyword = keyword.lower()
 
-        for keyword in f_key:
-            keyword = keyword.replace("\n", "")
-            keyword = keyword.lower()
+                if not keyword:
+                    continue
 
-            if not keyword:
-                continue
+                if (
+                    (keyword[0] != "#") and
+                    (keyword[0] != " ") and
+                    (keyword[0] != "") and
+                    (keyword[0] != "\n")
+                ):
+                    i += 1
+                    print(
+                        Fore.WHITE + "\n[*] Verifying keyword:",
+                        keyword,
+                        "[",
+                        i,
+                        "/",
+                        self.keywords_total,
+                        "]" + Style.RESET_ALL,
+                    )
+                    
+                    with open(self.phishing_filename, mode='r') as f_phishing:
+                        for site in f_phishing:
+                            phishing_site = site.lower()
+                            phishing_site = site.replace("\n", "")
 
-            if (
-                (keyword[0] != "#") and
-                (keyword[0] != " ") and
-                (keyword[0] != "") and
-                (keyword[0] != "\n")
-            ):
-                i += 1
-                print(
-                    Fore.WHITE + "\n[*] Verifying keyword:",
-                    keyword,
-                    "[",
-                    i,
-                    "/",
-                    self.keywords_total,
-                    "]" + Style.RESET_ALL,
-                )
-
-                for site in f_phishing:
-                    phishing_site = site.lower()
-                    phishing_site = site.replace("\n", "")
-
-                    if self.URL_contains(keyword, phishing_site):
-                        print(
-                            Style.BRIGHT + Fore.YELLOW +
-                            "  \_ Similarity detected between",
-                            keyword,
-                            "and",
-                            phishing_site,
-                            "" + Style.RESET_ALL
-                            )
-                        self.list_domains.append(phishing_site)
+                            if self.URL_contains(keyword, phishing_site):
+                                print(
+                                    Style.BRIGHT + Fore.YELLOW +
+                                    "  \\_ Similarity detected between",
+                                    keyword,
+                                    "and",
+                                    phishing_site,
+                                    "" + Style.RESET_ALL
+                                    )
+                                self.list_domains.append(phishing_site)
 
         return self.list_domains
 
@@ -131,6 +129,7 @@ class Phishing:
 
             data = r.content
             r.close()
+            session.close()
 
             with open(self.phishing_filename, "wb") as f:
                 f.write(data)
