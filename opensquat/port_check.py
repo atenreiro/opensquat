@@ -11,6 +11,8 @@ openSquat
 software licensed under GNU version 3
 """
 import socket
+import functools
+import concurrent.futures
 
 
 class PortCheck:
@@ -54,11 +56,14 @@ class PortCheck:
             return res
 
     def connect(self):
-
-        for port in self.ports:
-            if self.check_socket(self.URL, port):
-                self.ports_open.append(port)
-
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            futs = [ (port, executor.submit(functools.partial(self.check_socket, self.URL, port)))
+                for port in self.ports ]
+                
+        for tested_port, result_port in futs:
+            if result_port.result():
+                self.ports_open.append(tested_port)
+        
         return self.ports_open
 
     def main(self, domain):

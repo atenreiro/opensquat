@@ -14,6 +14,9 @@ import requests
 import bisect
 import hashlib
 import os
+import functools
+import concurrent.futures
+import io
 from opensquat import __VERSION__
 
 from colorama import Fore, Style
@@ -112,7 +115,7 @@ class Domain:
         with open(self.domain_filename, mode='r') as file_domains:
             for mydomains in file_domains:
                 domain = mydomains.replace("\n", "")
-                domain = domain.lower()
+                domain = domain.lower().strip()
                 self.list_file_domains.append(domain)
         
         with open(self.keywords_filename, mode='r') as file_keywords:
@@ -123,7 +126,7 @@ class Domain:
                     (line[0] != "") and
                     (line[0] != "\n")
                 ):
-                    self.list_file_keywords.append(line)
+                    self.list_file_keywords.append(line.strip())
 
     def check_latest_feeds(self):
 
@@ -299,6 +302,63 @@ class Domain:
         print("[*] Total domains:", f"{self.domain_total:,}")
         print("[*] Threshold:", self.confidence[self.confidence_level])
 
+
+    def verify_keyword(self, keyword, keyword_line_number, domain_total_lines):
+        result_buffer = io.StringIO()
+        result_domains = []
+        print("[+] Starting Domain Squatting verification for '%s' [%s/%s]" % (keyword, keyword_line_number, self.keywords_total))
+        
+        print(Fore.WHITE + "\n[*] Verifying keyword:",
+            keyword,
+            "[",
+            keyword_line_number,
+            "/",
+            self.keywords_total,
+            "]" + Style.RESET_ALL,
+            file=result_buffer
+        )
+        
+        #print(list(enumerate(self.list_file_domains)))
+        
+        for domain_line_number, domains in enumerate(self.list_file_domains):
+            domain = domains.split(".")
+            domain = domain[0].replace("\n", "")
+            domain = domain.lower()
+            domains = domains.replace("\n", "")
+
+            # Show Progress every 50.000 line
+            if ((domain_line_number % 50000 == 0) and (domain_line_number != 0)):
+                progress = round(((domain_line_number * 100) / domain_total_lines), 1)
+                print(">> Progress:", progress, "%", file=result_buffer)
+            
+            # Check if the domain contains homograph character
+            #   Yes: returns True
+            #   No:  returns False
+            homograph_domain = homograph.check_homograph(domain)
+
+            if homograph_domain:
+                domain = homograph.homograph_to_latin(domain)
+
+            if self.doppelganger_only:
+                self._process_doppelgagner_only(keyword, domain, domains, result_buffer, result_domains)
+                continue
+
+            if self.method.lower() == "levenshtein":
+                self._process_levenshtein(keyword, domain, homograph_domain, domains, result_buffer, result_domains)
+                
+            elif self.method.lower() == "jarowinkler":
+                self._process_jarowinkler(keyword, domain, homograph_domain, domains, result_buffer, result_domains)
+                
+            else:
+                print(
+                    f"No such method: {self.method}. "
+                    "Levenshtein will be used as default.",
+                    file=result_buffer )
+                
+                self._process_levenshtein(keyword, domain, homograph_domain, domains, result_buffer, result_domains)
+        
+        return result_buffer, result_domains
+
     def worker(self):
         """
         Method that will compute all the similarity calculations between
@@ -310,86 +370,23 @@ class Domain:
         Return:
             list_domains: list containing all the flagged domains
         """
-        # keyword iteration
-        i = 0
-
-        # Domains iteration
-        j = 0
-
+        
         domain_total_lines = self.domain_total * self.keywords_total
-
-        for keyword in self.list_file_keywords:
-            keyword = keyword.replace("\n", "")
-            keyword = keyword.lower()
-
-            if not keyword:
-                continue
-
-            if (
-                (keyword[0] != "#") and
-                (keyword[0] != " ") and
-                (keyword[0] != "") and
-                (keyword[0] != "\n")
-            ):
-                i += 1
-                print(
-                    Fore.WHITE + "\n[*] Verifying keyword:",
-                    keyword,
-                    "[",
-                    i,
-                    "/",
-                    self.keywords_total,
-                    "]" + Style.RESET_ALL,
-                )
-
-                for domains in self.list_file_domains:
-                    domain = domains.split(".")
-                    domain = domain[0].replace("\n", "")
-                    domain = domain.lower()
-                    domains = domains.replace("\n", "")
-
-                    # Show Progress every 50.000 line
-                    if ((j % 50000 == 0) and (j != 0)):
-                        progress = round(((j * 100) / domain_total_lines), 1)
-                        print(">> Progress:", progress, "%")
-
-                    # Check if the domain contains homograph character
-                    #   Yes: returns True
-                    #   No:  returns False
-                    homograph_domain = homograph.check_homograph(domain)
-
-                    if homograph_domain:
-                        domain = homograph.homograph_to_latin(domain)
-
-                    if self.doppelganger_only:
-                        self._process_doppelgagner_only(
-                            keyword,
-                            domain,
-                            domains
-                            )
-                        continue
-
-                    if self.method.lower() == "levenshtein":
-                        self._process_levenshtein(
-                            keyword, domain, homograph_domain, domains
-                        )
-                    elif self.method.lower() == "jarowinkler":
-                        self._process_jarowinkler(
-                            keyword, domain, homograph_domain, domains
-                        )
-                    else:
-                        print(
-                            f"No such method: {self.method}. "
-                            "Levenshtein will be used as default."
-                        )
-                        self._process_levenshtein(
-                            keyword, domain, homograph_domain, domains
-                        )
-                    j += 1
-
+        
+        with concurrent.futures.ProcessPoolExecutor() as executor:
+            futs = [ executor.submit(functools.partial(self.verify_keyword, keyword, keyword_line_number, self.domain_total))
+                for keyword_line_number, keyword in enumerate(self.list_file_keywords) if keyword ]
+        
+        print(futs)
+        
+        for fut in futs:
+            result_buffer, result_domains = fut.result()
+            print(result_buffer.getvalue())
+            self.list_domains = self.list_domains + result_domains
+            
         return self.list_domains
 
-    def is_site_reachable(self, domain):
+    def is_site_reachable(self, domain, result_buffer):
         """
         Check if site is reachable in HTTPS
 
@@ -404,10 +401,10 @@ class Domain:
             response = requests.get(f"https://{domain}")
             self.response = response
             output = (True, f"Reachable ({response.status_code})")
-            print(Fore.GREEN + f"[+] https://{domain}/: Site reachable ({response.status_code})"+ Style.RESET_ALL)
+            print(Fore.GREEN + f"[+] https://{domain}/: Site reachable ({response.status_code})"+ Style.RESET_ALL, file=result_buffer)
         except Exception as e:
             output = (False, f"Not reachable: {e}")
-            print(Fore.YELLOW + f"[*] {e}" + Style.RESET_ALL)
+            print(Fore.YELLOW + f"[*] {e}" + Style.RESET_ALL, file=result_buffer)
         return output
 
     def response_contains_keyword(self, keyword):
@@ -422,136 +419,137 @@ class Domain:
         """
         return keyword in self.response.text
 
-    def _process_doppelgagner_only(self, keyword, domain, domains):
-        def print_info(_info):
+    def _process_doppelgagner_only(self, keyword, domain, domains, result_buffer, result_domains):
+        def print_info(_info, keyword, domains, result_buffer):
             print(
                 Style.BRIGHT + Fore.RED + f"[+] {_info} between",
                 keyword,
                 "and",
                 domains,
                 "" + Style.RESET_ALL,
+                file=result_buffer
             )
 
         doppelganger = self.domain_contains(keyword, domain)
 
         if doppelganger:
-            reachable = self.is_site_reachable(domains)[0]
+            reachable = self.is_site_reachable(domains, result_buffer)[0]
 
             if not reachable:
                 return
 
             if self.response_contains_keyword(keyword):
-                print_info(f"Site contains {keyword} !")
+                print_info(f"Site contains {keyword} !", keyword, domains, result_buffer)
             if not ct.CRTSH.check_certificate(domains):
-                print_info("suspicious certificate detected")
+                print_info("suspicious certificate detected", keyword, domains, result_buffer)
             else:
-                print_info("suspicious certificate detected")
-            self.list_domains.append(domains)
+                print_info("suspicious certificate detected", keyword, domains, result_buffer)
+            #self.list_domains.append(domains)
+            result_domains.append(domains)
 
-    def _process_levenshtein(self, keyword, domain, homograph_domain, domains):
+    def _process_levenshtein(self, keyword, domain, homograph_domain, domains, result_buffer, result_domains):
         leven_dist = validations.levenshtein(keyword, domain)
 
         if (leven_dist <= self.confidence_level) and not homograph_domain:
-            self.on_similarity_detected(
-                keyword,
-                domains,
-                self.confidence[leven_dist]
-                )
+            self.on_similarity_detected(keyword, domains, self.confidence[leven_dist], result_buffer, result_domains)
 
             #  DNS Validation
             if(self.dns_validation):
-                self.dns_reputation(domains)
+                self.dns_reputation(domains, result_buffer)
 
         elif (leven_dist <= self.confidence_level) and homograph_domain:
-            self.on_homograph_detected(
-                keyword,
-                domains,
-                self.confidence[leven_dist]
-                )
+            self.on_homograph_detected(keyword, domains, self.confidence[leven_dist], result_buffer, result_domains)
 
             #  DNS Validation
             if(self.dns_validation):
-                self.dns_reputation(domains)
+                self.dns_reputation(domains, result_buffer)
 
         elif self.domain_contains(keyword, domains):
-            self.on_domain_contains(keyword, domains)
+            self.on_domain_contains(keyword, domains, result_buffer, result_domains)
 
             # DNS validation
             if(self.dns_validation):
-                self.dns_reputation(domains)
-
+                self.dns_reputation(domains, result_buffer)
+        
     @staticmethod
-    def dns_error_NoAnswer():
+    def dns_error_NoAnswer(result_buffer=None):
         print(
             Fore.YELLOW + "  \\_ DNS Server error: No Answer\n" +
             Style.RESET_ALL,
+            file=result_buffer
         )
 
     @staticmethod
-    def dns_error_NoNameservers():
+    def dns_error_NoNameservers(result_buffer=None):
         print(
             Fore.YELLOW + "  \\_ DNS Server error: No Name Servers (SRVFAIL)" +
             "\n" + Style.RESET_ALL,
+            file=result_buffer
         )
 
     @staticmethod
-    def dns_error_timeout():
+    def dns_error_timeout(result_buffer=None):
         print(
             Fore.YELLOW + "  \\_ DNS Server error: " +
             "Possible Provider throttling\n" + Style.RESET_ALL,
+            file=result_buffer
         )
 
     @staticmethod
-    def dns_error_nxdomain():
+    def dns_error_nxdomain(result_buffer=None):
         print(
             Fore.YELLOW + "  \\_ DNS response: Non-Existent Domain\n" +
             Style.RESET_ALL,
+            file=result_buffer
         )
 
     @staticmethod
-    def dns_error(dns_resp):
+    def dns_error(dns_resp, result_buffer=None):
         print(
             Fore.YELLOW + "  \\_ DNS response:",
             dns_resp,
             "\n" + Style.RESET_ALL,
+            file=result_buffer
         )
 
     @staticmethod
-    def dns_malicious():
+    def dns_malicious(result_buffer=None):
         print(
             Style.BRIGHT + Fore.RED + "  \\_ Domain Reputation: Malicious\n" +
             Style.RESET_ALL,
+            file=result_buffer
         )
 
     @staticmethod
-    def dns_non_malicious():
+    def dns_non_malicious(result_buffer=None):
         print(
             Fore.GREEN + "  \\_ Domain Reputation: Non-malicious\n" +
             Style.RESET_ALL,
+            file=result_buffer
         )
 
-    def dns_reputation(self, domain):
+    def dns_reputation(self, domain, result_buffer=None):
 
         dns_resp = dns_resolvers.Quad9().main(domain)
 
         # Check response based on DNS rcodes
         if (dns_resp == "non-malicious"):
-            self.dns_non_malicious()  # No error / Non-malicous
+            self.dns_non_malicious(result_buffer)  # No error / Non-malicous
         elif (dns_resp == "malicious"):
-            self.dns_malicious()  # Domain Malicious
+            self.dns_malicious(result_buffer)  # Domain Malicious
             self.list_dns_domains.append(domain)
         elif (dns_resp == "Timeout"):
-            self.dns_error_timeout()  # Connection timeout
+            self.dns_error_timeout(result_buffer)  # Connection timeout
         elif (dns_resp == "NXDOMAIN"):
-            self.dns_error_nxdomain()  # NXDOMAIN / Non-existent Domain
+            self.dns_error_nxdomain(result_buffer)  # NXDOMAIN / Non-existent Domain
         elif (dns_resp == "NoNameservers"):
-            self.dns_error_NoNameservers()  # SRVFAIL / No Name servers
+            self.dns_error_NoNameservers(result_buffer)  # SRVFAIL / No Name servers
         elif (dns_resp == "NoAnswer"):
-            self.dns_error_NoAnswer()
+            self.dns_error_NoAnswer(result_buffer)
         else:
-            self.dns_error(dns_resp)
+            self.dns_error(dns_resp, result_buffer)
 
-    def _process_jarowinkler(self, keyword, domain, homograph_domain, domains):
+    def _process_jarowinkler(self, keyword, domain, homograph_domain, domains, result_buffer, result_domains):
         similarity = validations.jaro_winkler(keyword, domain)
         keys = list(self.jaro_winkler.keys())
         values = list(self.jaro_winkler.values())
@@ -563,15 +561,15 @@ class Domain:
 
         value = values[insertion_point]
         if value in triggered_values and not homograph_domain:
-            self.on_similarity_detected(keyword, domains, value)
+            self.on_similarity_detected(keyword, domains, value, result_buffer, result_domains)
 
         elif value in triggered_values and homograph_domain:
-            self.on_homograph_detected(keyword, domains, value)
+            self.on_homograph_detected(keyword, domains, value, result_buffer, result_domains)
 
         elif self.domain_contains(keyword, domains):
-            self.on_domain_contains(keyword, domains)
+            self.on_domain_contains(keyword, domains, result_buffer, result_domains)
 
-    def on_similarity_detected(self, keyword, domains, value):
+    def on_similarity_detected(self, keyword, domains, value, result_buffer, result_domains):
         print(
             Style.BRIGHT + Fore.RED + "[+] Similarity detected between",
             keyword,
@@ -579,10 +577,12 @@ class Domain:
             domains,
             "(%s)" % value,
             "" + Style.RESET_ALL,
+            file=result_buffer
         )
-        self.list_domains.append(domains)
+        #self.list_domains.append(domains)
+        result_domains.append(domains)
 
-    def on_homograph_detected(self, keyword, domains, value):
+    def on_homograph_detected(self, keyword, domains, value, result_buffer, result_domains):
         print(
             Style.BRIGHT + Fore.RED + "[+] Homograph detected between",
             keyword,
@@ -590,12 +590,14 @@ class Domain:
             domains,
             "(%s)" % value,
             "" + Style.RESET_ALL,
+            file=result_buffer
         )
-        self.list_domains.append(domains)
+        #self.list_domains.append(domains)
+        result_domains.append(domains)
 
-    def on_domain_contains(self, keyword, domains):
-        print(Fore.YELLOW + "[+] Found", domains, "" + Style.RESET_ALL)
-        self.list_domains.append(domains)
+    def on_domain_contains(self, keyword, domains, result_buffer, result_domains):
+        print(Fore.YELLOW + "[+] Found", domains, "" + Style.RESET_ALL, file=result_buffer)
+        result_domains.append(domains)
 
     def main(
         self,

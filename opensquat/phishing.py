@@ -133,7 +133,6 @@ class Phishing:
 
             with open(self.phishing_filename, "wb") as f:
                 f.write(data)
-
             f.close()
 
         except requests.exceptions.ConnectionError:
