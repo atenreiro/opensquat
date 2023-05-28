@@ -42,14 +42,11 @@ class PortCheck:
         try:
 
             if sock.connect_ex((host, port)) == 0:
-                #return port
                 res = port
             else:
                 res = False
-                #return False
 
         except socket.error:
-            #return False
             res = False
         
         finally:
