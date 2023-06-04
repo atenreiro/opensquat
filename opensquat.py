@@ -10,6 +10,8 @@ software licensed under GNU version 3
 """
 import time
 import signal
+import functools
+import concurrent.futures
 
 from colorama import init, Fore, Style
 from opensquat import __VERSION__, vt
@@ -89,7 +91,7 @@ if __name__ == "__main__":
                 for subdomain in subdomains:
                     print(
                         Style.BRIGHT + Fore.YELLOW +
-                        " \_", subdomain +
+                        " \\_", subdomain +
                         Style.RESET_ALL,
                         )
                     list_aux.append(subdomain)
@@ -135,17 +137,21 @@ if __name__ == "__main__":
         list_aux = []
         print("\n+---------- Domains with open webserver ports ----------+")
         time.sleep(1)
-
-        for domain in file_content:
-            ports = port_check.PortCheck().main(domain)
-
+        
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            futs = [ (domain, executor.submit(functools.partial(port_check.PortCheck().main, domain)))
+                for domain in file_content ]
+        
+        for tested_domain, result_domain_port_check in futs:
+            ports = result_domain_port_check.result()
             if ports:
-                list_aux.append(domain)
+                list_aux.append(tested_domain)
                 print(
                     Fore.YELLOW +
-                    "[*]", domain, ports, "" +
-                    Style.RESET_ALL,
+                    "[*]", tested_domain, ports, "" +
+                    Style.RESET_ALL
                     )
+        
         file_content = list_aux
         print("[*] Total found:", len(file_content))
 

@@ -44,10 +44,11 @@ class InputFile:
                 "not found or not readable! Exiting...\n",
             )
             exit(-1)
-
-        for line in open(self.domain_filename):
-            self.domain_total += 1
-
+        
+        with open(self.domain_filename, mode='r') as fd_input:
+            for line in fd_input:
+                self.domain_total += 1
+        
         return self.domain_total
 
     def count_keywords(self):
@@ -68,15 +69,16 @@ class InputFile:
                 "not found or not" "readable! Exiting... \n",
             )
             exit(-1)
-
-        for line in open(self.keywords_filename):
-            if (
-                (line[0] != "#") and
-                (line[0] != " ") and
-                (line[0] != "") and
-                (line[0] != "\n")
-            ):
-                self.keywords_total += 1
+        
+        with open(self.keywords_filename, mode='r') as fd_input:
+            for line in fd_input:
+                if (
+                    (line[0] != "#") and
+                    (line[0] != " ") and
+                    (line[0] != "") and
+                    (line[0] != "\n")
+                ):
+                    self.keywords_total += 1
 
         return self.keywords_total
 

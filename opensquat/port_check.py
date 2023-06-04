@@ -11,6 +11,8 @@ openSquat
 software licensed under GNU version 3
 """
 import socket
+import functools
+import concurrent.futures
 
 
 class PortCheck:
@@ -35,26 +37,33 @@ class PortCheck:
         self.URL = domain
 
     def check_socket(self, host, port):
-
+        res = False
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.settimeout(self.sock_timeout)
 
         try:
 
             if sock.connect_ex((host, port)) == 0:
-                return port
+                res = port
             else:
-                return False
+                res = False
 
         except socket.error:
-            return False
+            res = False
+        
+        finally:
+            sock.close()
+            return res
 
     def connect(self):
-
-        for port in self.ports:
-            if self.check_socket(self.URL, port):
-                self.ports_open.append(port)
-
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            futs = [ (port, executor.submit(functools.partial(self.check_socket, self.URL, port)))
+                for port in self.ports ]
+                
+        for tested_port, result_port in futs:
+            if result_port.result():
+                self.ports_open.append(tested_port)
+        
         return self.ports_open
 
     def main(self, domain):

@@ -46,8 +46,8 @@ class SaveFile:
         Return
             none
         """
-        f_json = open(self.filename, "w")
-        json.dump(self.content, f_json)
+        with open(self.filename, "w") as f_json:
+            json.dump(self.content, f_json)
         f_json.close()
 
     def as_csv(self):
@@ -60,11 +60,11 @@ class SaveFile:
         Return
             none
         """
-        f_csv = open(self.filename, "w")
-        file_csv = csv.writer(
-            f_csv, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL
-        )
-        file_csv.writerow(self.content)
+        with open(self.filename, "w") as f_csv:
+            file_csv = csv.writer(
+                f_csv, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL
+            )
+            file_csv.writerow(self.content)
         f_csv.close()
 
     def as_text(self):
