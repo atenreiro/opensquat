@@ -1,3 +1,8 @@
+v2.1.0 (2023-06-03)
++ openSquat now supports Multiprocessing and Multithreading (thanks to maaaaz) - major performance boost
++ dnsPython library has been updated (thanks to maaaaz)
++ Multiple fixes including DepreciationWarning (more details pull #85)
+
 v2.0.0 (2023-03-11)
 + Improved VirusTotal integration and support for VT API v3
 + new configuration file "vt_key.txt" for VirusTotal API key
