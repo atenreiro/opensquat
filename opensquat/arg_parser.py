@@ -174,6 +174,8 @@ def get_args():
         help="validate against VirusTotal",
     )
 
+    parser.add_argument("--urlhijack", help="Original URL for URL hijacking detection")
+
     args = parser.parse_args()
 
     return args
