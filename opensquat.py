@@ -31,7 +31,7 @@ import concurrent.futures
 
 #Imported libraries for URL hijacking
 import re
-import sys
+#import sys
 import argparse
 
 from colorama import init, Fore, Style
