@@ -12,6 +12,7 @@ import time
 import signal
 import functools
 import concurrent.futures
+import whois
 
 from colorama import init, Fore, Style
 from opensquat import __VERSION__, vt
@@ -86,6 +87,8 @@ if __name__ == "__main__":
         for domain in file_content:
             print("[*]", domain)
             subdomains = vt.VirusTotal().main(domain, "subdomains")
+            domain_info = whois.whois(domain)
+            print(domain_info)
 
             if subdomains:
                 for subdomain in subdomains:
@@ -105,6 +108,8 @@ if __name__ == "__main__":
         time.sleep(1)
         for domain in file_content:
             total_votes = vt.VirusTotal().main(domain)
+            domain_info = whois.whois(domain)
+            print(domain_info)
 
             # total votes
             harmless = total_votes[0]
