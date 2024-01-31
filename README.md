@@ -2,6 +2,20 @@ openSquat
 ====
 ![alt text](https://raw.githubusercontent.com/atenreiro/opensquat/master/screenshots/openSquat_logo.png)
 
+## Table of Contents
+- [What is openSquat](#what-is-opensquat)
+- [Screenshot / Video Demo](#screenshot--video-demo)
+- [Demo / Forks](#demo--forks)
+- [How to Install](#how-to-install)
+- [How to Update](#how-to-update)
+- [Usage Examples](#usage-examples)
+- [Automations & Integrations](#automations--integrations)
+- [To Do / Roadmap](#to-do--roadmap)
+- [Changelog](#changelog)
+- [How to Contribute](#how-to-contribute)
+- [Authors](#authors)
+- [How to Help](#how-to-help)
+
 What is openSquat
 -------------
 
@@ -140,13 +154,20 @@ To Do / Roadmap
 *   AND logical condition for keywords search (e.g: google+login) - Thanks to Steff T.
 *   Enhanced documentation
 
-Feature Request
--------------
-To request a new feature, create a "new issue" and describe the feature and potential use cases. You can upvote the "issue" and contribute to the discussions if something similar already exists.
-
 Changelog
 -------------
 *   Check the [CHANGELOG](https://github.com/atenreiro/opensquat/blob/master/CHANGELOG) file.
+
+How to Contribute
+-------------
+We welcome and encourage contributions from the community! If you're interested in helping improve openSquat, here are a variety of ways you can contribute:
+
+- **Reporting Bugs:** To report bugs, open an issue on our [GitHub issues page](https://github.com/atenreiro/opensquat/issues). You should include as much detail as possible to help us understand the problem and what the ideal solution would be.
+- **Feature Requests:** To request a new feature, create a "new issue" and describe the feature and potential use cases. You can upvote the "issue" and contribute to the discussions if something similar already exists.
+- **Code Contributions:** To help advance openSquat with coding, you can look at open issues or feature requests. Be sure to fork the repository, make your changes, and submit a pull request.
+- **Documentation:** You can help improve documentation by fixing typos, clarifying instructions, or adding new, valuable sections.
+
+Thank you for your interest in contributing to openSquat!
 
 Authors
 -------------
@@ -157,7 +178,7 @@ Project founder
 Contributors
 *   Please check the contributors page on GitHub
 
-How to help
+How to Help
 -------------
 You can help this project in many ways:
 *   Providing your time and coding skills to enhance the project
