@@ -29,8 +29,8 @@ class Phishing:
         keyword: list of keywords
     """
     def __init__(self):
-        self.phishing_db = "https://raw.githubusercontent.com/mitchellkrogza" \
-                           "/Phishing.Database/master/" \
+        self.phishing_db = "https://phish.co.za" \
+                           "/latest/" \
                            "phishing-domains-ACTIVE.txt"
         self.phishing_filename = "phishing.db"
         self.keyword = ""
