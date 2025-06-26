@@ -1,0 +1,199 @@
+name: openSquat Security Scan
+
+on:
+  # Run on schedule (daily at 8 AM UTC)
+  schedule:
+    - cron: '0 8 * * *'
+  
+  # Run on manual trigger
+  workflow_dispatch:
+    inputs:
+      keywords:
+        description: 'Keywords to scan (comma-separated)'
+        required: false
+        default: 'dovetail,google,microsoft'
+      confidence:
+        description: 'Confidence level (0-4)'
+        required: false
+        default: '1'
+      output_format:
+        description: 'Output format (txt, json, csv)'
+        required: false
+        default: 'json'
+      enable_dns:
+        description: 'Enable DNS validation'
+        required: false
+        default: 'true'
+      enable_phishing:
+        description: 'Enable phishing validation'
+        required: false
+        default: 'true'
+      enable_portcheck:
+        description: 'Enable port checking'
+        required: false
+        default: 'false'
+
+  # Run on push to main branch (optional)
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'keywords.txt'
+      - 'opensquat.py'
+      - '.github/workflows/opensquat-scan.yml'
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Create keywords file
+      run: |
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          # Use provided keywords
+          echo "${{ github.event.inputs.keywords }}" | tr ',' '\n' > keywords.txt
+        else
+          # Use default keywords file
+          echo "Using existing keywords.txt"
+        fi
+
+    - name: Set up Datadog API key (optional)
+      if: env.DD_API_KEY != ''
+      run: |
+        echo "DD_API_KEY is set, will send results to Datadog"
+      env:
+        DD_API_KEY: ${{ secrets.DD_API_KEY }}
+
+    - name: Run openSquat scan
+      run: |
+        # Build command with options
+        CMD="python opensquat.py"
+        
+        # Add confidence level
+        CMD="$CMD -c ${{ github.event.inputs.confidence || '1' }}"
+        
+        # Add output format
+        OUTPUT_FILE="opensquat_results.${{ github.event.inputs.output_format || 'json' }}"
+        CMD="$CMD -o $OUTPUT_FILE -t ${{ github.event.inputs.output_format || 'json' }}"
+        
+        # Add DNS validation if enabled
+        if [ "${{ github.event.inputs.enable_dns || 'true' }}" = "true" ]; then
+          CMD="$CMD --dns"
+        fi
+        
+        # Add phishing validation if enabled
+        if [ "${{ github.event.inputs.enable_phishing || 'true' }}" = "true" ]; then
+          CMD="$CMD --phishing phishing_results.txt"
+        fi
+        
+        # Add port checking if enabled
+        if [ "${{ github.event.inputs.enable_portcheck || 'false' }}" = "true" ]; then
+          CMD="$CMD --portcheck"
+        fi
+        
+        echo "Running: $CMD"
+        $CMD
+
+    - name: Upload scan results
+      uses: actions/upload-artifact@v3
+      with:
+        name: opensquat-results-${{ github.run_number }}
+        path: |
+          opensquat_results.*
+          phishing_results.txt
+        retention-days: 30
+
+    - name: Comment on PR (if triggered by PR)
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          let results = 'No results file found';
+          
+          try {
+            if (fs.existsSync('opensquat_results.json')) {
+              const data = JSON.parse(fs.readFileSync('opensquat_results.json', 'utf8'));
+              results = `Found ${data.length} potentially suspicious domains`;
+            } else if (fs.existsSync('opensquat_results.txt')) {
+              const data = fs.readFileSync('opensquat_results.txt', 'utf8');
+              const lines = data.trim().split('\n').filter(line => line.length > 0);
+              results = `Found ${lines.length} potentially suspicious domains`;
+            }
+          } catch (error) {
+            results = 'Error reading results file';
+          }
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: `🔍 **openSquat Security Scan Results**\n\n${results}\n\n[View full results](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})`
+          });
+
+    - name: Create issue for high-risk findings
+      if: always()
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          
+          try {
+            let domainCount = 0;
+            
+            if (fs.existsSync('opensquat_results.json')) {
+              const data = JSON.parse(fs.readFileSync('opensquat_results.json', 'utf8'));
+              domainCount = data.length;
+            } else if (fs.existsSync('opensquat_results.txt')) {
+              const data = fs.readFileSync('opensquat_results.txt', 'utf8');
+              const lines = data.trim().split('\n').filter(line => line.length > 0);
+              domainCount = lines.length;
+            }
+            
+            // Create issue if more than 5 suspicious domains found
+            if (domainCount > 5) {
+              const title = `🚨 High number of suspicious domains detected (${domainCount})`;
+              const body = `## openSquat Security Alert
+              
+              **Scan Date:** ${new Date().toISOString()}
+              **Suspicious Domains Found:** ${domainCount}
+              
+              ### Action Required
+              Please review the scan results in the [GitHub Actions artifacts](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}).
+              
+              ### Scan Configuration
+              - Keywords: ${process.env.KEYWORDS || 'From keywords.txt'}
+              - Confidence Level: ${process.env.CONFIDENCE || '1'}
+              - DNS Validation: ${process.env.ENABLE_DNS || 'true'}
+              - Phishing Validation: ${process.env.ENABLE_PHISHING || 'true'}
+              
+              ### Next Steps
+              1. Review the flagged domains
+              2. Investigate high-risk findings
+              3. Update blocklists if necessary
+              4. Consider adjusting scan parameters if needed
+              `;
+              
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: title,
+                body: body,
+                labels: ['security', 'opensquat', 'high-priority']
+              });
+            }
+          } catch (error) {
+            console.log('Error creating issue:', error.message);
+          } 

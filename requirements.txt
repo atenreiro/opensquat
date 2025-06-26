@@ -13,3 +13,4 @@ flake8
 beautifulsoup4
 dnspython
 packaging
+datadog-api-client

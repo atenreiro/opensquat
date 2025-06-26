@@ -1,0 +1,55 @@
+name: openSquat Security Scan (Simple)
+
+on:
+  # Run daily at 8 AM UTC
+  schedule:
+    - cron: '0 8 * * *'
+  
+  # Manual trigger
+  workflow_dispatch:
+  
+  # Run when keywords.txt is updated
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'keywords.txt'
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Run openSquat scan
+      run: |
+        python opensquat.py -o results.json -t json --dns --phishing phishing_results.txt
+
+    - name: Upload results
+      uses: actions/upload-artifact@v3
+      with:
+        name: opensquat-results
+        path: |
+          results.json
+          phishing_results.txt
+        retention-days: 30
+
+    - name: Display results summary
+      run: |
+        if [ -f results.json ]; then
+          echo "Found $(jq length results.json) suspicious domains"
+          echo "First 5 domains:"
+          jq -r '.[0:5][]' results.json
+        else
+          echo "No results file found"
+        fi 
