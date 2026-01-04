@@ -47,7 +47,10 @@ class InputFile:
         
         with open(self.domain_filename, mode='r') as fd_input:
             for line in fd_input:
-                self.domain_total += 1
+                line = line.strip()
+                # Skip comments and empty lines
+                if line and not line.startswith("#"):
+                    self.domain_total += 1
         
         return self.domain_total
 
