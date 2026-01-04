@@ -104,6 +104,13 @@ def get_args():
         default="",
         help="update from FILE instead of downloading new domains",
     )
+    parser.add_argument(
+        "-p",
+        "--period",
+        type=str,
+        default=None,
+        help=argparse.SUPPRESS,  # Hide from help since deprecated
+    )
 
     parser.add_argument(
         "-m",
@@ -149,5 +156,10 @@ def get_args():
     )
 
     args = parser.parse_args()
+
+    # Check for deprecated -p/--period argument
+    if args.period is not None:
+        print("\n[ERROR] The weekly/monthly feeds have been deprecated. Please use the daily feeds.\n")
+        exit(1)
 
     return args
