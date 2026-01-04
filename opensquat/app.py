@@ -50,10 +50,7 @@ class Domain:
     def __init__(self):
         """Initiator."""
         self.URL = ("https://feeds.opensquat.com/")
-        self.URL_backup = (
-            "https://raw.githubusercontent.com/CERT-MZ/projects"
-            "/master/Domain-squatting/"
-        )
+        self.URL_backup = "https://feeds-backup.opensquat.com/opensquat-nrd-free.txt"
         self.URL_file = None
         self.today = date.today().strftime("%Y-%m-%d")
         self.domain_filename = None
@@ -196,7 +193,7 @@ class Domain:
                 Style.BRIGHT+Fore.RED+"[ERROR]", self.URL_file, "not found," +
                 "trying the backup URL."+Style.RESET_ALL
                 )
-            URL = self.URL_backup + self.URL_file
+            URL = self.URL_backup
             print("[*] Downloading fresh domain list from backup URL", URL)
             response = requests.get(URL, stream=True, headers=headers)
 
