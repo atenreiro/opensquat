@@ -117,13 +117,9 @@ class Domain:
         
         with open(self.keywords_filename, mode='r') as file_keywords:
             for line in file_keywords:
-                if (
-                    (line[0] != "#") and
-                    (line[0] != " ") and
-                    (line[0] != "") and
-                    (line[0] != "\n")
-                ):
-                    self.list_file_keywords.append(line.strip())
+                line = line.strip()
+                if line and not line.startswith("#"):
+                    self.list_file_keywords.append(line)
 
     def check_latest_feeds(self):
 
@@ -163,7 +159,7 @@ class Domain:
                         # print("-> ", latest_checksum, " ", local_checksum)
                         return False
 
-                except:
+                except Exception:
                     return False
         return False
 
@@ -420,7 +416,7 @@ class Domain:
             if not ct.CRTSH.check_certificate(domains):
                 print_info("suspicious certificate detected", keyword, domains, result_buffer)
             else:
-                print_info("suspicious certificate detected", keyword, domains, result_buffer)
+                print_info("valid certificate", keyword, domains, result_buffer)
             #self.list_domains.append(domains)
             result_domains.append(domains)
 
