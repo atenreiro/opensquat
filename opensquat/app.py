@@ -62,7 +62,6 @@ class Domain:
         self.keywords_total = 0
         self.list_domains = []
         self.confidence_level = 2
-        self.period = "day"
         self.doppelganger_only = False
         self.dns_validation = False
         self.list_dns_domains = []
@@ -116,7 +115,9 @@ class Domain:
             for mydomains in file_domains:
                 domain = mydomains.replace("\n", "")
                 domain = domain.lower().strip()
-                self.list_file_domains.append(domain)
+                # Skip comments and empty lines
+                if domain and not domain.startswith("#"):
+                    self.list_file_domains.append(domain)
         
         with open(self.keywords_filename, mode='r') as file_keywords:
             for line in file_keywords:
@@ -252,25 +253,6 @@ class Domain:
             none
         """
         self.keywords_filename = filename
-
-    def set_searchPeriod(self, search_period):
-        """
-        Method to set the search_period.
-
-        Args:
-            search_period
-
-        Return:
-            none
-        """
-        self.period = search_period
-
-        if self.period == "day":
-            self.URL_file = "domain-names.txt"
-        elif self.period == "week":
-            self.URL_file = "domain-names-week.txt"
-        elif self.period == "month":
-            self.URL_file = "domain-names-month.txt"
 
     def set_dns_validation(self, dns):
         """
@@ -603,7 +585,6 @@ class Domain:
         keywords_file,
         confidence_level,
         domains_file,
-        search_period,
         method,
         dns,
         doppelganger_only=False,
@@ -620,7 +601,7 @@ class Domain:
         print("+---------- Checking Domain Squatting ----------+")
         self.set_filename(keywords_file)
         self.domain_filename = domains_file
-        self.set_searchPeriod(search_period)
+        self.URL_file = "domain-names.txt"
         self.confidence_level = confidence_level
         self.doppelganger_only = doppelganger_only
         self.set_dns_validation(dns)

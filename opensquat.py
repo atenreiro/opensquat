@@ -68,7 +68,6 @@ if __name__ == "__main__":
         args.keywords,
         args.confidence,
         args.domains,
-        args.period,
         args.method,
         args.dns,
         args.ct

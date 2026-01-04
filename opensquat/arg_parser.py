@@ -14,25 +14,6 @@ software licensed under GNU version 3
 import argparse
 
 
-def validate_period(search_period):
-    """
-    Validate period.
-
-    Args:
-        period: string containing the searchable period, either day or week.
-
-    Return:
-        period
-
-    Raise:
-        If value is not valid, raise an exception to argparse
-    """
-    period = str(search_period)
-
-    if (period != "day") and (period != "week") and (period != "month"):
-        raise argparse.ArgumentTypeError("Unkown search period!")
-    return period
-
 
 def validate_type(file_type):
     """
@@ -122,13 +103,6 @@ def get_args():
         type=str,
         default="",
         help="update from FILE instead of downloading new domains",
-    )
-    parser.add_argument(
-        "-p",
-        "--period",
-        type=validate_period,
-        default="day",
-        help="Searchable period [day|week|month] (default: day)",
     )
 
     parser.add_argument(

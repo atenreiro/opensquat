@@ -115,9 +115,6 @@ Edit the "keywords.txt" with your customised keywords to hunt.
     # Conduct a certificate transparency (ct) hunt
     python opensquat.py --ct
 
-    # Period search - registrations from the last month (default: day)
-    python opensquat.py -p month
-
     # Tweak confidence level. The lower values bring more false positives
     # (0: very high, 1: high (default), 2: medium, 3: low, 4: very low
     python opensquat.py -c 2
