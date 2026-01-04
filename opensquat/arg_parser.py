@@ -3,9 +3,8 @@
 """
 openSquat.
 
-(c) CERT-MZ | Andre Tenreiro | andre@cert.mz
+(c) Andre Tenreiro
 
-* https://www.cert.mz
 * https://github.com/atenreiro/opensquat
 
 software licensed under GNU version 3
