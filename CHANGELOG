@@ -1,3 +1,8 @@
+v2.2.0 (2026-01-08)
++ Major Code Refactoring: Split app.py into FeedManager, DNSValidator, and SquattingDetector modules.
++ Performance: Optimized parallel execution logic (~2x faster on macOS).
++ Code Quality: Improved separation of concerns and maintainability.
+
 v2.1.2 (2026-01-08)
 + Fixed feed validation for chunked responses (feeds with missing Content-Length header)
 
