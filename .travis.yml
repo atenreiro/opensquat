@@ -1,6 +1,9 @@
 language: python
 python:
-  - "3.7"
+  - "3.8"
+  - "3.9"
+  - "3.10"
+  - "3.11"
 
 install:
   - pip install -r requirements.txt
@@ -11,4 +14,4 @@ before_script:
   - flake8 . --count --ignore=$IGNORE --max-complexity=25 --max-line-length=127 --show-source --statistics
 
 script:
-  - pytest --cov=opensquat --cov=tests --cov=docs/src --cov-report=term-missing tests
+  - pytest --cov=opensquat --cov=tests --cov-report=term-missing tests

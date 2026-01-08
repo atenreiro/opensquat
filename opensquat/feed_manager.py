@@ -11,7 +11,11 @@ from colorama import Fore, Style
 from opensquat import __VERSION__
 
 class FeedManager:
-    def __init__(self, url="https://feeds.opensquat.com/", backup_url="https://feeds-backup.opensquat.com/opensquat-nrd-free.txt"):
+    def __init__(
+        self,
+        url="https://feeds.opensquat.com/",
+        backup_url="https://feeds-backup.opensquat.com/opensquat-nrd-free.txt"
+    ):
         self.url = url
         self.backup_url = backup_url
         self.url_file = "domain-names.txt"
@@ -23,7 +27,7 @@ class FeedManager:
         """
         url_md5 = self.url + self.url_file + ".md5"
         print("[*] Checking for the latest feeds...")
-        
+
         headers = {'User-Agent': self.user_agent}
 
         try:
@@ -61,7 +65,7 @@ class FeedManager:
         headers = {'User-Agent': self.user_agent}
         try:
             response = requests.get(download_url, stream=True, headers=headers)
-            
+
             # Fault tolerance
             if response.status_code in (403, 404):
                 print(
@@ -73,13 +77,17 @@ class FeedManager:
                 response = requests.get(download_url, stream=True, headers=headers)
 
             if response.status_code != 200:
-                print(Style.BRIGHT + Fore.RED + f"[ERROR] Failed to download feeds (Status: {response.status_code})" + Style.RESET_ALL)
+                print(
+                    Style.BRIGHT + Fore.RED +
+                    f"[ERROR] Failed to download feeds (Status: {response.status_code})" +
+                    Style.RESET_ALL
+                )
                 exit(-1)
 
             # Get content size (handling chunked encoding where header might be missing)
             total_size = int(response.headers.get("content-length", 0))
             data = response.content
-            
+
             if total_size == 0:
                 total_size = len(data)
 
@@ -96,7 +104,7 @@ class FeedManager:
 
             with open(local_filename, "wb") as f:
                 f.write(data)
-            
+
             return True
 
         except Exception as e:
@@ -107,13 +115,13 @@ class FeedManager:
         """
         Ensures that the feed file exists and is up to date.
         """
-        if local_filename == "": # Should not happen if defaults are set correctly, but for safety
-             local_filename = self.url_file
-             
-        # If user provided a custom path that is NOT the default/downloaded one, 
+        if local_filename == "":  # Should not happen if defaults are set correctly, but for safety
+            local_filename = self.url_file
+
+        # If user provided a custom path that is NOT the default/downloaded one,
         # typically we assume they manage it, but here we cover the default logic.
         # The logic in app.py was: if domain_filename == "" (or default), check/download.
         # We will handle the check here.
-        
+
         if not self.check_latest_feeds(local_filename):
             self.download(local_filename)

@@ -11,14 +11,11 @@ software licensed under GNU version 3
 """
 import concurrent.futures
 import functools
-import time
 import io
 from datetime import date
 from colorama import Fore, Style
 
-from opensquat import __VERSION__
-from opensquat import file_input, output, check_update
-from opensquat import port_check, vt, phishing
+from opensquat import file_input
 from opensquat.feed_manager import FeedManager
 from opensquat.dns_validator import DNSValidator
 from opensquat.squatting_detector import SquattingDetector
@@ -40,11 +37,11 @@ class Domain:
         self.confidence_level = 2
         self.doppelganger_only = False
         self.method = "Levenshtein"
-        
+
         self.feed_manager = FeedManager()
         self.dns_validator = None
         self.squatting_detector = None
-        
+
         self.list_file_domains = []
         self.list_file_keywords = []
 
@@ -52,7 +49,7 @@ class Domain:
         (self.keywords_total, self.domain_total) = file_input.InputFile().main(
             self.keywords_filename,
             self.domain_filename
-            )
+        )
 
     def read_files(self):
         """
@@ -64,8 +61,8 @@ class Domain:
                 domain = domain.lower().strip()
                 # Skip comments and empty lines
                 if domain and not domain.startswith("#"):
-                    self.list_file_domains.append(mydomains) # Keep original line for detector
-        
+                    self.list_file_domains.append(mydomains)  # Keep original line for detector
+
         with open(self.keywords_filename, mode='r') as file_keywords:
             for line in file_keywords:
                 line = line.strip()
@@ -79,7 +76,7 @@ class Domain:
         print("[*] keywords:", self.keywords_filename)
         print("[*] keywords total:", self.keywords_total)
         print("[*] Total domains:", f"{self.domain_total:,}")
-        
+
         # Detector confidence mapping is internal now, but we can print level
         # self.squatting_detector.confidence[self.confidence_level] access might be needed or hardcoded
         # Replicating original behavior hardcoded or accessing detector
@@ -92,18 +89,18 @@ class Domain:
         }
         print("[*] Threshold:", confidence_map.get(self.confidence_level, "unknown"))
 
-
     @staticmethod
     def verify_keyword_task(detector, domains_list, keyword_info):
         """
         Static worker method for parallel execution.
         """
         keyword, keyword_line_number, keywords_total = keyword_info
-        
+
         result_buffer = io.StringIO()
         print(f"[+] Starting Domain Squatting verification for '{keyword}' [{keyword_line_number}/{keywords_total}]")
-        
-        print(Fore.WHITE + "\n[*] Verifying keyword:",
+
+        print(
+            Fore.WHITE + "\n[*] Verifying keyword:",
             keyword,
             "[",
             keyword_line_number,
@@ -123,42 +120,42 @@ class Domain:
         """
         # We pass the detector instance. Ideally pickling it is cheap as it has no heavy state.
         # The list_file_domains is passed explicitly to partial, so it's pickled once per process start (fork) or task?
-        # On spawn (macOS), arguments to partial are pickled and sent. 
+        # On spawn (macOS), arguments to partial are pickled and sent.
         # Sending the full list_file_domains (360k items) for EVERY keyword task is what we wanted to avoid.
         # But here we are still passing it.
         # However, verifying 5-10 keywords means 5-10 tasks.
         # If we use ProcessPoolExecutor, we submit tasks.
         # To truly optimize, we need to avoid sending the list every time.
-        # But given the current architecture without shared memory or a Manager, 
+        # But given the current architecture without shared memory or a Manager,
         # passing it is the standard way.
         # EXCEPT: If we use `initializer` in Executor to load domains once per worker process?
         # But let's stick to the structure refactor first.
         # The `detector` is now lightweight (no domain list in it).
-        
+
         # NOTE: For true optimization on Spawn systems, we should load domains inside the worker process
         # or use shared memory. But standard refactoring is the first step.
-        
+
         with concurrent.futures.ProcessPoolExecutor() as executor:
             # We must be careful not to pass `self` methods if they pickle `self`.
             # That's why verify_keyword_task is static.
-            
+
             # Prepare task arguments
             keyword_infos = [
-                (keyword, i, self.keywords_total) 
+                (keyword, i, self.keywords_total)
                 for i, keyword in enumerate(self.list_file_keywords) if keyword
             ]
-            
+
             # Partial: detector and domains are constant for all tasks
-            # Optimization note: This still sends domains_list to each process. 
+            # Optimization note: This still sends domains_list to each process.
             worker_func = functools.partial(self.verify_keyword_task, self.squatting_detector, self.list_file_domains)
 
             futs = [executor.submit(worker_func, k_info) for k_info in keyword_infos]
-        
+
         for fut in futs:
             result_buffer, result_domains = fut.result()
             print(result_buffer.getvalue())
             self.list_domains.extend(result_domains)
-            
+
         return self.list_domains
 
     def main(
@@ -176,20 +173,20 @@ class Domain:
         self.confidence_level = confidence_level
         self.doppelganger_only = doppelganger_only
         self.method = method
-        
+
         self.dns_validator = DNSValidator(use_dns=dns)
         self.squatting_detector = SquattingDetector(
-            method=method, 
-            confidence_level=confidence_level, 
+            method=method,
+            confidence_level=confidence_level,
             doppelganger_only=doppelganger_only,
             dns_validator=self.dns_validator
         )
 
         # Feed Management
         if self.domain_filename == "":
-             self.domain_filename = self.feed_manager.url_file
-             self.feed_manager.ensure_feeds(self.domain_filename)
-        
+            self.domain_filename = self.feed_manager.url_file
+            self.feed_manager.ensure_feeds(self.domain_filename)
+
         self.count_files()
         self.read_files()
         self.print_info()

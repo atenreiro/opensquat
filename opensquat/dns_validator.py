@@ -35,7 +35,7 @@ class DNSValidator:
         elif dns_resp == "NoNameservers":
             self._print_result(Fore.YELLOW + "  \\_ DNS Server error: No Name Servers (SRVFAIL)\n", result_buffer)
         elif dns_resp == "NoAnswer":
-             self._print_result(Fore.YELLOW + "  \\_ DNS Server error: No Answer\n", result_buffer)
+            self._print_result(Fore.YELLOW + "  \\_ DNS Server error: No Answer\n", result_buffer)
         else:
             self._print_result(Fore.YELLOW + f"  \\_ DNS response: {dns_resp}\n", result_buffer)
 
