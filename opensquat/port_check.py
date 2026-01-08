@@ -29,11 +29,11 @@ class PortCheck:
         """Initiator."""
         self.ports = [80, 443]
         self.ports_open = []
-        self.host = None
+        self.domain = None
         self.sock_timeout = 1
 
-    def set_url(self, domain):
-        self.URL = domain
+    def set_domain(self, domain):
+        self.domain = domain
 
     def check_socket(self, host, port):
         res = False
@@ -41,31 +41,27 @@ class PortCheck:
         sock.settimeout(self.sock_timeout)
 
         try:
-
             if sock.connect_ex((host, port)) == 0:
                 res = port
-            else:
-                res = False
-
         except socket.error:
-            res = False
-        
+            pass
         finally:
             sock.close()
             return res
 
     def connect(self):
         with concurrent.futures.ThreadPoolExecutor() as executor:
-            futs = [ (port, executor.submit(functools.partial(self.check_socket, self.URL, port)))
-                for port in self.ports ]
-                
+            futs = [
+                (port, executor.submit(functools.partial(self.check_socket, self.domain, port)))
+                for port in self.ports
+            ]
+
         for tested_port, result_port in futs:
             if result_port.result():
                 self.ports_open.append(tested_port)
-        
+
         return self.ports_open
 
     def main(self, domain):
-        self.set_url(domain)
-
+        self.set_domain(domain)
         return self.connect()
