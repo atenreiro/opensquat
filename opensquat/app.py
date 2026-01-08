@@ -194,20 +194,25 @@ class Domain:
 
         # Get total file size in bytes from the request header
         total_size = int(response.headers.get("content-length", 0))
+
+        data = response.content
+
+        # Update total_size from actual data if header was missing
+        if total_size == 0:
+            total_size = len(data)
+
         total_size_mb = round(float(total_size / 1024 / 1024), 2)
 
-        # Validate if the URL file is not found
-        if total_size_mb == 0:
+        # Validate if the URL file is not found or empty
+        if total_size == 0:
 
             print(
-                Style.BRIGHT+Fore.RED+"[ERROR]", self.URL_file, "not found, " +
+                Style.BRIGHT+Fore.RED+"[ERROR]", self.URL_file, "not found or empty, " +
                 "Please notify the authors or try again later."+Style.RESET_ALL
                 )
             exit(-1)
 
         print("[*] Download volume:", total_size_mb, "MB")
-
-        data = response.content
         response.close()
 
         with open(self.URL_file, "wb") as f:
