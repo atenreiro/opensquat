@@ -44,7 +44,7 @@ openSquat is an **Open Source Intelligence (OSINT)** security tool that identifi
 ## ✨ Key Features
 
 - 📅 **Daily NRD feeds** — Automatic newly registered domain updates
-- 🔍 **Similarity detection** — Levenshtein & Jaro-Winkler algorithms
+- 🔍 **Similarity detection** — Levenshtein distance algorithm
 - 🛡️ **VirusTotal integration** — Check domain reputation
 - 🌐 **Quad9 DNS validation** — Identify malicious domains
 - 📜 **Certificate Transparency** — Monitor SSL/TLS certificates
@@ -169,7 +169,6 @@ Run daily via crontab:
 | `-t, --type` | `txt` | Output format: `txt`, `json`, `csv` |
 | `-c, --confidence` | `1` | Confidence level (0-4) |
 | `-d, --domains` | — | Use local domain file instead of downloading |
-| `-m, --method` | `Levenshtein` | Algorithm: `Levenshtein` or `JaroWinkler` |
 | `--dns` | — | Enable Quad9 DNS validation |
 | `--ct` | — | Search Certificate Transparency logs |
 | `--phishing` | — | Cross-reference phishing database |

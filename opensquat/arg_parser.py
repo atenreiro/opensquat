@@ -118,15 +118,6 @@ def get_args():
     )
 
     parser.add_argument(
-        "-m",
-        "--method",
-        type=str,
-        choices=("Levenshtein", "JaroWinkler"),
-        default="Levenshtein",
-        help="method which is used to calculate similarity",
-    )
-
-    parser.add_argument(
         "--ct",
         action="store_true",
         help="search in certificate transparency",

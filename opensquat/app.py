@@ -36,7 +36,6 @@ class Domain:
         self.list_domains = []
         self.confidence_level = 2
         self.doppelganger_only = False
-        self.method = "Levenshtein"
 
         self.feed_manager = None
         self.dns_validator = None
@@ -133,7 +132,6 @@ class Domain:
         keywords_file,
         confidence_level,
         domains_file,
-        method,
         dns,
         doppelganger_only=False,
         feed_url="https://feeds.opensquat.com/opensquat-nrd-latest.txt",
@@ -143,11 +141,9 @@ class Domain:
         self.domain_filename = domains_file
         self.confidence_level = confidence_level
         self.doppelganger_only = doppelganger_only
-        self.method = method
 
         self.dns_validator = DNSValidator(use_dns=dns)
         self.squatting_detector = SquattingDetector(
-            method=method,
             confidence_level=confidence_level,
             doppelganger_only=doppelganger_only,
             dns_validator=self.dns_validator

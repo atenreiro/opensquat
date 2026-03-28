@@ -5,7 +5,6 @@ SquattingDetector module for openSquat.
 Handles the core logic for detecting squatting domains.
 Designed to be lightweight for parallel execution.
 """
-import bisect
 import io
 import requests
 from colorama import Fore, Style
@@ -13,8 +12,7 @@ from opensquat import validations, homograph, ct
 
 
 class SquattingDetector:
-    def __init__(self, method="Levenshtein", confidence_level=2, doppelganger_only=False, dns_validator=None):
-        self.method = method.lower()
+    def __init__(self, confidence_level=2, doppelganger_only=False, dns_validator=None):
         self.confidence_level = confidence_level
         self.doppelganger_only = doppelganger_only
         self.dns_validator = dns_validator
@@ -25,13 +23,6 @@ class SquattingDetector:
             2: "medium confidence",
             3: "low confidence",
             4: "very low confidence",
-        }
-
-        self.jaro_winkler = {
-            0.8: "Low",
-            0.89: "Medium",
-            0.949: "High",
-            0.95: "Very high",
         }
 
     def check(self, keyword, domains_list, result_buffer=None):
@@ -66,18 +57,9 @@ class SquattingDetector:
                 )
                 continue
 
-            if self.method == "levenshtein":
-                self._process_levenshtein(
-                    keyword, domain_part, homograph_domain, original_domain, result_buffer, result_domains
-                )
-            elif self.method == "jarowinkler":
-                self._process_jarowinkler(
-                    keyword, domain_part, homograph_domain, original_domain, result_buffer, result_domains
-                )
-            else:
-                self._process_levenshtein(
-                    keyword, domain_part, homograph_domain, original_domain, result_buffer, result_domains
-                )
+            self._process_levenshtein(
+                keyword, domain_part, homograph_domain, original_domain, result_buffer, result_domains
+            )
 
         return result_domains
 
@@ -98,32 +80,6 @@ class SquattingDetector:
             self._on_homograph(
                 keyword, original_domain, self.confidence.get(leven_dist, "unknown"), result_buffer, result_domains
             )
-            if self.dns_validator:
-                self.dns_validator.check_domain(original_domain, result_buffer)
-
-        elif self._domain_contains(keyword, original_domain):
-            self._on_contains(keyword, original_domain, result_buffer, result_domains)
-            if self.dns_validator:
-                self.dns_validator.check_domain(original_domain, result_buffer)
-
-    def _process_jarowinkler(self, keyword, domain, homograph_domain, original_domain, result_buffer, result_domains):
-        similarity = validations.jaro_winkler(keyword, domain)
-        keys = list(self.jaro_winkler.keys())
-        values = list(self.jaro_winkler.values())
-        triggered_values = values[1:]
-        insertion_point = bisect.bisect_left(keys, similarity)
-
-        if insertion_point == len(keys):
-            insertion_point -= 1
-
-        value = values[insertion_point]
-        if value in triggered_values and not homograph_domain:
-            self._on_similarity(keyword, original_domain, value, result_buffer, result_domains)
-            if self.dns_validator:
-                self.dns_validator.check_domain(original_domain, result_buffer)
-
-        elif value in triggered_values and homograph_domain:
-            self._on_homograph(keyword, original_domain, value, result_buffer, result_domains)
             if self.dns_validator:
                 self.dns_validator.check_domain(original_domain, result_buffer)
 
