@@ -10,7 +10,6 @@ software licensed under GNU version 3
 import requests
 from colorama import Fore, Style
 from opensquat import __VERSION__
-from packaging import version
 
 class CheckUpdate:
     """
@@ -49,7 +48,10 @@ class CheckUpdate:
 
         current_ver = self.current
 
-        if version.parse(latest_ver) > version.parse(current_ver):
+        def parse_version(v):
+            return tuple(int(x) for x in v.strip().split("."))
+
+        if parse_version(latest_ver) > parse_version(current_ver):
             print(
                 Style.BRIGHT+Fore.MAGENTA +
                 "[INFO] New version avaiable!" +

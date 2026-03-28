@@ -3,7 +3,6 @@ confusable_homoglyphs
 homoglyphs
 colorama
 requests
-numpy
 pytest
 pytest-cov
 codecov
@@ -12,4 +11,3 @@ black
 flake8
 beautifulsoup4
 dnspython
-packaging
