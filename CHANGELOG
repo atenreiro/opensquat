@@ -1,7 +1,20 @@
-v2.2.0 (2026-01-08)
+v2.2.0 (2026-03-28)
 + Major Code Refactoring: Split app.py into FeedManager, DNSValidator, and SquattingDetector modules.
-+ Performance: Optimized parallel execution logic (~2x faster on macOS).
-+ Code Quality: Improved separation of concerns and maintainability.
++ Performance: Native Levenshtein with early exit optimization (~5.6x faster).
++ Removed strsimpy, numpy, and packaging dependencies (native Python replacements).
++ Removed Jaro-Winkler method (Levenshtein catches more squatting patterns).
++ Added -u/--url flag for custom feed URL.
++ Added --doppelganger flag (separated from --ct).
++ Added path traversal protection for feed URL filename extraction.
++ Fixed args.ct incorrectly mapped to doppelganger_only parameter.
++ Fixed ct.py not printing actual URL on errors.
++ Fixed read_files() appending raw lines instead of cleaned domains.
++ Fixed keyword enumeration starting at 0 instead of 1.
++ Removed deprecated Telegram Bot and RapidAPI integrations from README.
++ Updated Python version support from 3.6+ to 3.8+.
++ Pinned minimum dependency versions in requirements.txt.
++ Separated runtime and dev dependencies (requirements-dev.txt).
++ Renamed project to openSquat Core (open-core model).
 
 v2.1.2 (2026-01-08)
 + Fixed feed validation for chunked responses (feeds with missing Content-Length header)
