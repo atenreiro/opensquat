@@ -5,7 +5,7 @@
 <h1 align="center">openSquat</h1>
 
 <p align="center">
-  <a href="#"><img src="https://img.shields.io/badge/python-3.6+-blue.svg" alt="Python 3.6+"></a>
+  <a href="#"><img src="https://img.shields.io/badge/python-3.8+-blue.svg" alt="Python 3.8+"></a>
   <a href="https://github.com/atenreiro/opensquat/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="License: GPL v3"></a>
   <a href="https://github.com/atenreiro/opensquat/issues"><img src="https://img.shields.io/github/issues/atenreiro/opensquat" alt="GitHub issues"></a>
   <a href="https://github.com/atenreiro/opensquat/stargazers"><img src="https://img.shields.io/github/stars/atenreiro/opensquat" alt="GitHub stars"></a>
@@ -22,7 +22,6 @@
 - [Usage](#-usage)
 - [Configuration](#%EF%B8%8F-configuration)
 - [Automation](#-automation)
-- [Integrations](#-integrations)
 - [CLI Reference](#-cli-reference)
 - [Contributing](#-contributing)
 - [Author](#-author)
@@ -71,8 +70,8 @@ python opensquat.py -k keywords.txt
 
 ## 📦 Requirements
 
-- **Python 3.6+**
-- Dependencies: `colorama`, `dnspython`, `requests`, `beautifulsoup4`
+- **Python 3.8+**
+- Dependencies: `strsimpy`, `confusable_homoglyphs`, `homoglyphs`, `colorama`, `requests`, `dnspython`, `beautifulsoup4`, `numpy`, `packaging`
 
 ---
 
@@ -158,15 +157,6 @@ Run daily via crontab:
 # Every day at 8 AM (feeds update ~7:30 AM UTC)
 0 8 * * * /path/to/opensquat/opensquat.py -k keywords.txt -o results.json -t json
 ```
-
----
-
-## 🔗 Integrations
-
-| Platform | Link |
-|----------|------|
-| 🤖 Telegram Bot | [@opensquat_bot](https://telegram.me/opensquat_bot) |
-| 🔌 REST API | [RapidAPI](https://rapidapi.com/atenreiro/api/opensquat1) |
 
 ---
 
