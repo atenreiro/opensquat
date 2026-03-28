@@ -7,6 +7,7 @@ Handles checking and downloading of domain feeds.
 import os
 import requests
 import hashlib
+from urllib.parse import urlparse
 from colorama import Fore, Style
 from opensquat import __VERSION__
 
@@ -14,8 +15,43 @@ from opensquat import __VERSION__
 class FeedManager:
     def __init__(self, feed_url="https://feeds.opensquat.com/opensquat-nrd-latest.txt"):
         self.feed_url = feed_url
-        self.local_filename = os.path.basename(feed_url)
+        self.local_filename = self._safe_filename(feed_url)
         self.user_agent = "openSquat-" + __VERSION__
+
+    @staticmethod
+    def _safe_filename(feed_url):
+        """
+        Extract and validate local filename from feed URL.
+        Prevents path traversal attacks from crafted URLs.
+        """
+        parsed = urlparse(feed_url)
+        filename = os.path.basename(parsed.path)
+
+        if not filename:
+            print(
+                Style.BRIGHT + Fore.RED +
+                "[SECURITY] Aborted: Feed URL has no valid filename." +
+                Style.RESET_ALL
+            )
+            exit(-1)
+
+        if filename.startswith('.'):
+            print(
+                Style.BRIGHT + Fore.RED +
+                f"[SECURITY] Aborted: Suspicious filename '{filename}' (hidden file)." +
+                Style.RESET_ALL
+            )
+            exit(-1)
+
+        if '/' in filename or '\\' in filename or '..' in filename:
+            print(
+                Style.BRIGHT + Fore.RED +
+                f"[SECURITY] Aborted: Path traversal detected in filename '{filename}'." +
+                Style.RESET_ALL
+            )
+            exit(-1)
+
+        return filename
 
     def check_latest_feeds(self):
         """
