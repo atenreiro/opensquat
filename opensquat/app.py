@@ -12,7 +12,6 @@ software licensed under GNU version 3
 import concurrent.futures
 import functools
 import io
-from datetime import date
 from colorama import Fore, Style
 
 from opensquat import file_input
@@ -28,7 +27,6 @@ class Domain:
 
     def __init__(self):
         """Initiator."""
-        self.today = date.today().strftime("%Y-%m-%d")
         self.domain_filename = None
         self.keywords_filename = None
         self.domain_total = 0

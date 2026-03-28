@@ -69,12 +69,11 @@ if __name__ == "__main__":
         args.confidence,
         args.domains,
         args.dns,
-        args.ct,
+        doppelganger_only=args.doppelganger,
         feed_url=args.url,
     )
 
-    if args.subdomains or args.vt or args.subdomains or args.phishing \
-        or args.portcheck:
+    if args.subdomains or args.vt or args.phishing or args.portcheck:
         print("\n[*] Total found:", len(file_content))
 
     # Check for subdomains

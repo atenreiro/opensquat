@@ -38,8 +38,8 @@ class CRTSH:
 
         try:
             html_text = requests.get(url).text
-        except Exception as e:
-            print("Cannot fetch data from {url}")
+        except Exception:
+            print(f"Cannot fetch data from {url}")
             return True
 
         soup = BeautifulSoup(html_text, "html.parser")

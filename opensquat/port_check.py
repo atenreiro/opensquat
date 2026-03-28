@@ -47,7 +47,8 @@ class PortCheck:
             pass
         finally:
             sock.close()
-            return res
+
+        return res
 
     def connect(self):
         with concurrent.futures.ThreadPoolExecutor() as executor:

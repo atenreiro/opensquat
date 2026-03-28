@@ -95,7 +95,7 @@ class FeedManager:
 
         headers = {'User-Agent': self.user_agent}
         try:
-            response = requests.get(self.feed_url, stream=True, headers=headers)
+            response = requests.get(self.feed_url, headers=headers)
 
             if response.status_code != 200:
                 print(

@@ -124,6 +124,12 @@ def get_args():
     )
 
     parser.add_argument(
+        "--doppelganger",
+        action="store_true",
+        help="doppelganger-only mode: check if domains contain the keyword and are reachable",
+    )
+
+    parser.add_argument(
         "--dns",
         action="store_true",
         help="Check if domain is flagged by Quad9 DNS"

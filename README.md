@@ -169,7 +169,9 @@ Run daily via crontab:
 | `-t, --type` | `txt` | Output format: `txt`, `json`, `csv` |
 | `-c, --confidence` | `1` | Confidence level (0-4) |
 | `-d, --domains` | — | Use local domain file instead of downloading |
+| `-u, --url` | opensquat feed | URL to download domain feed |
 | `--dns` | — | Enable Quad9 DNS validation |
+| `--doppelganger` | — | Doppelganger-only mode (keyword in domain + reachability check) |
 | `--ct` | — | Search Certificate Transparency logs |
 | `--phishing` | — | Cross-reference phishing database |
 | `--subdomains` | — | Fetch subdomains via VirusTotal |

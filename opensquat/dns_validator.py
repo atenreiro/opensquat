@@ -11,7 +11,6 @@ from opensquat import dns_resolvers
 class DNSValidator:
     def __init__(self, use_dns=False):
         self.use_dns = use_dns
-        self.malicious_domains = []
 
     def check_domain(self, domain, result_buffer=None):
         """
@@ -28,7 +27,6 @@ class DNSValidator:
             self._print_result(Fore.GREEN + "  \\_ Domain Reputation: Non-malicious\n", result_buffer)
         elif dns_resp == "malicious":
             self._print_result(Style.BRIGHT + Fore.RED + "  \\_ Domain Reputation: Malicious\n", result_buffer)
-            self.malicious_domains.append(domain)
         elif dns_resp == "Timeout":
             self._print_result(Fore.YELLOW + "  \\_ DNS Server error: Possible Provider throttling\n", result_buffer)
         elif dns_resp == "NXDOMAIN":
