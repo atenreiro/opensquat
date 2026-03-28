@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "opensquat"
-version = "2.2.1"
+version = "2.2.2"
 description = "openSquat - Detection of domain squatting, typosquatting, IDN homograph attacks, and phishing threats"
 readme = "README.md"
 license = "GPL-3.0-only"
@@ -28,7 +28,7 @@ classifiers = [
 ]
 dependencies = [
     "confusable_homoglyphs>=2.0.0",
-    "homoglyphs>=2.1.0",
+    "homoglyphs>=2.0.0",
     "colorama>=0.4.1",
     "requests>=2.20.0",
     "beautifulsoup4>=4.4.0",

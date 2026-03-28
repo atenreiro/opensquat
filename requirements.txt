@@ -1,5 +1,5 @@
 confusable_homoglyphs>=2.0.0
-homoglyphs>=2.1.0
+homoglyphs>=2.0.0
 colorama>=0.4.1
 requests>=2.33.0
 beautifulsoup4>=4.4.0
