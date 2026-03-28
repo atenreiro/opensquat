@@ -16,3 +16,6 @@ venv/
 test*.py
 phishing.db
 domain-names*.txt
+dist/
+build/
+*.egg-info/

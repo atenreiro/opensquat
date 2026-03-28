@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "opensquat"
+version = "2.2.0"
+description = "openSquat - Detection of domain squatting, typosquatting, IDN homograph attacks, and phishing threats"
+readme = "README.md"
+license = "GPL-3.0-only"
+requires-python = ">=3.8"
+authors = [
+    { name = "Andre Tenreiro", email = "andre@opensquat.com" },
+]
+keywords = ["cybersecurity", "phishing", "typosquatting", "domain-squatting", "osint", "homograph", "brand-protection"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Security",
+]
+dependencies = [
+    "confusable_homoglyphs>=2.0.0",
+    "homoglyphs>=2.1.0",
+    "colorama>=0.4.1",
+    "requests>=2.20.0",
+    "beautifulsoup4>=4.4.0",
+    "dnspython>=2.0.0",
+]
+
+[project.urls]
+Homepage = "https://opensquat.com"
+Repository = "https://github.com/atenreiro/opensquat"
+Issues = "https://github.com/atenreiro/opensquat/issues"
+
+[project.scripts]
+opensquat = "opensquat.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["opensquat*"]
+
+[tool.setuptools]
+py-modules = []
+
+[tool.setuptools.package-data]
+opensquat = ["*.txt"]
