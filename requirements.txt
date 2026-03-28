@@ -4,3 +4,9 @@ colorama>=0.4.1
 requests>=2.20.0
 beautifulsoup4>=4.4.0
 dnspython>=2.0.0
+pytest
+pytest-cov
+codecov
+coverage
+black
+flake8
