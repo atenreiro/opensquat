@@ -38,7 +38,7 @@ class Domain:
         self.doppelganger_only = False
         self.method = "Levenshtein"
 
-        self.feed_manager = FeedManager()
+        self.feed_manager = None
         self.dns_validator = None
         self.squatting_detector = None
 
@@ -136,6 +136,7 @@ class Domain:
         method,
         dns,
         doppelganger_only=False,
+        feed_url="https://feeds.opensquat.com/opensquat-nrd-latest.txt",
     ):
         print("+---------- Checking Domain Squatting ----------+")
         self.keywords_filename = keywords_file
@@ -153,9 +154,10 @@ class Domain:
         )
 
         # Feed Management
+        self.feed_manager = FeedManager(feed_url=feed_url)
         if self.domain_filename == "":
-            self.domain_filename = self.feed_manager.url_file
-            self.feed_manager.ensure_feeds(self.domain_filename)
+            self.domain_filename = self.feed_manager.local_filename
+            self.feed_manager.ensure_feeds()
 
         self.count_files()
         self.read_files()

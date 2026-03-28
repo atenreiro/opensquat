@@ -70,7 +70,8 @@ if __name__ == "__main__":
         args.domains,
         args.method,
         args.dns,
-        args.ct
+        args.ct,
+        feed_url=args.url,
     )
 
     if args.subdomains or args.vt or args.subdomains or args.phishing \

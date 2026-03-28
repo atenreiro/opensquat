@@ -4,29 +4,24 @@
 FeedManager module for openSquat.
 Handles checking and downloading of domain feeds.
 """
+import os
 import requests
 import hashlib
-import os
 from colorama import Fore, Style
 from opensquat import __VERSION__
 
 
 class FeedManager:
-    def __init__(
-        self,
-        url="https://feeds.opensquat.com/",
-        backup_url="https://feeds-backup.opensquat.com/opensquat-nrd-free.txt"
-    ):
-        self.url = url
-        self.backup_url = backup_url
-        self.url_file = "opensquat-nrd-free.txt"
+    def __init__(self, feed_url="https://feeds.opensquat.com/opensquat-nrd-latest.txt"):
+        self.feed_url = feed_url
+        self.local_filename = os.path.basename(feed_url)
         self.user_agent = "openSquat-" + __VERSION__
 
-    def check_latest_feeds(self, local_filename):
+    def check_latest_feeds(self):
         """
         Checks if the local feed file is up to date by comparing MD5 checksums.
         """
-        url_md5 = self.url + self.url_file + ".md5"
+        url_md5 = self.feed_url + ".md5"
         print("[*] Checking for the latest feeds...")
 
         headers = {'User-Agent': self.user_agent}
@@ -42,9 +37,9 @@ class FeedManager:
         latest_checksum = response.content.decode('utf-8').strip()
         response.close()
 
-        if os.path.exists(local_filename):
+        if os.path.exists(self.local_filename):
             try:
-                with open(local_filename, "rb") as f:
+                with open(self.local_filename, "rb") as f:
                     local_checksum = hashlib.md5(f.read()).hexdigest()
 
                 if latest_checksum == local_checksum:
@@ -56,26 +51,15 @@ class FeedManager:
                 return False
         return False
 
-    def download(self, local_filename):
+    def download(self):
         """
         Downloads the latest registered domains.
         """
-        download_url = self.url + self.url_file
-        print("[*] Downloading fresh domain list:", self.url_file)
+        print("[*] Downloading fresh domain list:", self.feed_url)
 
         headers = {'User-Agent': self.user_agent}
         try:
-            response = requests.get(download_url, stream=True, headers=headers)
-
-            # Fault tolerance
-            if response.status_code in (403, 404):
-                print(
-                    Style.BRIGHT + Fore.RED + "[ERROR]", self.url_file, "not found," +
-                    "trying the backup URL." + Style.RESET_ALL
-                )
-                download_url = self.backup_url
-                print("[*] Downloading fresh domain list from backup URL", download_url)
-                response = requests.get(download_url, stream=True, headers=headers)
+            response = requests.get(self.feed_url, stream=True, headers=headers)
 
             if response.status_code != 200:
                 print(
@@ -96,14 +80,14 @@ class FeedManager:
 
             if total_size == 0:
                 print(
-                    Style.BRIGHT + Fore.RED + "[ERROR]", self.url_file, "not found or empty, " +
+                    Style.BRIGHT + Fore.RED + "[ERROR] Feed file not found or empty, " +
                     "Please notify the authors or try again later." + Style.RESET_ALL
                 )
                 exit(-1)
 
             print("[*] Download volume:", total_size_mb, "MB")
 
-            with open(local_filename, "wb") as f:
+            with open(self.local_filename, "wb") as f:
                 f.write(data)
 
             return True
@@ -112,12 +96,9 @@ class FeedManager:
             print(Style.BRIGHT + Fore.RED + f"[ERROR] Exception during download: {e}" + Style.RESET_ALL)
             exit(-1)
 
-    def ensure_feeds(self, local_filename):
+    def ensure_feeds(self):
         """
         Ensures that the feed file exists and is up to date.
         """
-        if local_filename == "":
-            local_filename = self.url_file
-
-        if not self.check_latest_feeds(local_filename):
-            self.download(local_filename)
+        if not self.check_latest_feeds():
+            self.download()

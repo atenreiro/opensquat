@@ -13,7 +13,6 @@ software licensed under GNU version 3
 import argparse
 
 
-
 def validate_type(file_type):
     """
     Validate file_type.
@@ -102,6 +101,13 @@ def get_args():
         type=str,
         default="",
         help="update from FILE instead of downloading new domains",
+    )
+    parser.add_argument(
+        "-u",
+        "--url",
+        type=str,
+        default="https://feeds.opensquat.com/opensquat-nrd-latest.txt",
+        help="URL to download domain feed (default: https://feeds.opensquat.com/opensquat-nrd-latest.txt)",
     )
     parser.add_argument(
         "-p",
