@@ -2,7 +2,7 @@
   <img src="https://raw.githubusercontent.com/atenreiro/opensquat/master/screenshots/openSquat_logo.png" alt="openSquat Logo" width="400"/>
 </p>
 
-<h1 align="center">openSquat</h1>
+<h1 align="center">openSquat Core</h1>
 
 <p align="center">
   <a href="#"><img src="https://img.shields.io/badge/python-3.8+-blue.svg" alt="Python 3.8+"></a>
@@ -16,6 +16,7 @@
 ## 📑 Table of Contents
 
 - [What is openSquat?](#-what-is-opensquat)
+- [Open-Core Model](#-open-core-model)
 - [Key Features](#-key-features)
 - [Quick Start](#-quick-start)
 - [Requirements](#-requirements)
@@ -40,6 +41,17 @@ openSquat is an **Open Source Intelligence (OSINT)** security tool that identifi
 | 🌐 **IDN Homograph** | Look-alike characters from other alphabets |
 | 👥 **Doppelgänger** | Domains containing your brand name |
 | 🔀 **Bitsquatting** | Single-bit errors in domain names |
+
+## 🔓 Open-Core Model
+
+openSquat follows an **open-core model**:
+
+- **Core detection engine** — Open source and community-driven
+- **Advanced capabilities** — Delivered through commercial intelligence services
+
+This model enables transparency and community collaboration while supporting the scale, reliability, and operational requirements of enterprise use.
+
+---
 
 ## ✨ Key Features
 
