@@ -1,3 +1,6 @@
+v2.2.2 (2026-03-28)
++ Fixed homoglyphs dependency version pin (2.1.0 doesn't exist on PyPI, corrected to 2.0.0)
+
 v2.2.1 (2026-03-28)
 + PyPI package support: pip install opensquat
 + Auto-publish to PyPI via GitHub Actions on push to master
