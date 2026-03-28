@@ -9,6 +9,7 @@ venv/
 *.old
 *.bak
 *.txt
+!requirements*.txt
 *.dat
 *.log
 *.json
