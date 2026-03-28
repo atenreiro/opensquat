@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# opensquat.py
+# Module: cli.py
 """
-openSquat.
+openSquat CLI entry point.
 
 * https://github.com/atenreiro/opensquat
 
@@ -24,20 +24,11 @@ def signal_handler(sig, frame):
     print("\n[*] openSquat is terminating...\n")
     exit(0)
 
-if __name__ == "__main__":
 
+def main():
     signal.signal(signal.SIGINT, signal_handler)
 
     init()
-
-    RED, WHITE, GREEN, END, YELLOW, BOLD = (
-        "\033[91m",
-        "\33[97m",
-        "\033[1;32m",
-        "\033[0m",
-        "\33[93m",
-        "\033[1m",
-    )
 
     logo = (
         Style.BRIGHT + Fore.GREEN +
@@ -135,11 +126,11 @@ if __name__ == "__main__":
         list_aux = []
         print("\n+---------- Domains with open webserver ports ----------+")
         time.sleep(1)
-        
+
         with concurrent.futures.ThreadPoolExecutor() as executor:
-            futs = [ (domain, executor.submit(functools.partial(port_check.PortCheck().main, domain)))
-                for domain in file_content ]
-        
+            futs = [(domain, executor.submit(functools.partial(port_check.PortCheck().main, domain)))
+                    for domain in file_content]
+
         for tested_domain, result_domain_port_check in futs:
             ports = result_domain_port_check.result()
             if ports:
@@ -149,7 +140,7 @@ if __name__ == "__main__":
                     "[*]", tested_domain, ports, "" +
                     Style.RESET_ALL
                     )
-        
+
         file_content = list_aux
         print("[*] Total found:", len(file_content))
 
@@ -174,3 +165,7 @@ if __name__ == "__main__":
     print("")
 
     check_update.CheckUpdate().main()
+
+
+if __name__ == "__main__":
+    main()

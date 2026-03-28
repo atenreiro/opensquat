@@ -66,16 +66,20 @@ This model enables transparency and community collaboration while supporting the
 
 ## 🚀 Quick Start
 
+### Install via pip (recommended)
+
 ```bash
-# 1. Clone the repository
+pip install opensquat
+opensquat -k keywords.txt
+```
+
+### Or clone the repository
+
+```bash
 git clone https://github.com/atenreiro/opensquat
 cd opensquat
-
-# 2. Install dependencies
 pip install -r requirements.txt
-
-# 3. Run with your keywords
-python opensquat.py -k keywords.txt
+python run.py -k keywords.txt
 ```
 
 ---
@@ -93,39 +97,39 @@ python opensquat.py -k keywords.txt
 
 ```bash
 # Default run
-python opensquat.py
+opensquat
 
 # Show all options
-python opensquat.py -h
+opensquat -h
 
 # Use custom keywords file
-python opensquat.py -k my_keywords.txt
+opensquat -k my_keywords.txt
 ```
 
 ### Validation Options
 
 ```bash
 # DNS validation via Quad9
-python opensquat.py --dns
+opensquat --dns
 
 # Check Certificate Transparency logs
-python opensquat.py --ct
+opensquat --ct
 
 # Scan for open ports (80/443)
-python opensquat.py --portcheck
+opensquat --portcheck
 
 # Cross-reference phishing databases
-python opensquat.py --phishing results.txt
+opensquat --phishing results.txt
 ```
 
 ### Output Formats
 
 ```bash
 # Save as JSON
-python opensquat.py -o results.json -t json
+opensquat -o results.json -t json
 
 # Save as CSV
-python opensquat.py -o results.csv -t csv
+opensquat -o results.csv -t csv
 ```
 
 ### Confidence Levels
