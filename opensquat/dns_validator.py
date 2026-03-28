@@ -7,6 +7,7 @@ Handles DNS reputation checks and validation.
 from colorama import Fore, Style
 from opensquat import dns_resolvers
 
+
 class DNSValidator:
     def __init__(self, use_dns=False):
         self.use_dns = use_dns

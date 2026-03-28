@@ -10,6 +10,7 @@ import os
 from colorama import Fore, Style
 from opensquat import __VERSION__
 
+
 class FeedManager:
     def __init__(
         self,
@@ -115,13 +116,8 @@ class FeedManager:
         """
         Ensures that the feed file exists and is up to date.
         """
-        if local_filename == "":  # Should not happen if defaults are set correctly, but for safety
+        if local_filename == "":
             local_filename = self.url_file
-
-        # If user provided a custom path that is NOT the default/downloaded one,
-        # typically we assume they manage it, but here we cover the default logic.
-        # The logic in app.py was: if domain_filename == "" (or default), check/download.
-        # We will handle the check here.
 
         if not self.check_latest_feeds(local_filename):
             self.download(local_filename)
