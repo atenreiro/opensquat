@@ -1,6 +1,7 @@
 confusable_homoglyphs>=2.0.0
 homoglyphs>=2.1.0
 colorama>=0.4.1
-requests>=2.20.0
+requests>=2.32.2
 beautifulsoup4>=4.4.0
-dnspython>=2.0.0
+dnspython>=2.6.1
+urllib3>=1.26.19 # not directly required, pinned by Snyk to avoid a vulnerability
