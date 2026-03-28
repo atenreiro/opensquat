@@ -2,10 +2,10 @@
   <img src="https://raw.githubusercontent.com/atenreiro/opensquat/master/screenshots/openSquat_logo.png" alt="openSquat Logo" width="400"/>
 </p>
 
-<h1 align="center">openSquat</h1>
+<h1 align="center">openSquat Core</h1>
 
 <p align="center">
-  <a href="#"><img src="https://img.shields.io/badge/python-3.6+-blue.svg" alt="Python 3.6+"></a>
+  <a href="#"><img src="https://img.shields.io/badge/python-3.8+-blue.svg" alt="Python 3.8+"></a>
   <a href="https://github.com/atenreiro/opensquat/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="License: GPL v3"></a>
   <a href="https://github.com/atenreiro/opensquat/issues"><img src="https://img.shields.io/github/issues/atenreiro/opensquat" alt="GitHub issues"></a>
   <a href="https://github.com/atenreiro/opensquat/stargazers"><img src="https://img.shields.io/github/stars/atenreiro/opensquat" alt="GitHub stars"></a>
@@ -16,13 +16,13 @@
 ## 📑 Table of Contents
 
 - [What is openSquat?](#-what-is-opensquat)
+- [Open-Core Model](#-open-core-model)
 - [Key Features](#-key-features)
 - [Quick Start](#-quick-start)
 - [Requirements](#-requirements)
 - [Usage](#-usage)
 - [Configuration](#%EF%B8%8F-configuration)
 - [Automation](#-automation)
-- [Integrations](#-integrations)
 - [CLI Reference](#-cli-reference)
 - [Contributing](#-contributing)
 - [Author](#-author)
@@ -42,10 +42,21 @@ openSquat is an **Open Source Intelligence (OSINT)** security tool that identifi
 | 👥 **Doppelgänger** | Domains containing your brand name |
 | 🔀 **Bitsquatting** | Single-bit errors in domain names |
 
+## 🔓 Open-Core Model
+
+openSquat follows an **open-core model**:
+
+- **Core detection engine** — Open source and community-driven
+- **Advanced capabilities** — Delivered through commercial intelligence services
+
+This model enables transparency and community collaboration while supporting the scale, reliability, and operational requirements of enterprise use.
+
+---
+
 ## ✨ Key Features
 
 - 📅 **Daily NRD feeds** — Automatic newly registered domain updates
-- 🔍 **Similarity detection** — Levenshtein & Jaro-Winkler algorithms
+- 🔍 **Similarity detection** — Levenshtein distance algorithm
 - 🛡️ **VirusTotal integration** — Check domain reputation
 - 🌐 **Quad9 DNS validation** — Identify malicious domains
 - 📜 **Certificate Transparency** — Monitor SSL/TLS certificates
@@ -71,8 +82,8 @@ python opensquat.py -k keywords.txt
 
 ## 📦 Requirements
 
-- **Python 3.6+**
-- Dependencies: `colorama`, `dnspython`, `requests`, `beautifulsoup4`
+- **Python 3.8+**
+- Dependencies: `confusable_homoglyphs`, `homoglyphs`, `colorama`, `requests`, `dnspython`, `beautifulsoup4`
 
 ---
 
@@ -161,15 +172,6 @@ Run daily via crontab:
 
 ---
 
-## 🔗 Integrations
-
-| Platform | Link |
-|----------|------|
-| 🤖 Telegram Bot | [@opensquat_bot](https://telegram.me/opensquat_bot) |
-| 🔌 REST API | [RapidAPI](https://rapidapi.com/atenreiro/api/opensquat1) |
-
----
-
 ## 📋 CLI Reference
 
 | Argument | Default | Description |
@@ -179,8 +181,9 @@ Run daily via crontab:
 | `-t, --type` | `txt` | Output format: `txt`, `json`, `csv` |
 | `-c, --confidence` | `1` | Confidence level (0-4) |
 | `-d, --domains` | — | Use local domain file instead of downloading |
-| `-m, --method` | `Levenshtein` | Algorithm: `Levenshtein` or `JaroWinkler` |
+| `-u, --url` | opensquat feed | URL to download domain feed |
 | `--dns` | — | Enable Quad9 DNS validation |
+| `--doppelganger` | — | Doppelganger-only mode (keyword in domain + reachability check) |
 | `--ct` | — | Search Certificate Transparency logs |
 | `--phishing` | — | Cross-reference phishing database |
 | `--subdomains` | — | Fetch subdomains via VirusTotal |

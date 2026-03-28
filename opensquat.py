@@ -53,7 +53,7 @@ if __name__ == "__main__":
               ░███                                          ░███
               █████                                         █████
              ░░░░░                                         ░░░░░
-                    (c) Andre Tenreiro - https://github.com/atenreiro/opensquat
+                    (c) openSquat - https://opensquat.com
     """ + Style.RESET_ALL
     )
 
@@ -68,13 +68,12 @@ if __name__ == "__main__":
         args.keywords,
         args.confidence,
         args.domains,
-        args.method,
         args.dns,
-        args.ct
+        doppelganger_only=args.doppelganger,
+        feed_url=args.url,
     )
 
-    if args.subdomains or args.vt or args.subdomains or args.phishing \
-        or args.portcheck:
+    if args.subdomains or args.vt or args.phishing or args.portcheck:
         print("\n[*] Total found:", len(file_content))
 
     # Check for subdomains

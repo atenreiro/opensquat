@@ -13,7 +13,6 @@ software licensed under GNU version 3
 import argparse
 
 
-
 def validate_type(file_type):
     """
     Validate file_type.
@@ -104,6 +103,13 @@ def get_args():
         help="update from FILE instead of downloading new domains",
     )
     parser.add_argument(
+        "-u",
+        "--url",
+        type=str,
+        default="https://feeds.opensquat.com/opensquat-nrd-latest.txt",
+        help="URL to download domain feed (default: https://feeds.opensquat.com/opensquat-nrd-latest.txt)",
+    )
+    parser.add_argument(
         "-p",
         "--period",
         type=str,
@@ -112,18 +118,15 @@ def get_args():
     )
 
     parser.add_argument(
-        "-m",
-        "--method",
-        type=str,
-        choices=("Levenshtein", "JaroWinkler"),
-        default="Levenshtein",
-        help="method which is used to calculate similarity",
-    )
-
-    parser.add_argument(
         "--ct",
         action="store_true",
         help="search in certificate transparency",
+    )
+
+    parser.add_argument(
+        "--doppelganger",
+        action="store_true",
+        help="doppelganger-only mode: check if domains contain the keyword and are reachable",
     )
 
     parser.add_argument(
