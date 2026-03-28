@@ -71,7 +71,7 @@ python opensquat.py -k keywords.txt
 ## 📦 Requirements
 
 - **Python 3.8+**
-- Dependencies: `strsimpy`, `confusable_homoglyphs`, `homoglyphs`, `colorama`, `requests`, `dnspython`, `beautifulsoup4`, `numpy`, `packaging`
+- Dependencies: `confusable_homoglyphs`, `homoglyphs`, `colorama`, `requests`, `dnspython`, `beautifulsoup4`
 
 ---
 

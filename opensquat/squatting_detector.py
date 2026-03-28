@@ -67,7 +67,7 @@ class SquattingDetector:
         return keyword in domain
 
     def _process_levenshtein(self, keyword, domain, homograph_domain, original_domain, result_buffer, result_domains):
-        leven_dist = validations.levenshtein(keyword, domain)
+        leven_dist = validations.levenshtein(keyword, domain, self.confidence_level)
 
         if (leven_dist <= self.confidence_level) and not homograph_domain:
             self._on_similarity(

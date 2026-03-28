@@ -1,4 +1,3 @@
-strsimpy>=0.1.0
 confusable_homoglyphs>=2.0.0
 homoglyphs>=2.1.0
 colorama>=0.4.1
