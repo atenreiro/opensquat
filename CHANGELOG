@@ -1,3 +1,9 @@
+v2.2.1 (2026-03-28)
++ PyPI package support: pip install opensquat
++ Auto-publish to PyPI via GitHub Actions on push to master
++ Added opensquat CLI entry point for pip users
++ Backward compatible: python opensquat.py still works for repo users
+
 v2.2.0 (2026-03-28)
 + Major Code Refactoring: Split app.py into FeedManager, DNSValidator, and SquattingDetector modules.
 + Performance: Native Levenshtein with early exit optimization (~5.6x faster).
