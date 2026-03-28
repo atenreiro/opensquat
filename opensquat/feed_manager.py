@@ -19,7 +19,7 @@ class FeedManager:
     ):
         self.url = url
         self.backup_url = backup_url
-        self.url_file = "domain-names.txt"
+        self.url_file = "opensquat-nrd-free.txt"
         self.user_agent = "openSquat-" + __VERSION__
 
     def check_latest_feeds(self, local_filename):
