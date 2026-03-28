@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "opensquat"
-version = "2.2.0"
+version = "2.2.1"
 description = "openSquat - Detection of domain squatting, typosquatting, IDN homograph attacks, and phishing threats"
 readme = "README.md"
 license = "GPL-3.0-only"
