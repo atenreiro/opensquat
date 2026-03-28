@@ -53,7 +53,7 @@ if __name__ == "__main__":
               ░███                                          ░███
               █████                                         █████
              ░░░░░                                         ░░░░░
-                    (c) Andre Tenreiro - https://github.com/atenreiro/opensquat
+                    (c) openSquat - https://opensquat.com
     """ + Style.RESET_ALL
     )
 
