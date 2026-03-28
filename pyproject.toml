@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "opensquat"
-dynamic = ["version"]
+version = "2.2.0"
 description = "openSquat - Detection of domain squatting, typosquatting, IDN homograph attacks, and phishing threats"
 readme = "README.md"
 license = "GPL-3.0-only"
@@ -43,11 +43,11 @@ Issues = "https://github.com/atenreiro/opensquat/issues"
 [project.scripts]
 opensquat = "opensquat.cli:main"
 
-[tool.setuptools.dynamic]
-version = {attr = "opensquat.__VERSION__"}
-
 [tool.setuptools.packages.find]
 include = ["opensquat*"]
+
+[tool.setuptools]
+py-modules = []
 
 [tool.setuptools.package-data]
 opensquat = ["*.txt"]

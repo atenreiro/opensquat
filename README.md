@@ -79,7 +79,7 @@ opensquat -k keywords.txt
 git clone https://github.com/atenreiro/opensquat
 cd opensquat
 pip install -r requirements.txt
-python run.py -k keywords.txt
+python opensquat.py -k keywords.txt
 ```
 
 ---
