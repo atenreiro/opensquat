@@ -19,3 +19,4 @@ domain-names*.txt
 dist/
 build/
 *.egg-info/
+.coverage
