@@ -40,7 +40,7 @@ class VirusTotal:
             )
             exit(-1)
         
-        with open(self.api_key_file, mode='r') as file_vt:
+        with open(self.api_key_file, mode='r', encoding='utf-8') as file_vt:
             for line in file_vt:
                 if (
                     (line[0] != "#") and

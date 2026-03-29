@@ -52,7 +52,7 @@ class Domain:
         """
         Method to read domain files
         """
-        with open(self.domain_filename, mode='r') as file_domains:
+        with open(self.domain_filename, mode='r', encoding='utf-8') as file_domains:
             for mydomains in file_domains:
                 domain = mydomains.replace("\n", "")
                 domain = domain.lower().strip()
@@ -60,7 +60,7 @@ class Domain:
                 if domain and not domain.startswith("#"):
                     self.list_file_domains.append(domain)
 
-        with open(self.keywords_filename, mode='r') as file_keywords:
+        with open(self.keywords_filename, mode='r', encoding='utf-8') as file_keywords:
             for line in file_keywords:
                 line = line.strip()
                 if line and not line.startswith("#"):

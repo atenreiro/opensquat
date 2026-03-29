@@ -44,7 +44,7 @@ class InputFile:
             )
             exit(-1)
         
-        with open(self.domain_filename, mode='r') as fd_input:
+        with open(self.domain_filename, mode='r', encoding='utf-8') as fd_input:
             for line in fd_input:
                 line = line.strip()
                 # Skip comments and empty lines
@@ -72,14 +72,10 @@ class InputFile:
             )
             exit(-1)
         
-        with open(self.keywords_filename, mode='r') as fd_input:
+        with open(self.keywords_filename, mode='r', encoding='utf-8') as fd_input:
             for line in fd_input:
-                if (
-                    (line[0] != "#") and
-                    (line[0] != " ") and
-                    (line[0] != "") and
-                    (line[0] != "\n")
-                ):
+                line = line.strip()
+                if line and not line.startswith("#"):
                     self.keywords_total += 1
 
         return self.keywords_total
