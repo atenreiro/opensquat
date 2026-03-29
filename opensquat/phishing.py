@@ -58,7 +58,7 @@ class Phishing:
         i = 0
         
         # Open phishing DB
-        with open(self.keywords_filename, mode='r') as f_key:
+        with open(self.keywords_filename, mode='r', encoding='utf-8') as f_key:
             for keyword in f_key:
                 keyword = keyword.replace("\n", "")
                 keyword = keyword.lower()
@@ -83,7 +83,7 @@ class Phishing:
                         "]" + Style.RESET_ALL,
                     )
                     
-                    with open(self.phishing_filename, mode='r') as f_phishing:
+                    with open(self.phishing_filename, mode='r', encoding='utf-8') as f_phishing:
                         for site in f_phishing:
                             phishing_site = site.lower()
                             phishing_site = site.replace("\n", "")

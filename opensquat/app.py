@@ -32,6 +32,7 @@ class Domain:
         self.domain_total = 0
         self.keywords_total = 0
         self.list_domains = []
+        self.keyword_domains = {}
         self.confidence_level = 2
         self.doppelganger_only = False
 
@@ -52,7 +53,7 @@ class Domain:
         """
         Method to read domain files
         """
-        with open(self.domain_filename, mode='r') as file_domains:
+        with open(self.domain_filename, mode='r', encoding='utf-8') as file_domains:
             for mydomains in file_domains:
                 domain = mydomains.replace("\n", "")
                 domain = domain.lower().strip()
@@ -60,7 +61,7 @@ class Domain:
                 if domain and not domain.startswith("#"):
                     self.list_file_domains.append(domain)
 
-        with open(self.keywords_filename, mode='r') as file_keywords:
+        with open(self.keywords_filename, mode='r', encoding='utf-8') as file_keywords:
             for line in file_keywords:
                 line = line.strip()
                 if line and not line.startswith("#"):
@@ -101,7 +102,7 @@ class Domain:
         )
 
         result_domains = detector.check(keyword, domains_list, result_buffer)
-        return result_buffer, result_domains
+        return result_buffer, keyword, result_domains
 
     def worker(self):
         """
@@ -119,9 +120,11 @@ class Domain:
             futs = [executor.submit(worker_func, k_info) for k_info in keyword_infos]
 
         for fut in futs:
-            result_buffer, result_domains = fut.result()
+            result_buffer, keyword, result_domains = fut.result()
             print(result_buffer.getvalue())
             self.list_domains.extend(result_domains)
+            if result_domains:
+                self.keyword_domains[keyword] = result_domains
 
         return self.list_domains
 

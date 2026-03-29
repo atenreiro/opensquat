@@ -1,3 +1,11 @@
+v2.2.3 (2026-03-29)
++ Fixed Unicode encoding error on Windows (issue #104).
++ JSON output now groups results by keyword (issue #105).
++ JSON output respects post-processing filters (--vt, --subdomains, --portcheck).
++ Fixed file_input.py crash on empty lines in keywords file.
++ Added encoding='utf-8' to all file open() calls.
++ Added pretty-print and Unicode support to JSON output.
+
 v2.2.2 (2026-03-28)
 + Fixed homoglyphs dependency version pin (2.1.0 doesn't exist on PyPI, corrected to 2.0.0)
 
