@@ -146,11 +146,12 @@ def main():
         print("[*] Total found:", len(file_content))
 
     if args.type == "json":
-        keyword_domains = domain_scanner.keyword_domains
-        json_content = [
-            {"keyword": kw, "domains": doms}
-            for kw, doms in keyword_domains.items()
-        ]
+        filtered_set = set(file_content)
+        json_content = []
+        for kw, doms in domain_scanner.keyword_domains.items():
+            filtered_doms = [d for d in doms if d in filtered_set]
+            if filtered_doms:
+                json_content.append({"keyword": kw, "domains": filtered_doms})
         output.SaveFile().main(args.output, args.type, json_content)
     else:
         output.SaveFile().main(args.output, args.type, file_content)
