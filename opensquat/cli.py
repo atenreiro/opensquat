@@ -55,7 +55,8 @@ def main():
 
     start_time_squatting = time.time()
 
-    file_content = app.Domain().main(
+    domain_scanner = app.Domain()
+    file_content = domain_scanner.main(
         args.keywords,
         args.confidence,
         args.domains,
@@ -144,7 +145,15 @@ def main():
         file_content = list_aux
         print("[*] Total found:", len(file_content))
 
-    output.SaveFile().main(args.output, args.type, file_content)
+    if args.type == "json":
+        keyword_domains = domain_scanner.keyword_domains
+        json_content = [
+            {"keyword": kw, "domains": doms}
+            for kw, doms in keyword_domains.items()
+        ]
+        output.SaveFile().main(args.output, args.type, json_content)
+    else:
+        output.SaveFile().main(args.output, args.type, file_content)
     end_time_squatting = round(time.time() - start_time_squatting, 2)
 
     # Print summary

@@ -46,8 +46,7 @@ class SaveFile:
             none
         """
         with open(self.filename, "w", encoding='utf-8') as f_json:
-            json.dump(self.content, f_json)
-        f_json.close()
+            json.dump(self.content, f_json, indent=2, ensure_ascii=False)
 
     def as_csv(self):
         """
