@@ -1,3 +1,6 @@
+v2.2.4 (2026-03-30)
++ Raised minimum Python version from 3.8 to 3.10 (Python 3.8 and 3.9 are EOL).
+
 v2.2.3 (2026-03-29)
 + Fixed Unicode encoding error on Windows (issue #104).
 + JSON output now groups results by keyword (issue #105).
