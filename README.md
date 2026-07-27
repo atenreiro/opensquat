@@ -5,7 +5,8 @@
 <h1 align="center">openSquat Core</h1>
 
 <p align="center">
-  <a href="#"><img src="https://img.shields.io/badge/python-3.10+-blue.svg" alt="Python 3.10+"></a>
+  <a href="https://pypi.org/project/opensquat/"><img src="https://img.shields.io/pypi/v/opensquat" alt="PyPI"></a>
+  <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.10+-blue.svg" alt="Python 3.10+"></a>
   <a href="https://github.com/atenreiro/opensquat/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="License: GPL v3"></a>
   <a href="https://github.com/atenreiro/opensquat/issues"><img src="https://img.shields.io/github/issues/atenreiro/opensquat" alt="GitHub issues"></a>
   <a href="https://github.com/atenreiro/opensquat/stargazers"><img src="https://img.shields.io/github/stars/atenreiro/opensquat" alt="GitHub stars"></a>
@@ -23,6 +24,7 @@
 - [Requirements](#-requirements)
 - [Usage](#-usage)
 - [Premium and API Modes](#-premium-and-api-modes)
+- [MCP Server](#-mcp-server)
 - [Configuration](#%EF%B8%8F-configuration)
 - [Automation](#-automation)
 - [CLI Reference](#-cli-reference)
@@ -49,9 +51,6 @@ openSquat is an **Open Source Intelligence (OSINT)** security tool that identifi
 ## 🌟 Featured In
 
 > **"A powerful swiss army knife for brand protection"**
-> — [WhoisXML API Blog](https://www.whoisxmlapi.com/blog/orchestrating-open-source-software-and-whois-newly-registered-domain-data-feeds-to-fight-the-typosquatting-plague), August 2022
-
-> **"A tool with insane power to fight typosquatting and all related types of cyber mischief."**
 > — [WhoisXML API Blog](https://www.whoisxmlapi.com/blog/orchestrating-open-source-software-and-whois-newly-registered-domain-data-feeds-to-fight-the-typosquatting-plague), August 2022
 
 > **"A handy tool for collecting information on newly registered domains."** — ranked Top 5 phishing detection tool
@@ -109,6 +108,12 @@ python3 opensquat.py -k keywords.txt
 ```
 
 > **Repo users:** in all the examples below, replace `opensquat` with `python3 opensquat.py` to run from a cloned checkout.
+
+### See it in action
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/atenreiro/opensquat/master/screenshots/openSquat_v2.3.0.png" alt="openSquat 2.3.0 scanning the daily NRD feed for lookalikes of google, facebook, amazon and paypal" width="800"/>
+</p>
 
 ---
 
@@ -282,6 +287,21 @@ If you pass `--api-key` without also selecting `--premium` or `--api`, the CLI p
 In Premium API mode, `-c/--confidence` is auto-mapped to API fuzziness (`0→exact`, `1→low`, `2→auto`, `3→high`, `4→high`). Use `--api-fuzziness` to override.
 
 Premium API (`--api`) is incompatible with `--doppelganger` and `-d/--domains`.
+
+---
+
+## 🔌 MCP Server
+
+openSquat is also available as a **Model Context Protocol (MCP) server**, so AI assistants and agents (Claude, and any other MCP-compatible client) can query lookalike-domain intelligence directly:
+
+| Tool | What it does | Quota cost |
+|------|--------------|------------|
+| `search_lookalike_domains` | Find newly registered domains impersonating a brand or keyword (phishing, brand abuse, typosquatting) | 1 query per search |
+| `validate_api_key` | Confirm the connection is authenticated | Free |
+
+Authentication uses the same openSquat account as the Premium modes: either sign in with OAuth, or supply your API key (`os_...`) via the `Authorization: Bearer` header (or `X-OpenSquat-Key`). Searches draw from the same plan quota as the Premium API.
+
+See [opensquat.com](https://opensquat.com) for the MCP endpoint and client setup instructions.
 
 ---
 
