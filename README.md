@@ -112,7 +112,7 @@ python3 opensquat.py -k keywords.txt
 ### See it in action
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/atenreiro/opensquat/master/screenshots/openSquat_v2.3.0.png" alt="openSquat 2.3.0 scanning the daily NRD feed for lookalikes of google, facebook, amazon and paypal" width="800"/>
+  <img src="screenshots/openSquat_v2.3.0.png" alt="openSquat 2.3.0 scanning the daily NRD feed for lookalikes of google, facebook, amazon and paypal" width="800"/>
 </p>
 
 ---
