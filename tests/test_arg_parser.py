@@ -130,6 +130,54 @@ class TestRateLimitFlag(TestCase):
         self.assertIsNone(args.api_rate_limit)
 
 
+class TestCtFlag(TestCase):
+    """
+    --ct must reach a consumer.
+
+    It was parsed but never read from 2020 until v2.3.1: originally passed
+    positionally into doppelganger_only (so it silently toggled
+    doppelganger mode), then orphaned entirely when that mis-wiring was
+    fixed. Nothing failed, because no test asserted the flag did anything.
+    """
+
+    def _run(self, argv):
+        with patch.object(sys, "argv", ["opensquat"] + argv):
+            return arg_parser.get_args()
+
+    def test_ct_defaults_to_false(self):
+        self.assertFalse(self._run([]).ct)
+
+    def test_ct_flag_sets_true(self):
+        self.assertTrue(self._run(["--ct"]).ct)
+
+    def test_ct_is_independent_of_doppelganger(self):
+        """The original bug was these two being the same value."""
+        args = self._run(["--ct"])
+        self.assertTrue(args.ct)
+        self.assertFalse(args.doppelganger)
+
+        args = self._run(["--doppelganger"])
+        self.assertFalse(args.ct)
+        self.assertTrue(args.doppelganger)
+
+    def test_ct_is_consumed_by_the_cli(self):
+        """
+        Guards against re-orphaning: --ct must actually gate the CT pass.
+
+        Checking only for the string "args.ct" is too weak — it also
+        appears in the "Total found" condition, so the flag could be
+        disconnected from its pass while that check still passed.
+        """
+        import inspect
+        from opensquat import cli
+
+        source = inspect.getsource(cli.main)
+        self.assertIn("args.ct", source)
+        # The flag must gate the filter, not merely be mentioned.
+        self.assertIn("_filter_by_certificate_transparency", source)
+        self.assertRegex(source, r"if\s*\(?\s*args\.ct\s*\)?\s*:")
+
+
 class TestDeprecatedPeriodFlag(TestCase):
     """-p/--period is deprecated and should exit with a clear message."""
 

@@ -1,0 +1,4 @@
+# setuptools auto-includes tests/*.py in the sdist but not data files.
+# The CT tests parse a captured crt.sh page, so ship it or those tests
+# fail with FileNotFoundError for anyone testing from the sdist.
+recursive-include tests *.html

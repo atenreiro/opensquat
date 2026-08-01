@@ -6,7 +6,14 @@ on:
       - master
 
 jobs:
+  # Release gate: the full suite must pass on every supported Python before
+  # anything is built or uploaded. A red suite now blocks the release instead
+  # of shipping to PyPI regardless.
+  test:
+    uses: ./.github/workflows/tests.yml
+
   publish:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

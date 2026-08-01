@@ -1,0 +1,41 @@
+name: Tests
+
+on:
+  # Master pushes are covered by publish.yml, which calls this workflow as a
+  # release gate — excluding master here avoids running the same suite twice.
+  push:
+    branches-ignore:
+      - master
+  pull_request:
+  # Lets publish.yml reuse this job via `uses:` so releases are gated on it.
+  workflow_call:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Mirrors the Programming Language classifiers in pyproject.toml.
+        python-version: ["3.10", "3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install dependencies
+        # Runtime deps plus pytest only. requirements-dev.txt additionally
+        # pulls in `codecov`, which is deprecated and would make a failed
+        # install block every release through the gate below.
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest
+
+      - name: Run tests
+        run: pytest tests/ -v

@@ -1,3 +1,51 @@
+v2.3.1 (unreleased)
+- Fixed: IDN homograph detection did not work on real feeds. NRD feeds
+  publish IDNs as punycode ("xn--..."), which bypassed the homograph
+  check entirely - labels are now decoded and each character folded to
+  its ASCII homoglyph before matching. The documented "IDN Homograph"
+  threat type previously only worked on hand-supplied unicode input.
+- Fixed: whole-script confusables (e.g. the all-Cyrillic apple.com PoC,
+  xn--80ak6aa92e.com) and same-script lookalikes (e.g. Latin
+  small-capital miᴄrosoft) were never flagged, because the previous
+  mixed-script check (confusables.is_dangerous) cannot detect them.
+- Fixed: --ct was parsed but never consumed, so the flag silently did
+  nothing. It was originally passed positionally into doppelganger_only
+  (so it toggled doppelganger mode rather than CT checking); commit
+  733772e fixed that mis-wiring but left the flag orphaned. --ct now
+  runs a real Certificate Transparency pass over the flagged domains,
+  keeping only those with no certificates found. Domains whose CT status
+  cannot be determined are kept, never silently dropped, and the pass
+  stops querying crt.sh after 5 consecutive failures.
+- Fixed: crt.sh responses with no results table raised IndexError in
+  ct.py instead of reporting that no CT logs were found.
+- Fixed: ct.py ignored the HTTP status code, so crt.sh 502/503 error
+  pages were parsed as "no certificates found" and reported as
+  suspicious certificates during any crt.sh outage.
+- Fixed: ct.py could not distinguish "no certificates exist" from
+  "lookup failed". check_certificate() now returns True/False/None,
+  where None means indeterminate; a failed lookup no longer reports a
+  domain as having a valid certificate.
+- Fixed: ct.py read the wrong crt.sh columns - issuer_name took the
+  Matching Identities column and matching_ident took Common Name. The
+  untrusted-CA check was therefore comparing a CA name against a domain
+  name and could never match.
+- Homograph matches from punycode now display the unicode rendering in
+  console output, e.g.
+  "Homograph detected between microsoft and xn--mirosoft-hw7c.com (miᴄrosoft.com)".
+  Result files keep the clean feed string.
+- False-positive guard: labels containing characters with no ASCII
+  homoglyph (CJK, Hangul, accented Latin) are never classified as
+  homographs. Validated against a live 100k-domain feed: 6/6 synthetic
+  attacks caught, zero new flags on real feed data.
+- Local scanning is significantly faster: the per-domain confusables
+  check no longer runs on pure-ASCII labels (the overwhelming majority
+  of every feed), only on decoded punycode and raw-unicode labels.
+- Internal: new helpers in opensquat/homograph.py (decode_punycode(),
+  fold_to_latin()); the homoglyphs table is now loaded once per process
+  instead of per detected domain.
+- Internal: test suite expanded from 70 to 180+ tests; CI now gates the
+  PyPI publish on a green suite across Python 3.10-3.12.
+
 v2.3.0 (2026-04-08)
 + Added Premium Feed mode (--premium): downloads paid NRD feed from
   api.opensquat.com/v1/feeds/nrd-lite using X-API-Key header auth,

@@ -365,7 +365,7 @@ Run daily via crontab:
 | `-u, --url` | opensquat feed | URL to download domain feed |
 | `--dns` | — | Enable Quad9 DNS validation |
 | `--doppelganger` | — | Doppelganger-only mode (keyword in domain + reachability check) |
-| `--ct` | — | Search Certificate Transparency logs |
+| `--ct` | — | Check Certificate Transparency logs (crt.sh) and keep only domains with no certificates found. Domains whose CT status cannot be determined are kept, never silently dropped |
 | `--phishing` | — | Cross-reference phishing database |
 | `--subdomains` | — | Fetch subdomains via VirusTotal |
 | `--portcheck` | — | Check for open ports 80/443 |

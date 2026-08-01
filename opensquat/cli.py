@@ -16,8 +16,14 @@ import concurrent.futures
 from colorama import init, Fore, Style
 from opensquat import __VERSION__, vt
 from opensquat import arg_parser, output, app, phishing, check_update
-from opensquat import port_check
+from opensquat import ct, port_check
 from opensquat.app import ApiOptions
+
+
+# crt.sh is slow and flaps 5xx under load. After this many consecutive
+# indeterminate lookups, stop querying and keep the remaining domains
+# unfiltered rather than serialising a timeout per domain.
+CT_FAILURE_LIMIT = 5
 
 
 def signal_handler(sig, frame):
@@ -103,6 +109,72 @@ def _build_csv_rows(scanner, filtered_set):
                 if dom in filtered_set:
                     rows.append([kw, dom, "", "", "", ""])
     return rows
+
+
+def _filter_by_certificate_transparency(domains):
+    """
+    Narrow `domains` to those NOT confirmed to hold Certificate
+    Transparency logs, matching the "no CT logs is the suspicious signal"
+    semantic the doppelganger path already uses.
+
+    Fails open on purpose. CRTSH.check_certificate() is tri-state, and an
+    indeterminate result (crt.sh unreachable or erroring) is not evidence
+    that a domain is clean — so those domains are KEPT. Only a positive
+    "certificates found" answer clears a domain out of the results.
+
+    Stops querying after CT_FAILURE_LIMIT consecutive indeterminate
+    lookups and keeps everything remaining: when crt.sh is down, one
+    message is more useful than a timeout per domain.
+
+    Args:
+        domains: list of domain strings to check.
+
+    Return:
+        list: the domains that were not cleared.
+    """
+    kept = []
+    consecutive_failures = 0
+    aborted = False
+
+    for index, domain in enumerate(domains):
+        if aborted:
+            kept.append(domain)
+            continue
+
+        status = ct.CRTSH.check_certificate(domain)
+
+        if status is None:
+            consecutive_failures += 1
+            kept.append(domain)
+            print(
+                Fore.YELLOW +
+                f"[*] CT check unavailable, keeping: {domain}" +
+                Style.RESET_ALL
+            )
+            if consecutive_failures >= CT_FAILURE_LIMIT:
+                aborted = True
+                remaining = len(domains) - index - 1
+                print(
+                    Style.BRIGHT + Fore.YELLOW +
+                    f"[!] crt.sh unavailable after {CT_FAILURE_LIMIT} "
+                    f"consecutive failures - skipping CT checks for the "
+                    f"remaining {remaining} domain(s)" +
+                    Style.RESET_ALL
+                )
+            continue
+
+        consecutive_failures = 0
+        if status:
+            print(Fore.GREEN + f"[*] CT logs found: {domain}" + Style.RESET_ALL)
+        else:
+            print(
+                Style.BRIGHT + Fore.RED +
+                f"[*] No CT logs (suspicious): {domain}" +
+                Style.RESET_ALL
+            )
+            kept.append(domain)
+
+    return kept
 
 
 def _print_mode_summary(mode, scanner):
@@ -246,7 +318,7 @@ def main():
         premium_api_key=args.resolved_api_key if args.mode == "premium_feed" else None,
     )
 
-    if args.subdomains or args.vt or args.phishing or args.portcheck:
+    if args.subdomains or args.vt or args.ct or args.phishing or args.portcheck:
         print("\n[*] Total found:", len(file_content))
 
     # Check for subdomains
@@ -297,6 +369,13 @@ def main():
                     )
                 list_aux.append(domain)
         file_content = list_aux
+        print("[*] Total found:", len(file_content))
+
+    # Check Certificate Transparency logs
+    if (args.ct):
+        print("\n+---------- Certificate Transparency ----------+")
+        time.sleep(1)
+        file_content = _filter_by_certificate_transparency(file_content)
         print("[*] Total found:", len(file_content))
 
     # Check for phishing

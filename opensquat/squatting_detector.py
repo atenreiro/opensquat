@@ -47,9 +47,32 @@ class SquattingDetector:
                 progress = round(((i * 100) / domain_total_lines), 1)
                 print(f">> Progress: {progress} %", file=result_buffer)
 
-            homograph_domain = homograph.check_homograph(domain_part)
-            if homograph_domain:
-                domain_part = homograph.homograph_to_latin(domain_part)
+            # Homograph normalisation. NRD feeds publish IDNs in punycode
+            # ("xn--..."), so those must be decoded before folding; raw
+            # unicode (e.g. from a -d file) is folded directly. In both
+            # cases fold_to_latin() is the gate: it returns None for
+            # labels that are not Latin-lookalike (CJK, Hangul, accented
+            # Latin), which is what keeps false positives out.
+            homograph_domain = False
+            unicode_form = None
+            if domain_part.startswith("xn--"):
+                decoded = homograph.decode_punycode(domain_part)
+                if decoded:
+                    folded = homograph.fold_to_latin(decoded)
+                    if folded:
+                        if folded != decoded:
+                            homograph_domain = True
+                            # Full-domain unicode rendering for display,
+                            # e.g. "xn--mirosoft-hw7c.com" -> "miᴄrosoft.com"
+                            unicode_form = ".".join(
+                                [decoded] + original_domain.split(".")[1:]
+                            )
+                        domain_part = folded
+            elif not domain_part.isascii():
+                folded = homograph.fold_to_latin(domain_part)
+                if folded and folded != domain_part:
+                    homograph_domain = True
+                    domain_part = folded
 
             if self.doppelganger_only:
                 self._process_doppelganger(
@@ -58,7 +81,8 @@ class SquattingDetector:
                 continue
 
             self._process_levenshtein(
-                keyword, domain_part, homograph_domain, original_domain, result_buffer, result_domains
+                keyword, domain_part, homograph_domain, original_domain, result_buffer, result_domains,
+                unicode_form=unicode_form
             )
 
         return result_domains
@@ -66,7 +90,8 @@ class SquattingDetector:
     def _domain_contains(self, keyword, domain):
         return keyword in domain
 
-    def _process_levenshtein(self, keyword, domain, homograph_domain, original_domain, result_buffer, result_domains):
+    def _process_levenshtein(self, keyword, domain, homograph_domain, original_domain, result_buffer, result_domains,
+                             unicode_form=None):
         leven_dist = validations.levenshtein(keyword, domain, self.confidence_level)
 
         if (leven_dist <= self.confidence_level) and not homograph_domain:
@@ -78,7 +103,8 @@ class SquattingDetector:
 
         elif (leven_dist <= self.confidence_level) and homograph_domain:
             self._on_homograph(
-                keyword, original_domain, self.confidence.get(leven_dist, "unknown"), result_buffer, result_domains
+                keyword, original_domain, self.confidence.get(leven_dist, "unknown"), result_buffer, result_domains,
+                unicode_form=unicode_form
             )
             if self.dns_validator:
                 self.dns_validator.check_domain(original_domain, result_buffer)
@@ -106,7 +132,19 @@ class SquattingDetector:
                         file=result_buffer
                     )
 
-                if not ct.CRTSH.check_certificate(original_domain):
+                # Tri-state: None means crt.sh could not answer, which is
+                # not evidence either way. Reporting it as "valid" (the old
+                # behaviour on network errors) hid real suspicious domains.
+                ct_status = ct.CRTSH.check_certificate(original_domain)
+                if ct_status is None:
+                    print(
+                        Fore.YELLOW +
+                        f"[!] CT check unavailable for {original_domain} "
+                        "(crt.sh error) - no certificate verdict" +
+                        Style.RESET_ALL,
+                        file=result_buffer
+                    )
+                elif not ct_status:
                     print(
                         Style.BRIGHT + Fore.RED +
                         f"[+] suspicious certificate detected between {keyword} and {original_domain}" +
@@ -132,9 +170,14 @@ class SquattingDetector:
         )
         result_domains.append(domain)
 
-    def _on_homograph(self, keyword, domain, value, result_buffer, result_domains):
+    def _on_homograph(self, keyword, domain, value, result_buffer, result_domains, unicode_form=None):
+        # For punycode homographs, show the unicode rendering so the
+        # operator can see the actual characters being impersonated —
+        # a bare "xn--..." string gives no hint of why it matched.
+        # The clean feed string (domain) is what goes into results.
+        shown = f"{domain} ({unicode_form})" if unicode_form else domain
         print(
-            Style.BRIGHT + Fore.RED + f"[+] Homograph detected between {keyword} and {domain} ({value})" + Style.RESET_ALL,
+            Style.BRIGHT + Fore.RED + f"[+] Homograph detected between {keyword} and {shown} ({value})" + Style.RESET_ALL,
             file=result_buffer
         )
         result_domains.append(domain)
