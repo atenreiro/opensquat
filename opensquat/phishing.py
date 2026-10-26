@@ -31,6 +31,11 @@ class Phishing:
         self.phishing_db = "https://phish.co.za" \
                            "/latest/" \
                            "phishing-domains-ACTIVE.txt"
+        # Used when the Phishing Database cannot be downloaded: the domains
+        # that public threat feeds reported for phishing or malware in the
+        # last 24 hours, one per line, free and without a key.
+        self.fallback_db = "https://netapi.com/api2/" \
+                           "?method=compromised&dataset_type=url"
         self.phishing_filename = "phishing.db"
         self.keyword = ""
         self.keywords_filename = ""
@@ -87,6 +92,11 @@ class Phishing:
                         # sensitive comparison that missed mixed-case hits.
                         phishing_site = site.replace("\n", "").lower()
 
+                        # A list may start with a "#" header line, which is
+                        # not a site and must not match a keyword.
+                        if phishing_site.startswith("#"):
+                            continue
+
                         if self.URL_contains(keyword, phishing_site):
                             print(
                                 Style.BRIGHT + Fore.YELLOW +
@@ -100,48 +110,56 @@ class Phishing:
 
         return self.list_domains
 
+    def download_db(self, url):
+        """
+        Download one phishing list.
+
+        Return the body, or None when the source did not answer with a
+        non-empty list. A server that is down answers with an error page
+        (phish.co.za returns a short 503 or 403 HTML page), and that page
+        must not be saved as the database: every keyword would then
+        silently match nothing.
+        """
+        print("[*] Downloading fresh Phishing DB from", url)
+        try:
+            # Timeout so a hung phishing DB server cannot freeze the CLI.
+            r = requests.get(url, timeout=60)
+        except requests.exceptions.RequestException as e:
+            print("[!] Phishing DB not reachable:", e)
+            return None
+
+        data = r.content
+        r.close()
+
+        if r.status_code != 200:
+            print("[!] Phishing DB unavailable: HTTP", r.status_code)
+            return None
+
+        if len(data) == 0:
+            print("[!] Phishing DB is empty")
+            return None
+
+        return data
+
     def update_db(self):
 
-        try:
+        data = self.download_db(self.phishing_db)
+        if data is None:
+            print("[*] Trying the fallback list")
+            data = self.download_db(self.fallback_db)
+
+        if data is None:
             print(
-                "[*] Downloading fresh Phishing DB from",
-                self.phishing_db
-                )
-            session = requests.session()
-            # Add timeout so a hung phishing DB server cannot freeze the CLI.
-            r = session.get(self.phishing_db, timeout=60)
-
-            data = r.content
-            r.close()
-            session.close()
-
-            # Get reported size from header, but fall back to the actual
-            # body length when the header is missing (chunked encoding).
-            # Without this fallback, a chunked response with no
-            # Content-Length was incorrectly treated as "file not found"
-            # even when the body had valid data — same bug that was
-            # already fixed in feed_manager.py.
-            total_size = int(r.headers.get("content-length", 0))
-            if total_size == 0:
-                total_size = len(data)
-
-            total_size_mb = round(float(total_size / 1024 / 1024), 2)
-
-            if total_size == 0:
-                print(
-                    "[ERROR] File not found or empty! Contact the authors " +
-                    "or try again later. Exiting...\n",
-                )
-                exit(-1)
-
-            print("[*] Download volume:", total_size_mb, "MB")
-
-            with open(self.phishing_filename, "wb") as f:
-                f.write(data)
-
-        except requests.exceptions.RequestException:
-            print("")
+                "[ERROR] No phishing list could be downloaded. " +
+                "Try again later. Exiting...\n",
+            )
             exit(-1)
+
+        total_size_mb = round(float(len(data) / 1024 / 1024), 2)
+        print("[*] Download volume:", total_size_mb, "MB")
+
+        with open(self.phishing_filename, "wb") as f:
+            f.write(data)
 
         return True
 
