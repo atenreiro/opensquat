@@ -367,6 +367,7 @@ Run daily via crontab:
 | `--doppelganger` | — | Doppelganger-only mode (keyword in domain + reachability check) |
 | `--ct` | — | Search Certificate Transparency logs |
 | `--phishing` | — | Cross-reference phishing database |
+| `--phishing-fallback` | — | Optional `https` list of phishing domains/URLs, used only when the default database cannot be downloaded |
 | `--subdomains` | — | Fetch subdomains via VirusTotal |
 | `--portcheck` | — | Check for open ports 80/443 |
 | `--vt` | — | Validate against VirusTotal |

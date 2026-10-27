@@ -1,3 +1,25 @@
+v2.3.1 (2026-10-27)
++ Fixed --phishing returning no matches for every keyword while
+  phish.co.za is down: an HTTP error page (503/403) was saved as the
+  phishing database and the keywords were matched against it. Only a
+  200 response with a non-empty text body is accepted now. Thanks to
+  Slava Olesik (PR #119).
++ New flag --phishing-fallback URL: an optional https list of phishing
+  domains/URLs (one per line) used only when the Phishing Database cannot
+  be downloaded. There is no default fallback.
++ Phishing lists are treated as untrusted input:
+  - Every line is validated; only hostnames and http(s) URLs are kept, so
+    control characters and ANSI escape sequences can no longer reach the
+    terminal or the --phishing output file.
+  - A source is rejected when it is HTML/XML/JSON, redirects to plain
+    http, is larger than 256 MB, or when less than half of its lines are
+    valid.
+  - Invalid UTF-8 no longer crashes the phishing check.
+  - phishing.db is written atomically, so a failed update never leaves a
+    partial file or replaces the previous database.
++ The run summary now shows which list the phishing results came from.
++ Lines starting with "#" in the phishing list are ignored.
+
 v2.3.0 (2026-04-08)
 + Added Premium Feed mode (--premium): downloads paid NRD feed from
   api.opensquat.com/v1/feeds/nrd-lite using X-API-Key header auth,

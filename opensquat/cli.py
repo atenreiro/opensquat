@@ -301,7 +301,10 @@ def main():
 
     # Check for phishing
     if (args.phishing != ""):
-        file_phishing = phishing.Phishing().main(args.keywords)
+        phishing_check = phishing.Phishing(
+            fallback_db=args.phishing_fallback
+        )
+        file_phishing = phishing_check.main(args.keywords)
         output.SaveFile().main(args.phishing, "txt", file_phishing)
 
     # Check if domain has webserver port opened
@@ -353,6 +356,7 @@ def main():
 
     if (args.phishing != ""):
         print("[*] Phishing results:", args.phishing)
+        print("[*] Phishing source:", phishing_check.source)
         print("[*] Active Phishing sites:", len(file_phishing))
 
     print("[*] Running time: %s seconds" % end_time_squatting)
