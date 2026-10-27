@@ -11,6 +11,7 @@ software licensed under GNU version 3
 
 """
 import argparse
+from urllib.parse import urlparse
 
 from colorama import Fore, Style
 
@@ -35,6 +36,26 @@ def validate_type(file_type):
     if (file_type != "txt") and (file_type != "json") and (file_type != "csv"):
         raise argparse.ArgumentTypeError("File format unkown!")
     return file_type
+
+
+def validate_https_url(url):
+    """
+    Validate a URL given on the command line.
+
+    Args:
+        url: string containing the URL, must be https with a host.
+
+    Return:
+        url
+
+    Raise:
+        If value is not valid, raise an exception to argparse
+    """
+    parsed = urlparse(str(url))
+
+    if parsed.scheme != "https" or not parsed.hostname:
+        raise argparse.ArgumentTypeError("URL must start with https://")
+    return url
 
 
 def validate_confidence(confidence_level):
@@ -193,6 +214,14 @@ def get_args():
         type=str,
         default="",
         help="search known and active Phishing sites (arg: output.txt)",
+    )
+    parser.add_argument(
+        "--phishing-fallback",
+        type=validate_https_url,
+        default=None,
+        metavar="URL",
+        help="https list of phishing domains/URLs (one per line) used only "
+             "when the default Phishing Database cannot be downloaded",
     )
     parser.add_argument(
         "--subdomains",

@@ -140,3 +140,30 @@ class TestDeprecatedPeriodFlag(TestCase):
     def test_period_flag_exits(self):
         with self.assertRaises(SystemExit):
             self._run(["-p", "daily"])
+
+
+class TestPhishingFallbackFlag(TestCase):
+    """--phishing-fallback is opt-in and must be an https URL."""
+
+    def _run(self, argv):
+        with patch.object(sys, "argv", ["opensquat"] + argv):
+            return arg_parser.get_args()
+
+    def test_no_fallback_by_default(self):
+        self.assertIsNone(self._run([]).phishing_fallback)
+
+    def test_https_url_is_accepted(self):
+        args = self._run(
+            ["--phishing", "out.txt",
+             "--phishing-fallback", "https://lists.example.org/p.txt"]
+        )
+        self.assertEqual("https://lists.example.org/p.txt",
+                         args.phishing_fallback)
+
+    def test_plain_http_url_is_rejected(self):
+        with self.assertRaises(SystemExit):
+            self._run(["--phishing-fallback", "http://lists.example.org/p"])
+
+    def test_non_url_is_rejected(self):
+        with self.assertRaises(SystemExit):
+            self._run(["--phishing-fallback", "not-a-url"])
