@@ -67,7 +67,12 @@ class SquattingDetector:
         return keyword in domain
 
     def _process_levenshtein(self, keyword, domain, homograph_domain, original_domain, result_buffer, result_domains):
-        leven_dist = validations.levenshtein(keyword, domain, self.confidence_level)
+        # DNS names are case-insensitive, while keyword files preserve the
+        # user's display spelling. Normalize only for comparisons.
+        matching_keyword = keyword.lower()
+        leven_dist = validations.levenshtein(
+            matching_keyword, domain, self.confidence_level
+        )
 
         if (leven_dist <= self.confidence_level) and not homograph_domain:
             self._on_similarity(
@@ -83,13 +88,13 @@ class SquattingDetector:
             if self.dns_validator:
                 self.dns_validator.check_domain(original_domain, result_buffer)
 
-        elif self._domain_contains(keyword, original_domain):
+        elif self._domain_contains(matching_keyword, original_domain.lower()):
             self._on_contains(keyword, original_domain, result_buffer, result_domains)
             if self.dns_validator:
                 self.dns_validator.check_domain(original_domain, result_buffer)
 
     def _process_doppelganger(self, keyword, domain, original_domain, result_buffer, result_domains):
-        if self._domain_contains(keyword, domain):
+        if self._domain_contains(keyword.lower(), domain.lower()):
             try:
                 response = requests.get(f"https://{original_domain}", timeout=5)
                 print(
